@@ -12,8 +12,14 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2F97580BDA5A402FB7C87D4C /* SegoeUI-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F825E7192FA14B078072C56A /* SegoeUI-SemiBold.ttf */; };
+		31FFD1F2483F47269CBDDDBB /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 696BE74BDA7F47E5856293D9 /* Inter-Regular.ttf */; };
+		64C8B2FBC08145AFA916CF52 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2EF26F7F037544AC96B17AA1 /* Inter-SemiBold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-travelMobile-travelMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-travelMobile-travelMobileTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A8B142F24C714A1089CC387D /* SegoeUI-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 06C30295B6434BC48A0AD1B0 /* SegoeUI-Bold.ttf */; };
+		EF2BC3B0EA274DA6B5A6B792 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 16066BE7D09944B49B99987D /* Inter-Bold.ttf */; };
+		F0E09B732B0E4C5B97535DA4 /* SegoeUI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2FE0173A2ACF4BC08451556F /* SegoeUI.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,20 +36,26 @@
 		00E356EE1AD99517003FC87E /* travelMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = travelMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* travelMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = travelMobileTests.m; sourceTree = "<group>"; };
+		06C30295B6434BC48A0AD1B0 /* SegoeUI-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SegoeUI-Bold.ttf"; path = "../src/assets/fonts/SegoeUI-Bold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* travelMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = travelMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = travelMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = travelMobile/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = travelMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = travelMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = travelMobile/main.m; sourceTree = "<group>"; };
+		16066BE7D09944B49B99987D /* Inter-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.ttf"; path = "../src/assets/fonts/Inter-Bold.ttf"; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-travelMobile-travelMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelMobile-travelMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EF26F7F037544AC96B17AA1 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../src/assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		2FE0173A2ACF4BC08451556F /* SegoeUI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = SegoeUI.ttf; path = ../src/assets/fonts/SegoeUI.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-travelMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelMobile.debug.xcconfig"; path = "Target Support Files/Pods-travelMobile/Pods-travelMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-travelMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelMobile.release.xcconfig"; path = "Target Support Files/Pods-travelMobile/Pods-travelMobile.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-travelMobile-travelMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelMobile-travelMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-travelMobile-travelMobileTests/Pods-travelMobile-travelMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-travelMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		696BE74BDA7F47E5856293D9 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../src/assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = travelMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-travelMobile-travelMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelMobile-travelMobileTests.release.xcconfig"; path = "Target Support Files/Pods-travelMobile-travelMobileTests/Pods-travelMobile-travelMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F825E7192FA14B078072C56A /* SegoeUI-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SegoeUI-SemiBold.ttf"; path = "../src/assets/fonts/SegoeUI-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +118,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7A48B6663A034DC0888C5B1E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				16066BE7D09944B49B99987D /* Inter-Bold.ttf */,
+				696BE74BDA7F47E5856293D9 /* Inter-Regular.ttf */,
+				2EF26F7F037544AC96B17AA1 /* Inter-SemiBold.ttf */,
+				06C30295B6434BC48A0AD1B0 /* SegoeUI-Bold.ttf */,
+				F825E7192FA14B078072C56A /* SegoeUI-SemiBold.ttf */,
+				2FE0173A2ACF4BC08451556F /* SegoeUI.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +148,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				7A48B6663A034DC0888C5B1E /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -244,6 +271,12 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				EF2BC3B0EA274DA6B5A6B792 /* Inter-Bold.ttf in Resources */,
+				31FFD1F2483F47269CBDDDBB /* Inter-Regular.ttf in Resources */,
+				64C8B2FBC08145AFA916CF52 /* Inter-SemiBold.ttf in Resources */,
+				A8B142F24C714A1089CC387D /* SegoeUI-Bold.ttf in Resources */,
+				2F97580BDA5A402FB7C87D4C /* SegoeUI-SemiBold.ttf in Resources */,
+				F0E09B732B0E4C5B97535DA4 /* SegoeUI.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

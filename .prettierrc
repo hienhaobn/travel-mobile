@@ -12,7 +12,7 @@
   "quoteProps": "as-needed",
   "vueIndentScriptAndStyle": false,
   "singleQuote": true,
-  "semi": false,
+  "semi": true,
   "useTabs": false,
   "importOrder": [
       "^/(.*)$$",
@@ -26,6 +26,7 @@
       "^i18n/(.*)$",
       "^modules/(.*)$",
       "^services/(.*)$",
+      "^states$",
       "^states/(.*)$",
       "^themes$",
       "^themes/(.*)$",
