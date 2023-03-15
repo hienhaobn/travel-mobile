@@ -4,4 +4,6 @@ export type RootNavigatorParamList = {
   Messenger: undefined,
   Favorite: undefined,
   Account: undefined,
+  Splash: undefined,
+  Main: { screen?: string }
 };

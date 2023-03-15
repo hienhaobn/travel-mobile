@@ -1,0 +1,10 @@
+{
+  "appName": "Travel",
+  "tabBar": {
+    "home": "Home",
+    "location": "Location",
+    "messenger": "Messenger",
+    "favorite": "Favorite",
+    "account": "Account"
+  }
+}

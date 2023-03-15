@@ -1,10 +1,13 @@
 import { EThemeColor } from 'constants/index';
 
-export const getThemeColor = (theme = EThemeColor.Light) => {
+import { ColorDarkTheme, ColorLightTheme } from 'themes';
+
+// export const getThemeColor = (theme: string = EThemeColor.Light) => {
     // Todo: check dark mode
+export const getThemeColor = () => {
 
     // if (theme === EThemeColor.Dark) {
-    //   return Dark;
+    //     return ColorDarkTheme;
     // }
-    return Light;
+    return ColorLightTheme;
 };

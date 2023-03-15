@@ -1,8 +1,8 @@
 import { useColorScheme } from 'react-native';
 
-import { EThemeColor, GlobalVariable } from 'constants/index';
+import { EThemeColor, GlobalVariables } from 'constants/index';
 
-export const useMyTheme = () => {
+export const useTheme = () => {
     const colorScheme = useColorScheme();
 
     // Todo
@@ -13,7 +13,7 @@ export const useMyTheme = () => {
         // themeCurrent = EThemeColor.Dark;
     }
 
-    GlobalVariable.themeCurrent = themeCurrent;
+    GlobalVariables.themeCurrent = themeCurrent;
 
     return {
         themeCurrent,

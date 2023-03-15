@@ -1,4 +1,4 @@
-const Light = {
+export const ColorLightTheme = {
     transparent: 'transparent',
     white: '#ffffff',
     pGreen2: '#0BE254',
@@ -50,6 +50,9 @@ const Light = {
     Color_Primary_Mint_10: '#e7f8fa',
     Color_Primary_Light_Mint: '#73E2F3',
 
+
+    Color_Primary: '#00A66C',
+
     // Secondary
     Color_Secondary_Blue: '#4A70F5',
     Color_Secondary_Light_Blue: '#60A9FF',
@@ -58,7 +61,7 @@ const Light = {
     Color_Secondary_Yellow: '#FF9C06',
     Color_Secondary_Light_Yellow: '#FFB854',
     Color_Secondary_Yellow_10: '#fef5e6',
-    Color_Secondary_Green: '#5EC70C',
+    Color_Secondary_Green: '#D0FFD8',
     Color_Secondary_Purple: '#D277EF',
     Color_Secondary_Bronze: '#BE7C48',
 
@@ -97,12 +100,12 @@ const Light = {
     Light_2: '#F2F2F4',
     Light_3: '#EFF7FF',
 
-    Color_Bg: '#F4F5F9',
+    Color_Bg: '#FBFEEA',
     Color_Red_1: '#DE626280',
     Color_Yellow_1: '#FFB88C80',
     Color_Transparent: 'transparent',
 };
 
-const Dark = {
+export const ColorDarkTheme = {
     // Todo: add dark theme in design
 };

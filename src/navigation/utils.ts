@@ -46,6 +46,7 @@ export function goBack() {
 }
 
 export function resetStack(name: keyof RootNavigatorParamList, params = {}) {
+    console.log('isReady', navigationRef);
     navigationRef.reset({
         index: 0,
         routes: [
@@ -64,3 +65,7 @@ export function getCurrentRoute() {
 export function pushToPage(name: string, params?: RootNavigatorParamList[keyof RootNavigatorParamList]): void {
     navigationRef.dispatch(StackActions.push(name, params));
 }
+
+export function setRoot() {
+    resetStack('Main');
+};
