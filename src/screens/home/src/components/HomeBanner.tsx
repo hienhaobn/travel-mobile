@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import { View } from 'react-native-animatable';
 import Swiper from 'react-native-swiper';
@@ -12,10 +11,9 @@ import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-
 const HomeBanner = () => {
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
 
     return (
         <View style={styles.swiperContainer}>
@@ -61,7 +59,7 @@ const HomeBanner = () => {
 
 export default React.memo(HomeBanner);
 
-const myStyles = (themeCurrent: string) => {
+const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         itemPage: {

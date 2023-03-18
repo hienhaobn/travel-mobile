@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Images from 'assets/images';
 
@@ -17,15 +17,20 @@ interface Props {
 }
 const LocationData = (props: Props) => {
     const { data } = props;
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
+    const renderNoData = useCallback(() => {
+        return (
+            <View style={styles.optionsContainer}>
+                <Image source={Images.NoData} style={styles.image} resizeMode={'contain'} />
+                <Text style={styles.textNoData}>Chưa có dữ liệu về địa điểm</Text>
+                <Text style={styles.textInputData}>Vui lòng nhập địa điểm muốn thăm quan</Text>
+            </View>
+        )
+    }, []);
     return data.length === 0 ? (
-        <View style={styles.optionsContainer}>
-            <Image source={Images.NoData} style={styles.image} resizeMode={'cover'} />
-            <Text style={styles.textNoData}>Chưa có dữ liệu về địa điểm</Text>
-            <Text style={styles.textInputData}>Vui lòng nhập địa điểm muốn thăm quan</Text>
-        </View>
-    ) : <ScrollView style={{marginTop: scales(10)}}>
+        renderNoData()
+    ): <ScrollView style = {{ marginTop: scales(10) }}>
         <Pressable style={styles.itemSwipe}>
             <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
             <View style={styles.tourInfo}>
@@ -54,7 +59,7 @@ const LocationData = (props: Props) => {
                 <Text style={styles.tourText}>5 tour</Text>
             </View>
         </Pressable>
-    </ScrollView>;
+    </ScrollView >;
 };
 
 export default LocationData;
@@ -71,8 +76,6 @@ const myStyles = (themeCurrent: string) => {
             marginHorizontal: scales(15),
             flexDirection: 'column',
             marginBottom: scales(25),
-            flex: 1,
-            // justifyContent: 'center',
             alignItems: 'center',
         },
         optionItem: {
@@ -95,19 +98,16 @@ const myStyles = (themeCurrent: string) => {
             borderRadius: scales(20),
         },
         textNoData: {
-            color: '#F03800',
+            color: color.Color_Red_2,
             marginTop: scales(29),
             marginBottom: scales(15),
-            fontWeight: '500',
-            fontFamily: 'roboto',
+            ...Fonts.inter700,
             fontSize: scales(12),
             fontStyle: 'normal',
         },
         textInputData: {
-            color: '#425884',
-
+            color: color.Color_Gray3,
             fontWeight: '300',
-            fontFamily: 'roboto',
             fontSize: scales(12),
             fontStyle: 'normal',
         },

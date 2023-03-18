@@ -12,11 +12,11 @@ export interface IToken {
 interface GlobalVariableParams {
     tokenInfo?: IToken;
     activeRouteKey?: string;
-    themeCurrent: EThemeColor;
+    theme: EThemeColor;
 }
 
 export const GlobalVariables: GlobalVariableParams = {
-    themeCurrent: EThemeColor.Light,
+    theme: EThemeColor.Light,
 };
 
 export const clearGlobal = () => {

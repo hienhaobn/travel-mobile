@@ -23,9 +23,9 @@ import SvgIcons from 'assets/svgs';
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
 const MyTabBar = (props: BottomTabBarProps) => {
-    const { themeCurrent } = useTheme();
+    const { theme } = useTheme();
     const { t } = useTranslation();
-    const styles = myStyles(themeCurrent);
+    const styles = myStyles(theme);
     const { state } = props;
 
     return (
@@ -56,7 +56,7 @@ const MyTabBar = (props: BottomTabBarProps) => {
 
 export default MyTabBar;
 
-const myStyles = (themeCurrent: EThemeColor) => {
+const myStyles = (theme: EThemeColor) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {

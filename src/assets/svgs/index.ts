@@ -6,6 +6,7 @@ import IcNotification from './ic_notification.svg';
 import IcScan from './ic_scan.svg';
 import IcSearch from './ic_search.svg';
 import IcLogoLaunch from './logo_launch.svg';
+import IcStarActive from './star_active.svg';
 import IcTabAccount from './tab_account.svg';
 import IcTabAccountActive from './tab_account_active.svg';
 import IcTabFavorite from './tab_favorite.svg';
@@ -16,7 +17,6 @@ import IcTabLocation from './tab_location.svg';
 import IcTabLocationActive from './tab_location_active.svg';
 import IcTabMessenger from './tab_messenger.svg';
 import IcTabMessengerActive from './tab_messenger_active.svg';
-
 
 const SvgIcons = {
     IcBack,
@@ -37,6 +37,7 @@ const SvgIcons = {
     IcNotification,
     IcScan,
     IcSearch,
+    IcStarActive,
 };
 
 export default SvgIcons;

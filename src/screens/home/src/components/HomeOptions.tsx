@@ -15,8 +15,8 @@ import { navigate } from 'navigation/utils';
 
 
 const HomeOptions = () => {
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
     return (
         <ScrollView horizontal style={styles.optionsContainer}>
             <TouchableOpacity style={styles.optionItem}>
@@ -27,7 +27,7 @@ const HomeOptions = () => {
                 <Image source={Images.IcTour} style={styles.imageOptions} />
                 <Text style={styles.optionText}>Tour</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.optionItem, styles.mh5]} onPress={() => navigate('Location')}>
+            <TouchableOpacity style={[styles.optionItem, styles.mh5]}>
                 <Image source={Images.IcTourGuide} style={styles.imageOptions} />
                 <Text style={styles.optionText}>Hướng dẫn viên</Text>
             </TouchableOpacity>
@@ -45,7 +45,7 @@ const HomeOptions = () => {
 
 export default HomeOptions;
 
-const myStyles = (themeCurrent: string) => {
+const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         imageOptions: {
@@ -53,8 +53,7 @@ const myStyles = (themeCurrent: string) => {
             height: scales(45),
         },
         optionsContainer: {
-            marginTop: scales(26),
-            marginHorizontal: scales(15),
+            marginTop: scales(40),
             flexDirection: 'row',
             marginBottom: scales(25),
         },

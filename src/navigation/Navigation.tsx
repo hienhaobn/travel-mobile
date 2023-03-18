@@ -26,13 +26,12 @@ const RootStack = () => {
             <Stack.Screen name="Splash" component={SplashScreen} />
 
             <Stack.Screen name="Main" component={MainScreen} options={{ animation: 'fade' }} />
-            <Stack.Screen name="Location" component={LocationScreen} />
         </Stack.Navigator>
     );
 };
 
 const StackNavigator = () => {
-    const { themeCurrent } = useTheme();
+    const { theme } = useTheme();
     const onSetStatusBar = (screenName: string) => {
         if (!screenName) {
             return;
@@ -51,7 +50,7 @@ const StackNavigator = () => {
         <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
             <StatusBar
                 backgroundColor={getThemeColor().Color_Bg}
-                barStyle={themeCurrent === EThemeColor.Light ? 'dark-content' : 'light-content'}
+                barStyle={theme === EThemeColor.Light ? 'dark-content' : 'light-content'}
                 translucent
             />
             <RootStack />

@@ -29,8 +29,8 @@ export interface InputProps extends TextInputProps {
 }
 
 const Input = (props: InputProps) => {
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
     const {
         title,
         rightTitle,
@@ -100,7 +100,7 @@ const Input = (props: InputProps) => {
 
 export default Input;
 
-const myStyles = (themeCurrent: string) => {
+const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {},

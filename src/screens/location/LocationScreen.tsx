@@ -16,10 +16,9 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
 const LocationScreen = () => {
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
-    const [data, setData] = useState([1]);
-    
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
+    const [data, setData] = useState([]);
     return (
         <>
             <Header iconLeft={<Text style={styles.textTitle}>Địa điểm</Text>} />
@@ -126,10 +125,10 @@ const myStyles = (themeCurrent: string) => {
             marginHorizontal: scales(5),
         },
         textTitle: {
-            fontWeight: '700',
+            ...Fonts.inter700,
             fontSize: 32,
-            color: '#0A2753',
-        }
+            color: color.Text_Dark_2,
+        },
     });
 };
 export default LocationScreen;
