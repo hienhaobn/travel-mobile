@@ -8,6 +8,7 @@ const Images = {
     DaNangImg: require('./da_nang.png'),
     HaGiangImg: require('./ha_giang.png'),
     NinhBinhImg: require('./ninh_binh.jpeg'),
+    NoData: require('./no_data.png'),
 };
 
 export default Images;

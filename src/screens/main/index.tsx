@@ -31,6 +31,7 @@ const Main = () => {
             <Tab.Screen name={'Favorite'} component={Screen.Favorite} />
 
             <Tab.Screen name={'Account'} component={Screen.Account} />
+
         </Tab.Navigator>
     );
 };

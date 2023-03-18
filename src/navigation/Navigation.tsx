@@ -13,6 +13,7 @@ import SplashScreen from 'screens/launch/LaunchScreen';
 import MainScreen from 'screens/main';
 
 import { getThemeColor } from 'utils/getThemeColor';
+import LocationScreen from 'screens/location/LocationScreen';
 
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
@@ -25,6 +26,7 @@ const RootStack = () => {
             <Stack.Screen name="Splash" component={SplashScreen} />
 
             <Stack.Screen name="Main" component={MainScreen} options={{ animation: 'fade' }} />
+            <Stack.Screen name="Location" component={LocationScreen} />
         </Stack.Navigator>
     );
 };

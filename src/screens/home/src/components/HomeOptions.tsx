@@ -11,6 +11,7 @@ import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import { navigate } from 'navigation/utils';
 
 
 const HomeOptions = () => {
@@ -26,7 +27,7 @@ const HomeOptions = () => {
                 <Image source={Images.IcTour} style={styles.imageOptions} />
                 <Text style={styles.optionText}>Tour</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.optionItem, styles.mh5]}>
+            <TouchableOpacity style={[styles.optionItem, styles.mh5]} onPress={() => navigate('Location')}>
                 <Image source={Images.IcTourGuide} style={styles.imageOptions} />
                 <Text style={styles.optionText}>Hướng dẫn viên</Text>
             </TouchableOpacity>

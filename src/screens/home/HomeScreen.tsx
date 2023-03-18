@@ -57,9 +57,9 @@ const HomeScreen = () => {
     const renderSearchComponent = useCallback(() => {
         return (
             <View style={styles.searchContainer}>
-                <View style={styles.icScan}>
+                {/* <View style={styles.icScan}>
                     <SvgIcons.IcScan color={getThemeColor().Text_Dark_1} width={scales(17)} height={scales(17)} />
-                </View>
+                </View> */}
                 <Input
                     placeholder="Tìm kiếm"
                     leftIcon={
