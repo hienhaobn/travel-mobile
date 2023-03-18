@@ -14,9 +14,9 @@ import { getThemeColor } from 'utils/getThemeColor';
 import 'i18n';
 
 const LaunchScreen = () => {
-    const { themeCurrent } = useTheme();
+    const { theme } = useTheme();
     const { i18n } = useTranslation();
-    const styles = myStyles(themeCurrent);
+    const styles = myStyles(theme);
 
     const initLocale = React.useCallback(() => {
         const currentLocale = 'en'; // Todo
@@ -49,7 +49,7 @@ const LaunchScreen = () => {
 
 export default LaunchScreen;
 
-const myStyles = (themeCurrent: string) =>
+const myStyles = (theme: string) =>
     StyleSheet.create({
         container: {
             flex: 1,

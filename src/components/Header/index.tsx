@@ -26,8 +26,8 @@ interface Props {
 }
 
 const Header = (props: Props) => {
-    const { themeCurrent } = useTheme();
-    const styles = getStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
     const { showLineBottom, title, iconLeft, hideLeft, onPressLeft, iconRight, onPressRight } = props;
 
     const renderLeft = () =>
@@ -80,7 +80,7 @@ const Header = (props: Props) => {
 
 export default Header;
 
-const getStyles = (themeCurrent: string) => {
+const getStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {

@@ -14,8 +14,8 @@ import { scales } from 'utils/scales';
 
 
 const HomeOptions = () => {
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
     return (
         <ScrollView horizontal style={styles.optionsContainer}>
             <TouchableOpacity style={styles.optionItem}>
@@ -44,7 +44,7 @@ const HomeOptions = () => {
 
 export default HomeOptions;
 
-const myStyles = (themeCurrent: string) => {
+const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         imageOptions: {
@@ -52,8 +52,7 @@ const myStyles = (themeCurrent: string) => {
             height: scales(45),
         },
         optionsContainer: {
-            marginTop: scales(26),
-            marginHorizontal: scales(15),
+            marginTop: scales(40),
             flexDirection: 'row',
             marginBottom: scales(25),
         },

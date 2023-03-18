@@ -30,7 +30,7 @@ const RootStack = () => {
 };
 
 const StackNavigator = () => {
-    const { themeCurrent } = useTheme();
+    const { theme } = useTheme();
     const onSetStatusBar = (screenName: string) => {
         if (!screenName) {
             return;
@@ -49,7 +49,7 @@ const StackNavigator = () => {
         <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
             <StatusBar
                 backgroundColor={getThemeColor().Color_Bg}
-                barStyle={themeCurrent === EThemeColor.Light ? 'dark-content' : 'light-content'}
+                barStyle={theme === EThemeColor.Light ? 'dark-content' : 'light-content'}
                 translucent
             />
             <RootStack />

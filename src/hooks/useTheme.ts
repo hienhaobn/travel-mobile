@@ -6,16 +6,16 @@ export const useTheme = () => {
     const colorScheme = useColorScheme();
 
     // Todo
-    const themeCurrent = EThemeColor.Light;
+    const theme = EThemeColor.Light;
 
     if (colorScheme === 'dark') {
         // Todo
-        // themeCurrent = EThemeColor.Dark;
+        // theme = EThemeColor.Dark;
     }
 
-    GlobalVariables.themeCurrent = themeCurrent;
+    GlobalVariables.theme = theme;
 
     return {
-        themeCurrent,
+        theme,
     };
 };

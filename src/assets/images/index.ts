@@ -8,6 +8,8 @@ const Images = {
     DaNangImg: require('./da_nang.png'),
     HaGiangImg: require('./ha_giang.png'),
     NinhBinhImg: require('./ninh_binh.jpeg'),
+    TourGuidePerson: require('./tour_guide_person.png'),
+    Mountain: require('./mountain.png'),
 };
 
 export default Images;

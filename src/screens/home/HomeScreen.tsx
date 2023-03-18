@@ -4,6 +4,9 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import HomeBanner from './src/components/HomeBanner';
 import HomeOptions from './src/components/HomeOptions';
+import HomePostSection from './src/components/HomePostSection';
+import HomeTourGuideSection from './src/components/HomeTourGuideSection';
+import HomeTourSection from './src/components/HomeTourSection';
 
 import SvgIcons from 'assets/svgs';
 
@@ -19,8 +22,8 @@ import { Fonts, Sizes } from 'themes';
 
 const HomeScreen = () => {
     const { t } = useTranslation();
-    const { themeCurrent } = useTheme();
-    const styles = myStyles(themeCurrent);
+    const { theme } = useTheme();
+    const styles = myStyles(theme);
 
     const renderHeader = useCallback(() => {
         return (
@@ -80,10 +83,15 @@ const HomeScreen = () => {
     const renderContent = () => {
         return (
             <View style={styles.contentContainer}>
-                {/* Search */}
-                {renderSearchComponent()}
-                {<HomeOptions />}
-                <HomeBanner />
+                <View style={{ marginHorizontal: scales(15) }}>
+                    {/* Search */}
+                    {renderSearchComponent()}
+                    <HomeOptions />
+                    <HomeBanner />
+                    <HomeTourGuideSection />
+                    <HomeTourSection />
+                    <HomePostSection />
+                </View>
             </View>
         );
     };
@@ -101,21 +109,21 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const myStyles = (themeCurrent: string) => {
+const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         contentContainer: {
             backgroundColor: color.Color_Bg,
-            borderTopRightRadius: scales(6),
-            borderTopLeftRadius: scales(6),
+            borderTopRightRadius: scales(16),
+            borderTopLeftRadius: scales(16),
         },
         headerContainer: {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexDirection: 'row',
             paddingTop: Sizes.statusBarHeight + scales(20),
+            paddingBottom: scales(40),
             marginHorizontal: scales(15),
-            paddingBottom: scales(12),
         },
         headerLeftContainer: {
             flexDirection: 'row',
@@ -140,8 +148,8 @@ const myStyles = (themeCurrent: string) => {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            marginHorizontal: scales(15),
-            marginTop: scales(12),
+            position: 'absolute',
+            top: -scales(23),
         },
         icScan: {
             backgroundColor: color.Color_Bg,
@@ -158,34 +166,10 @@ const myStyles = (themeCurrent: string) => {
         inputContainer: {
             flex: 1,
             marginLeft: scales(15),
-            shadowColor: getThemeColor().Text_Dark_1,
+            shadowColor: color.Text_Dark_1,
             shadowOffset: { width: -1, height: 4 },
             shadowOpacity: 0.2,
             shadowRadius: 3,
-        },
-        imageOptions: {
-            width: scales(45),
-            height: scales(45),
-        },
-        optionsContainer: {
-            marginTop: scales(26),
-            marginHorizontal: scales(15),
-            flexDirection: 'row',
-            marginBottom: scales(25),
-        },
-        optionItem: {
-            alignItems: 'center',
-            width: Sizes.scrWidth / 6,
-        },
-        optionText: {
-            ...Fonts.inter400,
-            fontSize: scales(12),
-            color: color.Text_Dark_2,
-            marginTop: scales(8),
-            textAlign: 'center',
-        },
-        mh5: {
-            marginHorizontal: scales(5),
         },
     });
 };
