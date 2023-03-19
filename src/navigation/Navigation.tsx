@@ -13,6 +13,7 @@ import SplashScreen from 'screens/launch/LaunchScreen';
 import MainScreen from 'screens/main';
 
 import { getThemeColor } from 'utils/getThemeColor';
+import LocationScreen from 'screens/location/LocationScreen';
 
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 

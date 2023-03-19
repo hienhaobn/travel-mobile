@@ -108,6 +108,7 @@ export const ColorLightTheme = {
     Color_Gray4: '#F8F8F8',
     Color_Gray5: '#BEBEBE',
     Color_Red_1: '#DE626280',
+    Color_Red_2: '#F03800',
     Color_Yellow_1: '#FFB88C80',
     Color_Transparent: 'transparent',
 };

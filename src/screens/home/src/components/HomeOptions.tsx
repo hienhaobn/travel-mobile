@@ -11,6 +11,7 @@ import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import { navigate } from 'navigation/utils';
 
 
 const HomeOptions = () => {
