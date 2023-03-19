@@ -13,21 +13,9 @@ import { scales } from 'utils/scales';
 
 import { Fonts, Sizes } from 'themes';
 
-const HomePostSection = () => {
+const TourScene = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-
-    const renderHeader = useCallback(() => {
-        return (
-            <View style={styles.headerContainer}>
-                <Text style={styles.textTourGuide}>Tour phổ biến</Text>
-                <TouchableOpacity style={styles.showAllContainer}>
-                    <Text style={styles.textShowAll}>Xem tất cả</Text>
-                    <SvgIcons.IcForward width={scales(17)} height={scales(17)} color={getThemeColor().Color_Primary} />
-                </TouchableOpacity>
-            </View>
-        );
-    }, []);
 
     const renderItem = useCallback(() => {
         return (
@@ -81,7 +69,11 @@ const HomePostSection = () => {
 
     const renderSection = useCallback(() => {
         return (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: scales(20),
+                }}>
                 {renderItem()}
                 {renderItem()}
                 {renderItem()}
@@ -89,21 +81,16 @@ const HomePostSection = () => {
         );
     }, []);
 
-    return (
-        <View style={styles.container}>
-            {renderHeader()}
-            {renderSection()}
-        </View>
-    );
+    return <View style={styles.container}>{renderSection()}</View>;
 };
 
-export default HomePostSection;
+export default TourScene;
 
 const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {
-            marginTop: scales(20),
+            marginHorizontal: scales(15),
         },
         headerContainer: {
             flexDirection: 'row',
@@ -124,15 +111,12 @@ const myStyles = (theme: string) => {
             color: color.Color_Primary,
         },
         itemContainer: {
-            marginTop: scales(5),
-            marginHorizontal: scales(10),
-            width: Sizes.scrWidth - scales(40),
+            marginTop: scales(20),
             borderRadius: scales(8),
         },
-        itemContentContainer: {
-        },
+        itemContentContainer: {},
         itemImages: {
-            width: Sizes.scrWidth - scales(40),
+            width: Sizes.scrWidth - scales(30),
             height: Sizes.scrWidth / 3,
             borderRadius: scales(8),
         },

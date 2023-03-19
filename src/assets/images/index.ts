@@ -11,6 +11,9 @@ const Images = {
     NoData: require('./no_data.png'),
     TourGuidePerson: require('./tour_guide_person.png'),
     Mountain: require('./mountain.png'),
+    CauRongDaNang: require('./cau_rong_da_nang.jpeg'),
+    NguHanhSon: require('./ngu_hanh_son.jpeg'),
+    ThanhDia: require('./thanh_dia.jpeg'),
 };
 
 export default Images;
