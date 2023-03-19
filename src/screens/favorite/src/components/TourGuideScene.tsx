@@ -17,37 +17,31 @@ const HomePostSection = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
 
-    const renderHeader = useCallback(() => {
-        return (
-            <View style={styles.headerContainer}>
-                <Text style={styles.textTourGuide}>Hướng dẫn viên</Text>
-                <TouchableOpacity style={styles.showAllContainer}>
-                    <Text style={styles.textShowAll}>Xem tất cả</Text>
-                    <SvgIcons.IcForward width={scales(17)} height={scales(17)} color={getThemeColor().Color_Primary} />
-                </TouchableOpacity>
-            </View>
-        );
-    }, []);
-
     const renderItem = useCallback(() => {
         return (
-            <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} >
+            <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer}>
                 <View style={styles.itemContentContainer}>
                     <Image source={Images.Mountain} style={styles.itemImages} />
-                    <View style={styles.itemHeaderContainer}>
-                        <Text style={styles.tourGuideName}>Mai anh</Text>
-                        <View style={styles.rateContainer}>
-                            <SvgIcons.IcStarActive width={scales(12)} height={scales(12)} />
-                            <Text style={styles.rate}>4.8</Text>
+                    <View
+                        style={{
+                            flex: 1,
+                            marginLeft: scales(10),
+                        }}>
+                        <View style={styles.itemHeaderContainer}>
+                            <Text style={styles.tourGuideName}>Mai anh</Text>
+                            <View style={styles.rateContainer}>
+                                <SvgIcons.IcStarActive width={scales(12)} height={scales(12)} />
+                                <Text style={styles.rate}>4.8</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.locationContainer}>
-                        <SvgIcons.IcLocation
-                            width={scales(17)}
-                            height={scales(17)}
-                            color={getThemeColor().Color_Primary}
-                        />
-                        <Text style={styles.textLocation}>Bali, Indonesia</Text>
+                        <View style={styles.locationContainer}>
+                            <SvgIcons.IcLocation
+                                width={scales(17)}
+                                height={scales(17)}
+                                color={getThemeColor().Color_Primary}
+                            />
+                            <Text style={styles.textLocation}>Bali, Indonesia</Text>
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -56,7 +50,7 @@ const HomePostSection = () => {
 
     const renderSection = useCallback(() => {
         return (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {renderItem()}
                 {renderItem()}
                 {renderItem()}
@@ -64,12 +58,7 @@ const HomePostSection = () => {
         );
     }, []);
 
-    return (
-        <View style={styles.container}>
-            {renderHeader()}
-            {renderSection()}
-        </View>
-    );
+    return <View style={styles.container}>{renderSection()}</View>;
 };
 
 export default HomePostSection;
@@ -78,29 +67,18 @@ const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {},
-        headerContainer: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-        },
-        showAllContainer: {
-            flexDirection: 'row',
-        },
-        textTourGuide: {
-            ...Fonts.inter700,
-            fontSize: scales(16),
-            color: color.Text_Dark_1,
-        },
         textShowAll: {
             ...Fonts.inter600,
             fontSize: scales(12),
             color: color.Color_Primary,
         },
         itemContainer: {
-            marginHorizontal: scales(5),
+            marginHorizontal: scales(15),
         },
         itemContentContainer: {
             marginTop: scales(10),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
         },
         itemImages: {
             width: Sizes.scrWidth / 2 - scales(25),
@@ -121,7 +99,6 @@ const myStyles = (theme: string) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginVertical: scales(8),
         },
         rate: {
             ...Fonts.inter400,
