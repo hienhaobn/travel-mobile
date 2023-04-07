@@ -7,4 +7,5 @@ export type RootNavigatorParamList = {
   Splash: undefined,
   Main: { screen?: string },
   LocationDetail: undefined,
+  TourDetail: undefined,
 };

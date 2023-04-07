@@ -2,23 +2,15 @@ import { indexOf } from 'lodash';
 import React from 'react';
 import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
-
+import LocationDetailTourGuideScene from 'screens/locationDetail/src/components/LocationDetailTourGuideScene';
+import LocationDetailTourScene from 'screens/locationDetail/src/components/LocationDetailTourScene';
 import LocationDetailPostScene from './src/components/LocationDetailPostScene';
-
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
-
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { goBack } from 'navigation/utils';
-
-import TourGuideScene from 'screens/favorite/src/components/TourGuideScene';
-import TourScene from 'screens/favorite/src/components/TourScene';
-
 import { Fonts, Sizes } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
@@ -28,8 +20,8 @@ interface RouteProps {
 }
 
 const renderScene = SceneMap({
-    tourGuide: TourGuideScene,
-    tour: TourScene,
+    tourGuide: LocationDetailTourGuideScene,
+    tour: LocationDetailTourScene,
     post: LocationDetailPostScene,
 });
 

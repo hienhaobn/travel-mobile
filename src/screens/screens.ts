@@ -1,3 +1,4 @@
+import TourDetail from 'screens/tourDetail/TourDetailScreen';
 import Account from './account/AccountScreen';
 import Favorite from './favorite/FavoriteScreen';
 import Home from './home/HomeScreen';
@@ -17,4 +18,5 @@ export const Screen = {
 
     Launch,
     LocationDetail,
+    TourDetail,
 };

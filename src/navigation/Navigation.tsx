@@ -27,6 +27,8 @@ const RootStack = () => {
             <Stack.Screen name="Main" component={MainScreen} options={{ animation: 'fade' }} />
 
             <Stack.Screen name="LocationDetail" component={Screen.LocationDetail} />
+
+            <Stack.Screen name="TourDetail" component={Screen.TourDetail} />
         </Stack.Navigator>
     );
 };
