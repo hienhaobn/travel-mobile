@@ -62,7 +62,8 @@ const LocationScreen = () => {
     return (
         <View style={styles.container}>
             {renderHeader()}
-            {data.length > 0 ? renderContent() : renderNoData()}
+            {/* {data.length > 0 ? renderContent() : renderNoData()} */}
+            {renderContent()}
         </View>
     );
 };

@@ -5,6 +5,8 @@ import Launch from './launch/LaunchScreen';
 import Location from './location/LocationScreen';
 import Messenger from './messenger/MessengerScreen';
 
+import LocationDetail from 'screens/locationDetail/LocationDetailScreen';
+
 export const Screen = {
     // TAB BOTTOM
     Home,
@@ -14,4 +16,5 @@ export const Screen = {
     Account,
 
     Launch,
+    LocationDetail,
 };

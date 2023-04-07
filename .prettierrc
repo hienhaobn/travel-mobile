@@ -29,6 +29,7 @@
       "^screens/(.*)$",
       "^services/(.*)$",
       "^states/(.*)$",
+      "^themes$",
       "^themes/(.*)$",
       "^typings/(.*)$",
       "^utils/(.*)$",
@@ -45,7 +46,6 @@
       "^screens$",
       "^services$",
       "^states$",
-      "^themes$",
       "^typings$",
       "^utils$",
       "^$"

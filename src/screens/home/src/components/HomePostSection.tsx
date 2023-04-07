@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import HomePostItem from './HomePostItem';
+
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
@@ -8,10 +10,10 @@ import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
 
+import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-
-import { Fonts, Sizes } from 'themes';
 
 const HomePostSection = () => {
     const { theme } = useTheme();
@@ -29,19 +31,7 @@ const HomePostSection = () => {
         );
     }, []);
 
-    const renderItem = useCallback(() => {
-        return (
-            <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer}>
-                <View style={styles.itemContentContainer}>
-                    <Image source={Images.BacNinhImg} style={styles.itemImages} />
-                    <Text style={styles.tourGuideName}>Đi về miền quan họ à ơi câu hát</Text>
-                    <Text style={styles.textDesc} numberOfLines={3}>
-                        Dân ca quan họ Bắc Ninh, đờn ca tài tử Nam bộ được tái hiện ở festival "Về miền quan họ",
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        );
-    }, []);
+    const renderItem = useCallback(() => <HomePostItem />, []);
 
     const renderSection = useCallback(() => {
         return (

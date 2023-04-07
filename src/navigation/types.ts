@@ -5,5 +5,6 @@ export type RootNavigatorParamList = {
   Favorite: undefined,
   Account: undefined,
   Splash: undefined,
-  Main: { screen?: string }
+  Main: { screen?: string },
+  LocationDetail: undefined,
 };
