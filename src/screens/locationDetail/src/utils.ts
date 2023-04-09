@@ -1,3 +1,3 @@
 import { navigate } from 'navigation/utils';
 
-export const goToLocationDetail = () => navigate('LocationDetail');
+export const goToLocationDetail = (provinceId: string) => navigate('LocationDetail', { provinceId });

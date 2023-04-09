@@ -1,4 +1,6 @@
+import { RouteProp } from '@react-navigation/core';
 import { indexOf } from 'lodash';
+import { RootNavigatorParamList } from 'navigation/types';
 import React from 'react';
 import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
@@ -14,9 +16,10 @@ import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-interface RouteProps {
+export interface RouteProps {
     key: string;
     title?: string;
+    provinceId: string;
 }
 
 const renderScene = SceneMap({
@@ -25,16 +28,21 @@ const renderScene = SceneMap({
     post: LocationDetailPostScene,
 });
 
-const LocationDetailScreen = () => {
+interface LocationDetailScreenProps {
+    route: RouteProp<RootNavigatorParamList, 'LocationDetail'>;
+}
+
+const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
     const layout = useWindowDimensions();
+    const provinceId = props.route.params.provinceId;
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'tourGuide', title: 'Hướng dẫn viên' },
-        { key: 'tour', title: 'Tour' },
-        { key: 'post', title: 'Bài viết' },
+        { key: 'tourGuide', title: 'Hướng dẫn viên', provinceId },
+        { key: 'tour', title: 'Tour', provinceId },
+        { key: 'post', title: 'Bài viết', provinceId },
     ]);
 
     const renderHeader = () => (

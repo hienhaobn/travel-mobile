@@ -6,6 +6,6 @@ export type RootNavigatorParamList = {
   Account: undefined,
   Splash: undefined,
   Main: { screen?: string },
-  LocationDetail: undefined,
+  LocationDetail: { provinceId: string },
   TourDetail: undefined,
 };
