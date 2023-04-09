@@ -14,11 +14,12 @@ import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-interface Props {
-    data?: [];
+interface IProps {
+    province: location.Province;
 }
-const LocationData = (props: Props) => {
-    const { data } = props;
+
+const LocationData = (props: IProps) => {
+    const { province } = props;
     const { theme } = useTheme();
     const styles = myStyles(theme);
 
@@ -26,8 +27,8 @@ const LocationData = (props: Props) => {
         <TouchableOpacity style={styles.itemSwipe} onPress={goToLocationDetail}>
             <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
             <View style={styles.tourInfo}>
-                <Text style={styles.provinceText}>Bắc Ninh</Text>
-                <Text style={styles.tourText}>5 tour</Text>
+                <Text style={styles.provinceText}>{province?.name}</Text>
+                <Text style={styles.tourText}>{province?.tours?.length} tour</Text>
             </View>
         </TouchableOpacity>
     );

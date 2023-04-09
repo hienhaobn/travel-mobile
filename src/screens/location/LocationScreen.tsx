@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import axios from 'axios';
+import { BASE_URL } from 'configs/api';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
 import LocationItem from './src/components/LocationItem';
@@ -18,7 +20,25 @@ import { Fonts, Sizes } from 'themes';
 const LocationScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-    const [data, setData] = useState([]);
+    const [provinces, setProvinces] = useState<location.Province[]>([]);
+
+    const getLocation = async () => {
+        try {
+            const response: location.ProvincesResponse = await axios.get(`${BASE_URL}/provinces`);
+            setProvinces(response.data.data);
+        } catch (e) {
+            console.log(e.message);
+        }
+    };
+
+    useEffect(() => {
+        try {
+            getLocation();
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+    }, []);
 
     const renderNoData = useCallback(() => {
         return (
@@ -48,21 +68,23 @@ const LocationScreen = () => {
         []
     );
 
+    console.log(provinces);
+
     const renderContent = useCallback(
         () => (
             <FlatList
-                renderItem={(item) => <LocationItem />}
-                data={[1, 2, 3, 4]}
-                keyExtractor={(item) => item.toString()}
+                renderItem={(item) => <LocationItem province={item.item}/>}
+                data={provinces}
+                keyExtractor={(item) => item.id.toString()}
+                ListEmptyComponent={renderNoData}
             />
         ),
-        [data]
+        [provinces]
     );
 
     return (
         <View style={styles.container}>
             {renderHeader()}
-            {/* {data.length > 0 ? renderContent() : renderNoData()} */}
             {renderContent()}
         </View>
     );
