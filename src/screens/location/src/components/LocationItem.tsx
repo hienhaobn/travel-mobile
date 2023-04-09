@@ -1,14 +1,18 @@
 import React from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import Images from 'assets/images';
 
+import TouchableOpacity from 'components/TouchableOpacity';
+
 import { useTheme } from 'hooks/useTheme';
+
+import { goToLocationDetail } from 'screens/locationDetail/src/utils';
+
+import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-
-import { Fonts, Sizes } from 'themes';
 
 interface Props {
     data?: [];
@@ -19,43 +23,13 @@ const LocationData = (props: Props) => {
     const styles = myStyles(theme);
 
     return (
-        <Pressable style={styles.itemSwipe}>
+        <TouchableOpacity style={styles.itemSwipe} onPress={goToLocationDetail}>
             <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
             <View style={styles.tourInfo}>
                 <Text style={styles.provinceText}>Bắc Ninh</Text>
                 <Text style={styles.tourText}>5 tour</Text>
             </View>
-        </Pressable>
-        // <ScrollView style={{ marginTop: scales(10) }}>
-        //     <Pressable style={styles.itemSwipe}>
-        //         <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
-        //         <View style={styles.tourInfo}>
-        //             <Text style={styles.provinceText}>Bắc Ninh</Text>
-        //             <Text style={styles.tourText}>5 tour</Text>
-        //         </View>
-        //     </Pressable>
-        //     <Pressable style={styles.itemSwipe}>
-        //         <Image source={Images.HaGiangImg} style={styles.image} resizeMode={'cover'} />
-        //         <View style={styles.tourInfo}>
-        //             <Text style={styles.provinceText}>Hà Giang</Text>
-        //             <Text style={styles.tourText}>5 tour</Text>
-        //         </View>
-        //     </Pressable>
-        //     <Pressable style={styles.itemSwipe}>
-        //         <Image source={Images.DaNangImg} style={styles.image} resizeMode={'cover'} />
-        //         <View style={styles.tourInfo}>
-        //             <Text style={styles.provinceText}>Đà Nẵng</Text>
-        //             <Text style={styles.tourText}>5 tour</Text>
-        //         </View>
-        //     </Pressable>
-        //     <Pressable style={styles.itemSwipe}>
-        //         <Image source={Images.NinhBinhImg} style={styles.image} resizeMode={'cover'} />
-        //         <View style={styles.tourInfo}>
-        //             <Text style={styles.provinceText}>Bắc Ninh</Text>
-        //             <Text style={styles.tourText}>5 tour</Text>
-        //         </View>
-        //     </Pressable>
-        // </ScrollView>
+        </TouchableOpacity>
     );
 };
 

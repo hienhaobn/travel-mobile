@@ -3,6 +3,7 @@ import IcForward from './ic_forward.svg';
 import IcHeartOutline from './ic_heart_outline.svg';
 import IcLocation from './ic_location.svg';
 import IcMenu from './ic_menu.svg';
+import IcMoreInfo from './ic_more_info.svg';
 import IcNotification from './ic_notification.svg';
 import IcScan from './ic_scan.svg';
 import IcSearch from './ic_search.svg';
@@ -42,6 +43,7 @@ const SvgIcons = {
     IcStarActive,
     IcHeartOutline,
     IcShopOutline,
+    IcMoreInfo,
 };
 
 export default SvgIcons;

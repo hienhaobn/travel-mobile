@@ -11,9 +11,9 @@ import { useTheme } from 'hooks/useTheme';
 
 import SplashScreen from 'screens/launch/LaunchScreen';
 import MainScreen from 'screens/main';
+import { Screen } from 'screens/screens';
 
 import { getThemeColor } from 'utils/getThemeColor';
-import LocationScreen from 'screens/location/LocationScreen';
 
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
@@ -21,11 +21,14 @@ const RootStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
-            initialRouteName="Splash"
-        >
+            initialRouteName="Splash">
             <Stack.Screen name="Splash" component={SplashScreen} />
 
             <Stack.Screen name="Main" component={MainScreen} options={{ animation: 'fade' }} />
+
+            <Stack.Screen name="LocationDetail" component={Screen.LocationDetail} />
+
+            <Stack.Screen name="TourDetail" component={Screen.TourDetail} />
         </Stack.Navigator>
     );
 };

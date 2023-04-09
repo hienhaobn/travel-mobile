@@ -1,9 +1,13 @@
-import Images from 'assets/images';
-import Header from 'components/Header';
-import { useTheme } from 'hooks/useTheme';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Sizes, Fonts } from 'themes';
+import { StyleSheet, Text } from 'react-native';
+
+
+import Header from 'components/Header';
+
+import { useTheme } from 'hooks/useTheme';
+
+import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
@@ -12,7 +16,7 @@ const AccountScreen = () => {
     const styles = myStyles(theme);
     return (
         <>
-            <Header iconLeft={<Text style={styles.textTitle}>Tài khoản</Text>}/>
+            <Header iconLeft={<Text style={styles.textTitle}>Tài khoản</Text>} />
         </>
     );
 };
