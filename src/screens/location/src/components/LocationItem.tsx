@@ -24,7 +24,7 @@ const LocationData = (props: IProps) => {
     const styles = myStyles(theme);
 
     return (
-        <TouchableOpacity style={styles.itemSwipe} onPress={goToLocationDetail}>
+        <TouchableOpacity style={styles.itemSwipe} onPress={() => goToLocationDetail(province?.id)}>
             <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
             <View style={styles.tourInfo}>
                 <Text style={styles.provinceText}>{province?.name}</Text>

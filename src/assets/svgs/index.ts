@@ -20,6 +20,8 @@ import IcTabLocation from './tab_location.svg';
 import IcTabLocationActive from './tab_location_active.svg';
 import IcTabMessenger from './tab_messenger.svg';
 import IcTabMessengerActive from './tab_messenger_active.svg';
+import IcVisibility from './visibility.svg';
+import IcVisibilityOff from './visibility_off.svg';
 
 const SvgIcons = {
     IcBack,
@@ -44,6 +46,8 @@ const SvgIcons = {
     IcHeartOutline,
     IcShopOutline,
     IcMoreInfo,
+    IcVisibility,
+    IcVisibilityOff,
 };
 
 export default SvgIcons;

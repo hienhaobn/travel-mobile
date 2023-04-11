@@ -1,6 +1,6 @@
 declare namespace tour {
     interface Tour {
-        id: string;
+        id: number;
         name: string;
         description: string;
         basePrice: string;
@@ -12,5 +12,12 @@ declare namespace tour {
         createdAt: string;
         updatedAt: string;
         deletedAt: string;
+        status: '1';
+        images: string[];
+        rates: string[];
+        tourGuide: tourGuide.TourGuide[];
+        userFavorites: [];
+        tourSchedule: [];
+        province: location.Province;
     }
 }

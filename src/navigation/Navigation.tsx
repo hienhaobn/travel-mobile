@@ -21,14 +21,19 @@ const RootStack = () => {
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
-            initialRouteName="Splash">
+            initialRouteName="Splash"
+        >
             <Stack.Screen name="Splash" component={SplashScreen} />
 
-            <Stack.Screen name="Main" component={MainScreen} options={{ animation: 'fade' }} />
+            <Stack.Screen name="Main" component={MainScreen} />
 
             <Stack.Screen name="LocationDetail" component={Screen.LocationDetail} />
 
             <Stack.Screen name="TourDetail" component={Screen.TourDetail} />
+
+            <Stack.Screen name="Login" component={Screen.Login} />
+
+            <Stack.Screen name="Register" component={Screen.Register} />
         </Stack.Navigator>
     );
 };

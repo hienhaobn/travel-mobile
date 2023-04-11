@@ -1,17 +1,47 @@
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+import { apiPostOrder } from '../api';
+
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
+
 import TouchableOpacity from 'components/TouchableOpacity';
+
 import { useTheme } from 'hooks/useTheme';
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+
 import { goToTourDetail } from 'screens/tourDetail/src/utils';
+
 import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-function LocationDetailTourItem() {
+interface ILocationDetailTourItemProps {
+    tour: tour.Tour;
+}
+
+function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+    const { tour } = props;
+
+    const onTourOrder = async () => {
+        try {
+            const response = await apiPostOrder({
+                tourId: tour?.id,
+                numberOfMember: parseInt(tour.maxMember),
+                price: parseFloat(tour.maxPrice),
+                startDate: '2023-03-20',
+            });
+            if (response?.status === 201) {
+                // show toast message
+            }
+            console.log('response', response.status);
+        } catch (error) {
+            console.log('error tour order', error.message);
+        }
+    };
 
     return (
         <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} onPress={goToTourDetail}>
@@ -23,11 +53,7 @@ function LocationDetailTourItem() {
                         <Text style={styles.rate}>4.8</Text>
                     </View>
                     <TouchableOpacity style={styles.heart}>
-                        <SvgIcons.IcHeartOutline
-                            color={getThemeColor().white}
-                            width={scales(17)}
-                            height={scales(17)}
-                        />
+                        <SvgIcons.IcHeartOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
                     </TouchableOpacity>
                 </View>
                 <View>
@@ -35,8 +61,8 @@ function LocationDetailTourItem() {
                 </View>
                 <View style={styles.itemHeaderContainer}>
                     <Text style={styles.tourGuideName} numberOfLines={3}>
-                        Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng
-                        -Sơn Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour)
+                        Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn
+                        Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour)
                     </Text>
                 </View>
                 <View style={styles.locationContainer}>
@@ -45,12 +71,8 @@ function LocationDetailTourItem() {
                 </View>
                 <Text style={styles.textPrice}>7,690,000đ</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: scales(10) }}>
-                    <TouchableOpacity style={styles.shopContainer}>
-                        <SvgIcons.IcShopOutline
-                            color={getThemeColor().white}
-                            width={scales(17)}
-                            height={scales(17)}
-                        />
+                    <TouchableOpacity style={styles.shopContainer} onPress={onTourOrder}>
+                        <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
                         <Text style={styles.sellNow}>Đặt ngay</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.showInfoContainer}>

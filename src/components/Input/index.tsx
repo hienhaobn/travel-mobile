@@ -122,7 +122,7 @@ const myStyles = (theme: string) => {
             flexDirection: 'row',
             alignItems: 'center',
             height: scales(46),
-            backgroundColor: color.Color_Bg,
+            backgroundColor: color.Color_Gray4,
             borderRadius: scales(6),
             paddingRight: scales(15),
             borderColor: color.transparent,

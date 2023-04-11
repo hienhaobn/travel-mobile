@@ -15,7 +15,7 @@ const LocationScene = () => {
     const renderContent = useCallback(
         () => (
             <FlatList
-                renderItem={(item) => <LocationItem />}
+                renderItem={(item) => <LocationItem province={item.item}/>}
                 data={[1, 2, 3, 4]}
                 keyExtractor={(item) => item.toString()}
             />

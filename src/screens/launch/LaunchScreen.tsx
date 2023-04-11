@@ -5,11 +5,15 @@ import SplashScreen from 'react-native-splash-screen';
 
 import SvgIcons from 'assets/svgs';
 
+import { GlobalVariables, IToken } from 'constants/global-variables';
+
 import { useTheme } from 'hooks/useTheme';
 
+import { RootNavigatorParamList } from 'navigation/types';
 import { resetStack, setRoot } from 'navigation/utils';
 
 import { getThemeColor } from 'utils/getThemeColor';
+import Storages, { KeyStorage } from 'utils/storages';
 
 import 'i18n';
 
@@ -25,16 +29,28 @@ const LaunchScreen = () => {
 
     React.useEffect(() => {
         initLocale();
-      }, [initLocale]);
+    }, [initLocale]);
 
     useEffect(() => {
         SplashScreen.hide();
-        onNavigator()
+        onNavigator();
     }, []);
 
-    const onNavigator = () => {
+    const onNavigator = async () => {
+        const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
+
+        console.log('tokenInfo', tokenInfo)
+
+        let screenName: keyof RootNavigatorParamList = 'Login';
+        if (tokenInfo?.accessToken) {
+            GlobalVariables.tokenInfo = {
+                ...tokenInfo,
+            };
+            screenName = 'Main';
+        }
+
         setTimeout(() => {
-            resetStack('Main');
+            resetStack(screenName);
         }, 200);
     };
 

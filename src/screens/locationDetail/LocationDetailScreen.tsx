@@ -1,18 +1,26 @@
-import { RouteProp } from '@react-navigation/core';
+import { RouteProp } from '@react-navigation/native';
 import { indexOf } from 'lodash';
-import { RootNavigatorParamList } from 'navigation/types';
 import React from 'react';
-import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
-import LocationDetailTourGuideScene from 'screens/locationDetail/src/components/LocationDetailTourGuideScene';
-import LocationDetailTourScene from 'screens/locationDetail/src/components/LocationDetailTourScene';
+
 import LocationDetailPostScene from './src/components/LocationDetailPostScene';
+
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
+
 import TouchableOpacity from 'components/TouchableOpacity';
+
 import { useTheme } from 'hooks/useTheme';
+
+import { RootNavigatorParamList } from 'navigation/types';
 import { goBack } from 'navigation/utils';
+
+import LocationDetailTourGuideScene from 'screens/locationDetail/src/components/LocationDetailTourGuideScene';
+import LocationDetailTourScene from 'screens/locationDetail/src/components/LocationDetailTourScene';
+
 import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 

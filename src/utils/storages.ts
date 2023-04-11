@@ -1,10 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export enum KeyStorage {
-    Language = 'drcex_language',
-    Theme = 'drcex_theme',
-    LastEmailLogin = 'drcex_last_email_login',
-    TimeAutoLock = 'drcex_time_auto_lock',
+    Language = 'travel_language',
+    Theme = 'travel_theme',
+    Token = 'Token',
 }
 
 type StorageValue = string;
@@ -18,13 +17,30 @@ const set = async (key: KeyStorage, value: StorageValue) => {
     await AsyncStorage.setItem(key, value);
 };
 
-const setTimeLock = async (key: KeyStorage, value: string, userID: number) => {
-    await AsyncStorage.setItem(`${key}_${userID}`, value);
+/**
+ * Get Object AsyncStorage
+ * @param key
+ */
+const getObject = async <T>(key: KeyStorage): Promise<T | null> => {
+    const value = await AsyncStorage.getItem(key);
+    if (!value) {
+        return null;
+    }
+
+    return JSON.parse(value);
 };
 
-const getTimeLock = async (key: KeyStorage, userID: number): Promise<string | undefined> => {
-    const value = await AsyncStorage.getItem(`${key}_${userID}`);
-    return value || undefined;
+/**
+ * Save array or object AsyncStorage
+ * @param key
+ * @param value
+ */
+const saveObject = <T>(key: KeyStorage, value: T): void => {
+    AsyncStorage.setItem(key, JSON.stringify(value));
+};
+
+const clear = async (callback?: (error?: unknown) => void): Promise<void> => {
+    await AsyncStorage.clear(callback);
 };
 
 const remove = async (key: KeyStorage) => {
@@ -33,10 +49,11 @@ const remove = async (key: KeyStorage) => {
 
 const Storages = {
     get,
+    getObject,
     set,
+    saveObject,
+    clear,
     remove,
-    setTimeLock,
-    getTimeLock,
 };
 
 export default Storages;

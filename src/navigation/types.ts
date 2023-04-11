@@ -8,4 +8,6 @@ export type RootNavigatorParamList = {
   Main: { screen?: string },
   LocationDetail: { provinceId: string },
   TourDetail: undefined,
+  Register: undefined,
+  Login: undefined,
 };
