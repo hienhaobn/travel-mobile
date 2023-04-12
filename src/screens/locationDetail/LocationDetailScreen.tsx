@@ -1,14 +1,18 @@
 import { RouteProp } from '@react-navigation/native';
 import { indexOf } from 'lodash';
-import React from 'react';
-import { Image, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
 
+import { Subscription } from 'rxjs';
+
+import LocationDetailOrderTour from './src/components/LocationDetailOrderTour';
 import LocationDetailPostScene from './src/components/LocationDetailPostScene';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
+import BottomSheet, { CustomBottomSheetRefType } from 'components/BottomSheet/BottomSheet';
 import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
@@ -19,6 +23,7 @@ import { goBack } from 'navigation/utils';
 import LocationDetailTourGuideScene from 'screens/locationDetail/src/components/LocationDetailTourGuideScene';
 import LocationDetailTourScene from 'screens/locationDetail/src/components/LocationDetailTourScene';
 
+import EventBus, { BaseEvent, EventBusName } from 'services/event-bus';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
@@ -45,6 +50,7 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     const styles = myStyles(theme);
     const layout = useWindowDimensions();
     const provinceId = props.route.params.provinceId;
+    const subScription = new Subscription();
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -52,6 +58,51 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
         { key: 'tour', title: 'Tour', provinceId },
         { key: 'post', title: 'Bài viết', provinceId },
     ]);
+    const [tourSelected, setTourSelected] = useState<tour.Tour>(null);
+
+    const bottomSheetOrderTourRef = useRef<CustomBottomSheetRefType>(null);
+
+
+    useEffect(() => {
+        onRegisterEventBus();
+
+        return () => {
+            subScription?.unsubscribe?.();
+        };
+    }, []);
+
+    const onRegisterEventBus = () => {
+        subScription.add(EventBus.getInstance().events.subscribe((res: BaseEvent<tour.Tour>) => {
+            if (res?.type === EventBusName.OPEN_BOTTOM_SHEET_ORDER_TOUR) {
+                console.log(res?.payload?.id);
+                setTourSelected(res?.payload);
+                showOrderTour();
+            }
+        }));
+    };
+
+    const showOrderTour = () => {
+        if (bottomSheetOrderTourRef) {
+            bottomSheetOrderTourRef.current?.open();
+        }
+    };
+
+    const dismissBottomSheet = () => {
+        if (bottomSheetOrderTourRef) {
+            bottomSheetOrderTourRef.current?.dismiss();
+        }
+    };
+
+    const renderOrderTour = () => (
+        <BottomSheet
+            isDynamicSnapPoints
+            ref={bottomSheetOrderTourRef}
+            handleCloseModal={dismissBottomSheet}
+            enablePanDownToClose
+        >
+            <LocationDetailOrderTour tour={tourSelected} dismissBottomSheet={dismissBottomSheet}/>
+        </BottomSheet>
+    );
 
     const renderHeader = () => (
         <View>
@@ -98,12 +149,14 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
                 }}
                 onPress={() => {
                     setIndex(indexOf(routes, tabProps.route));
-                }}>
+                }}
+            >
                 <Text
                     style={[
                         styles.labelTabText,
                         active ? { color: getThemeColor().Color_Primary } : { color: getThemeColor().Text_Dark_1 },
-                    ]}>
+                    ]}
+                >
                     {title}
                 </Text>
             </TouchableOpacity>
@@ -130,6 +183,7 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
         <View style={styles.container}>
             {renderHeader()}
             {renderContent()}
+            {renderOrderTour()}
         </View>
     );
 };

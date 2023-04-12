@@ -45,15 +45,15 @@
     //#region plugin
     "@typescript-eslint/no-explicit-any": "error",
     "import/no-deprecated": "warn",
-    // "import/no-extraneous-dependencies": [
-    //   "error",
-    //   {
-    //     "devDependencies": true,
-    //     "optionalDependencies": false,
-    //     "peerDependencies": false,
-    //     "bundledDependencies": false
-    //   }
-    // ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false,
+        "bundledDependencies": false
+      }
+    ],
     "import/order": [
       "warn",
       {

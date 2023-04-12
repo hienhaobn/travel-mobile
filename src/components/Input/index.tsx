@@ -1,12 +1,10 @@
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { Fonts } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
@@ -26,6 +24,7 @@ export interface InputProps extends TextInputProps {
     onPressLeftIcon?: () => void;
     leftIconStyle?: StyleProp<ViewStyle>;
     rightIconStyle?: StyleProp<ViewStyle>;
+    isBottomSheet?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -47,7 +46,10 @@ const Input = (props: InputProps) => {
         inputStyle,
         leftIconStyle,
         rightIconStyle,
+        isBottomSheet,
     } = props;
+
+    const InputComponent = isBottomSheet ? BottomSheetTextInput : TextInput;
 
     const renderHeader = () =>
         title || rightTitle ? (
@@ -72,13 +74,14 @@ const Input = (props: InputProps) => {
                     styles.inputContainer,
                     inputContainerStyle,
                     errorMessage ? { borderColor: getThemeColor().Color_Red_1 } : {},
-                ]}>
+                ]}
+            >
                 {leftIcon ? (
                     <TouchableOpacity onPress={onPressLeftIcon} hitSlop={styles.hitSlopIcon} style={leftIconStyle}>
                         {leftIcon}
                     </TouchableOpacity>
                 ) : null}
-                <TextInput
+                <InputComponent
                     style={[styles.input, inputStyle]}
                     placeholderTextColor={getThemeColor().Text_Dark_4}
                     {...props}

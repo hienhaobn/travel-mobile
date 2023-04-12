@@ -1,19 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-
-import { apiPostOrder } from '../api';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
-
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { goToTourDetail } from 'screens/tourDetail/src/utils';
-
+import { EventBusName, onPushEventBus } from 'services/event-bus';
 import { Fonts, Sizes } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
@@ -27,24 +21,11 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
     const { tour } = props;
 
     const onTourOrder = async () => {
-        try {
-            const response = await apiPostOrder({
-                tourId: tour?.id,
-                numberOfMember: parseInt(tour.maxMember),
-                price: parseFloat(tour.maxPrice),
-                startDate: '2023-03-20',
-            });
-            if (response?.status === 201) {
-                // show toast message
-            }
-            console.log('response', response.status);
-        } catch (error) {
-            console.log('error tour order', error.message);
-        }
+        onPushEventBus(EventBusName.OPEN_BOTTOM_SHEET_ORDER_TOUR, tour);
     };
 
     return (
-        <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} onPress={goToTourDetail}>
+        <View style={styles.itemContainer}>
             <View style={styles.itemContentContainer}>
                 <View>
                     <Image source={Images.Mountain} style={styles.itemImages} />
@@ -75,12 +56,12 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
                         <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
                         <Text style={styles.sellNow}>Đặt ngay</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.showInfoContainer}>
+                    <TouchableOpacity style={styles.showInfoContainer} onPress={goToTourDetail}>
                         <Text style={styles.textShowInfo}>Xem chi tiết</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        </TouchableOpacity>
+        </View>
     );
 }
 

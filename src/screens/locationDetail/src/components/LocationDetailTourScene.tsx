@@ -30,7 +30,7 @@ const LocationDetailTourScene = () => {
         getTours();
     }, []);
 
-    const renderSection = useCallback(() => {
+    const renderSection = () => {
         return (
             <FlatList
                 renderItem={(item) => <LocationDetailTourItem tour={item.item}/>}
@@ -41,7 +41,7 @@ const LocationDetailTourScene = () => {
                 keyExtractor={(item) => item.id.toString()}
             />
         );
-    }, [tours]);
+    };
 
     return <View style={styles.container}>{renderSection()}</View>;
 };

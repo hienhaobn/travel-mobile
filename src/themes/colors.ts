@@ -95,6 +95,7 @@ export const ColorLightTheme = {
     Text_Dark_4: '#9EA0AF',
     Text_Dark_5: '#CDD2DD',
     Text_Color_Opacity_30: 'rgba(225, 225, 225, 0.3)',
+    Text_Color_Opacity_5: 'rgba(225, 225, 225, 0.05)',
 
     // Light
     Color_White: '#FFFFFF',
@@ -103,12 +104,14 @@ export const ColorLightTheme = {
     Light_3: '#EFF7FF',
 
     Color_Bg: '#FFFFFF',
+    Color_Bg_Separator: '#F0F0F0',
     Color_Gray: '#999999',
     Color_Gray1: '#888888',
     Color_Gray2: '#F2F2F2',
     Color_Gray3: '#424754',
     Color_Gray4: '#F8F8F8',
     Color_Gray5: '#BEBEBE',
+    Color_Gray6: '#33363A',
     Color_Red: '#FD4F56',
     Color_Red_1: '#DE626280',
     Color_Red_2: '#F03800',
