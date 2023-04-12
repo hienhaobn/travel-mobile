@@ -9,6 +9,7 @@ import SvgIcons from 'assets/svgs';
 
 import Button from 'components/Button/Button';
 import Input from 'components/Input';
+import { hideLoading, showLoading } from 'components/Loading';
 import TouchableOpacity from 'components/TouchableOpacity';
 
 import { GlobalVariables } from 'constants/index';
@@ -32,7 +33,9 @@ const LoginScreen = () => {
 
     const onLogin = async () => {
         try {
+            showLoading();
             const response = await apiLogin(email, password);
+            hideLoading();
             if (response?.data?.accessToken) {
                 GlobalVariables.tokenInfo = {
                     accessToken: response?.data?.accessToken,
@@ -41,8 +44,8 @@ const LoginScreen = () => {
                 Storages.saveObject(KeyStorage.Token, GlobalVariables.tokenInfo);
                 resetStack('Main');
             }
-            // TODO: update user data to reducer
         } catch (error) {
+            hideLoading()
             console.log('error', error);
         }
     };

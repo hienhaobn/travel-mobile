@@ -75,6 +75,8 @@ const LocationScreen = () => {
                 data={provinces}
                 keyExtractor={(item) => item.id.toString()}
                 ListEmptyComponent={renderNoData}
+                initialNumToRender={10}
+                showsVerticalScrollIndicator={false}
             />
         ),
         [provinces]

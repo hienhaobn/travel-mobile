@@ -69,6 +69,7 @@ const LocationDetailOrderTour = (props: LocationDetailOrderTourProps) => {
             });
             dismissBottomSheet();
             if (response?.status === 201) {
+                // TODO: call api fetch data tour
                 showCustomToast('Đặt tour thành công');
             } else {
                 showCustomToast('Đặt tour thất bại');

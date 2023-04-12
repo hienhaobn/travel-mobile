@@ -360,6 +360,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-spinkit (1.4.1):
+    - React
   - react-native-splash-screen (3.3.0):
     - React-Core
   - react-native-user-agent (2.3.1):
@@ -561,6 +563,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-spinkit (from `../node_modules/react-native-spinkit`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-user-agent (from `../node_modules/react-native-user-agent`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -666,6 +669,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-spinkit:
+    :path: "../node_modules/react-native-spinkit"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-user-agent:
@@ -762,6 +767,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
   react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
   react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
+  react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-user-agent: a90a1e839b99801baad67a73dd6f361a52aa3cf1
   React-perflogger: 0bb0522a12e058f6eb69d888bc16f40c16c4b907

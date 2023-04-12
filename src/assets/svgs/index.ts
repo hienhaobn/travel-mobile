@@ -1,13 +1,19 @@
 import IcBack from './ic_back.svg';
+import IcForgotPassword from './ic_forgot_password.svg';
 import IcForward from './ic_forward.svg';
 import IcHeartOutline from './ic_heart_outline.svg';
 import IcLocation from './ic_location.svg';
 import IcMenu from './ic_menu.svg';
+import IcMessageQuestion from './ic_message_question.svg';
 import IcMoreInfo from './ic_more_info.svg';
 import IcNotification from './ic_notification.svg';
 import IcScan from './ic_scan.svg';
 import IcSearch from './ic_search.svg';
 import IcShopOutline from './ic_shop_outline.svg';
+import IcTourAccount from './ic_tour_accout.svg';
+import IcUserInfo from './ic_user_info.svg';
+import IcVoucher from './ic_voucher.svg';
+import IcWallet from './ic_wallet.svg';
 import IcLogoLaunch from './logo_launch.svg';
 import IcStarActive from './star_active.svg';
 import IcTabAccount from './tab_account.svg';
@@ -48,6 +54,12 @@ const SvgIcons = {
     IcMoreInfo,
     IcVisibility,
     IcVisibilityOff,
+    IcUserInfo,
+    IcVoucher,
+    IcMessageQuestion,
+    IcForgotPassword,
+    IcWallet,
+    IcTourAccount,
 };
 
 export default SvgIcons;

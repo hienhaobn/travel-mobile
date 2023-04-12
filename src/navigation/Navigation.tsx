@@ -1,9 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useEffect, useRef } from 'react';
 import { StatusBar } from 'react-native';
 
 import { RootNavigatorParamList } from './types';
 import { getCurrentRoute, navigationRef } from './utils';
+
+import LoadingManager from 'components/Loading/loadingManager';
+import LoadingModal, { LoadingModalRef } from 'components/Loading/LoadingModal';
 
 import { EThemeColor, GlobalVariables } from 'constants/index';
 
@@ -40,6 +44,15 @@ const RootStack = () => {
 
 const StackNavigator = () => {
     const { theme } = useTheme();
+    const loadingRef = useRef<LoadingModalRef | null>(null);
+    useEffect(() => {
+        return () => {
+            if (loadingRef?.current) {
+                LoadingManager.unregister(loadingRef.current);
+            }
+        };
+    }, []);
+
     const onSetStatusBar = (screenName: string) => {
         if (!screenName) {
             return;
@@ -54,6 +67,15 @@ const StackNavigator = () => {
         }
     };
 
+    const renderLoadingModal = () => (
+        <LoadingModal
+            ref={(ref) => {
+                loadingRef.current = ref;
+                LoadingManager.register(loadingRef.current!);
+            }}
+        />
+    );
+
     return (
         <NavigationContainer ref={navigationRef} onStateChange={onStateChange}>
             <StatusBar
@@ -62,6 +84,7 @@ const StackNavigator = () => {
                 translucent
             />
             <RootStack />
+            {renderLoadingModal()}
         </NavigationContainer>
     );
 };
