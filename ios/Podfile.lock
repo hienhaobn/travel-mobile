@@ -352,6 +352,8 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.9):
     - React-Core
+  - react-native-orientation-locker (1.5.0):
+    - React-Core
   - react-native-pager-view (6.2.0):
     - React-Core
   - react-native-safe-area-context (4.5.1):
@@ -561,6 +563,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-spinkit (from `../node_modules/react-native-spinkit`)
@@ -665,6 +668,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -765,6 +770,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 89c419d88fa8e3c5f2d3cbae0bb7f7454ae8ea55
   react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
   react-native-netinfo: 22c082970cbd99071a4e5aa7a612ac20d66b08f0
+  react-native-orientation-locker: 851f6510d8046ea2f14aa169b1e01fcd309a94ba
   react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
   react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db

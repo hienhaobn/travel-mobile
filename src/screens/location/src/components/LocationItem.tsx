@@ -65,7 +65,7 @@ const myStyles = (themeCurrent: string) => {
             position: 'absolute',
             bottom: scales(8),
             left: scales(15),
-            backgroundColor: '#8EC3B0',
+            backgroundColor: '#8EC3B0AA',
             right: Sizes.scrWidth / 2 - scales(15),
             paddingTop: scales(5),
             borderTopRightRadius: scales(30),
