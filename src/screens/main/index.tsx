@@ -6,10 +6,12 @@ import MyTabBar from './MyTabBar';
 import { RootNavigatorParamList } from 'navigation/types';
 
 import { Screen } from 'screens/screens';
+import { useFetchProvinces } from 'states/provinces/hooks';
 
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
 const Main = () => {
+    useFetchProvinces()
     const renderTabBar = (bottomTabBarProps: BottomTabBarProps) => {
         return <MyTabBar {...bottomTabBarProps} />;
     };

@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
+import SvgIcons from 'assets/svgs';
 import TouchableOpacity from 'components/TouchableOpacity';
 
 import { EThemeColor } from 'constants/index';
@@ -18,7 +19,6 @@ import Sizes from 'themes/sizes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import SvgIcons from 'assets/svgs';
 
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 

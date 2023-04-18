@@ -50,8 +50,6 @@ const LaunchScreen = () => {
             screenName = 'Main';
         }
 
-        // useFetchProvinces()
-
         setTimeout(() => {
             resetStack(screenName);
         }, 200);

@@ -2,11 +2,12 @@ import axios from 'axios';
 
 import { EventBusName, onPushEventBus } from './event-bus';
 
+import { BASE_URL } from 'configs/api';
 import { GlobalVariables } from 'constants/index';
 
 const TIME_OUT = 60 * 1000;
 const axiosInstance = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_API}/${process.env.REACT_APP_API_VERSION}`,
+    baseURL: `${BASE_URL}`,
     timeout: TIME_OUT,
     responseType: 'json',
     headers: {

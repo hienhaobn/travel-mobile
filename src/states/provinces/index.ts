@@ -1,7 +1,4 @@
-import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import stringify from 'fast-json-stable-stringify';
-
-import { AppState } from './../index';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import axiosInstance from 'services/api-requests';
 
@@ -31,7 +28,7 @@ export const provincesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchInitialProvincesData.fulfilled, (state, action) => {
-            console.log({ state, action });
+            state.data = action.payload.data;
         });
     },
 });
