@@ -26,7 +26,6 @@ axiosInstance.interceptors.request.use(
     },
     (error) => Promise.reject(error)
 );
-
 axiosInstance.interceptors.response.use(
     async (response) => {
         if (response && response.data) {

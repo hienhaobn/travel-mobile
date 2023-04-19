@@ -16,6 +16,9 @@ interface Province extends ProvinceBaseProps {
 
 interface ProvincesState {
     data: Province[];
-    userDataLoaded: false;
     loadingKeys: Record<string, boolean>;
+}
+
+interface UserState {
+    token: string;
 }

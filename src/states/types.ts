@@ -1,3 +1,5 @@
 export interface GlobalState {
-  counter
+  counter,
+  provinces,
+  users,
 }

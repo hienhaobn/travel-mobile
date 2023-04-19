@@ -12,6 +12,7 @@ import Input from 'components/Input';
 
 import { useTheme } from 'hooks/useTheme';
 
+import { useSelectProvinces } from 'states/provinces/hooks';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
@@ -20,25 +21,8 @@ import { scales } from 'utils/scales';
 const LocationScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-    const [provinces, setProvinces] = useState<location.Province[]>([]);
+    const provinces = useSelectProvinces();
 
-    const getLocation = async () => {
-        try {
-            const response: location.ProvincesResponse = await apiGetProvinces();
-            setProvinces(response.data);
-        } catch (e) {
-            console.log(e.message);
-        }
-    };
-
-    useEffect(() => {
-        try {
-            getLocation();
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-    }, []);
 
     const renderNoData = useCallback(() => {
         return (

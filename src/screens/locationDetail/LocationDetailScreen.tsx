@@ -24,15 +24,16 @@ import LocationDetailTourGuideScene from 'screens/locationDetail/src/components/
 import LocationDetailTourScene from 'screens/locationDetail/src/components/LocationDetailTourScene';
 
 import EventBus, { BaseEvent, EventBusName } from 'services/event-bus';
+import { useProvinceById } from 'states/provinces/hooks';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-export interface RouteProps {
+export interface LocationDetailScreenRouteProps {
     key: string;
     title?: string;
-    provinceId: string;
+    province: location.Province;
 }
 
 const renderScene = SceneMap({
@@ -51,12 +52,13 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     const layout = useWindowDimensions();
     const provinceId = props.route.params.provinceId;
     const subScription = new Subscription();
+    const province = useProvinceById(provinceId);
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'tourGuide', title: 'Hướng dẫn viên', provinceId },
-        { key: 'tour', title: 'Tour', provinceId },
-        { key: 'post', title: 'Bài viết', provinceId },
+        { key: 'tourGuide', title: 'Hướng dẫn viên', province },
+        { key: 'tour', title: 'Tour', province },
+        { key: 'post', title: 'Bài viết', province },
     ]);
     const [tourSelected, setTourSelected] = useState<tour.Tour>(null);
 
@@ -111,9 +113,9 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
             </TouchableOpacity>
             <View style={styles.titleContainer}>
                 <View>
-                    <Text style={styles.titleHeader}>Bắc Ninh</Text>
+                    <Text style={styles.titleHeader}>{province?.name}</Text>
                     <View style={styles.infoTour}>
-                        <Text style={styles.tour}>234 tour</Text>
+                        <Text style={styles.tour}>{province?.tours?.length} tour</Text>
                         <Text style={styles.tour}>234 Lượt tìm</Text>
                     </View>
                 </View>
@@ -137,7 +139,7 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
         </View>
     );
 
-    const renderTabItem = (tabProps: TabBarItemProps<RouteProps>) => {
+    const renderTabItem = (tabProps: TabBarItemProps<LocationDetailScreenRouteProps>) => {
         const { title } = tabProps.route;
         const active = indexOf(routes, tabProps.route) === tabProps.navigationState.index;
         return (

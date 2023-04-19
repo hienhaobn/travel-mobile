@@ -10,4 +10,5 @@ export type RootNavigatorParamList = {
   TourDetail: { tour: tour.Tour },
   Register: undefined,
   Login: undefined,
+  TourStatus: undefined,
 };

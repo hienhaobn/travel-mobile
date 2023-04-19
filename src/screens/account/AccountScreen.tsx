@@ -1,18 +1,14 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import Images from 'assets/images';
-import SvgIcons from 'assets/svgs';
+import { goToTourStatus } from './src/utils';
 
+import SvgIcons from 'assets/svgs';
 import Button from 'components/Button/Button';
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { navigate, resetStack } from 'navigation/utils';
-
 import { Fonts } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
@@ -52,7 +48,7 @@ const AccountScreen = () => {
                             color={getThemeColor().Text_Dark_1}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.itemContainer}>
+                    <TouchableOpacity style={styles.itemContainer} onPress={goToTourStatus}>
                         <View style={styles.itemLeftContainer}>
                             <View>
                                 <SvgIcons.IcTourAccount

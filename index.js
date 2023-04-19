@@ -30,6 +30,7 @@ LogBox.ignoreLogs([
     '[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!',
     'Require cycle:',
     'ViewPropTypes will be removed from React Native',
+    '(ADVICE) View ',
 ]);
 
 AppRegistry.registerComponent(appName, () => App);

@@ -3,23 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { apiLogin } from './src/api';
-import { goToMain } from './src/utils';
 
 import SvgIcons from 'assets/svgs';
-
 import Button from 'components/Button/Button';
 import Input from 'components/Input';
 import { hideLoading, showLoading } from 'components/Loading';
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { GlobalVariables } from 'constants/index';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { resetStack } from 'navigation/utils';
-
 import { Fonts, Sizes } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
@@ -45,7 +38,7 @@ const LoginScreen = () => {
                 resetStack('Main');
             }
         } catch (error) {
-            hideLoading()
+            hideLoading();
             console.log('error', error);
         }
     };

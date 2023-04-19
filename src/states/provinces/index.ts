@@ -4,7 +4,6 @@ import axiosInstance from 'services/api-requests';
 
 const initialState: ProvincesState = {
     data: [],
-    userDataLoaded: false,
     loadingKeys: {},
 };
 
@@ -15,6 +14,7 @@ export const fetchInitialProvincesData = createAsyncThunk(
         const res = axiosInstance
             .get('/provinces')
             .catch((err) => {
+                console.log('error:: ', err)
                 throw err;
             })
             .then((data) => data);
@@ -28,7 +28,7 @@ export const provincesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchInitialProvincesData.fulfilled, (state, action) => {
-            state.data = action.payload.data;
+            state.data = action.payload.returnValue;
         });
     },
 });
