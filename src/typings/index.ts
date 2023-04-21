@@ -1,24 +1,27 @@
-interface ProvinceBaseProps {
-    id: number;
-    name: string;
-    slug: string;
-    description: string;
-    numOfFavorites: number;
-    images: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: number;
+interface ResponseApiBase {
+    code: string;
+    message: string;
+    statusCode: number;
+    returnValue: []
 }
-
-interface Province extends ProvinceBaseProps {
-    tours: tour.Tour[];
-}
-
 interface ProvincesState {
-    data: Province[];
+    data: location.Province[];
     loadingKeys: Record<string, boolean>;
 }
 
 interface UserState {
     token: string;
+}
+
+interface TourOrderStatus {
+    data: tour.Tour[];
+    isLoading: boolean;
+}
+
+interface ToursState {
+    data: tour.Tour[];
+    orderWaiting: TourOrderStatus;
+    orderProcessing: TourOrderStatus;
+    orderFinished: TourOrderStatus;
+    loadingKeys: Record<string, boolean>;
 }

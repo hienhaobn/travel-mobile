@@ -48,12 +48,14 @@ const TourStatusScreen = () => {
                 }}
                 onPress={() => {
                     setIndex(indexOf(routes, tabProps.route));
-                }}>
+                }}
+            >
                 <Text
                     style={[
                         styles.labelTabText,
                         active ? { color: getThemeColor().Color_Primary } : { color: getThemeColor().Text_Dark_1 },
-                    ]}>
+                    ]}
+                >
                     {title}
                 </Text>
             </TouchableOpacity>
@@ -78,7 +80,7 @@ const TourStatusScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Header title="Trạng thái chuyến đi" />
+            <Header title="Chuyến đi" />
             {renderContent()}
         </View>
     );

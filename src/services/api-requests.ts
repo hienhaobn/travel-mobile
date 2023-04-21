@@ -36,7 +36,6 @@ axiosInstance.interceptors.response.use(
     async (error) => {
         try {
             if (!error.response) {
-                // noti.error(errorMessage.AUTHEN);
                 return Promise.reject(error);
             }
 

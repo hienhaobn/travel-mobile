@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 
 import CounterReducer from './counter';
-import provincesReducer from './provinces/index';
+import provincesReducer from './provinces';
+import toursReducer from './tours';
 
 const PERSISTED_KEYS: string[] = ['user'];
 
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(
         // add something
         counter: CounterReducer,
         provinces: provincesReducer,
+        tours: toursReducer,
     })
 );
 

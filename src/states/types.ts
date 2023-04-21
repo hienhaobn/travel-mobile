@@ -1,5 +1,6 @@
 export interface GlobalState {
   counter,
-  provinces,
-  users,
+  provinces: ProvincesState,
+  users: UserState,
+  tours: ToursState,
 }

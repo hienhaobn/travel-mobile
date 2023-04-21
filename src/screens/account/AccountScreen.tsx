@@ -28,7 +28,8 @@ const AccountScreen = () => {
                 style={styles.wrapperContent}
                 contentContainerStyle={styles.contentContainer}
                 keyboardShouldPersistTaps="handled"
-                showsVerticalScrollIndicator={false}>
+                showsVerticalScrollIndicator={false}
+            >
                 <View style={styles.itemsContainer}>
                     <Text style={styles.titleHeader}>Tài khoản</Text>
                     <TouchableOpacity style={styles.itemContainer}>
@@ -133,9 +134,25 @@ const AccountScreen = () => {
                             color={getThemeColor().Text_Dark_1}
                         />
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer} onPress={onLogOut}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcLogoLaunch
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Đăng xuất</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
-            <Button title="Đăng xuất" customStyles={styles.button} onPress={onLogOut}/>
         </View>
     );
 };
