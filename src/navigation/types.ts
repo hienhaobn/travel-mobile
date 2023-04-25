@@ -11,4 +11,5 @@ export type RootNavigatorParamList = {
   Register: undefined,
   Login: undefined,
   TourStatus: undefined,
+  TourStatusDetail: undefined,
 };

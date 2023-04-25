@@ -1,35 +1,26 @@
-import React, { useCallback } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import Images from 'assets/images';
 import { useTheme } from 'hooks/useTheme';
-import { Fonts, Sizes } from 'themes';
+import ListTourStatus from 'screens/account/src/components/ListTourStatus';
+import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
+import { useFetchOrderFinished, useSelectOrderFinished } from 'states/tours/hooks';
 import { getThemeColor } from 'utils/getThemeColor';
-import { scales } from 'utils/scales';
 
-const TourFinishScene = () => {
+interface TourFinishSceneProps {
+    route: TourStatusScreenRouteProps
+}
+
+const TourFinishScene = (props: TourFinishSceneProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-
-    const renderNoData = useCallback(() => {
-        return (
-            <View style={styles.noDataContainer}>
-                <Image source={Images.NoData} style={styles.image} resizeMode={'contain'} />
-                <Text style={styles.textNoData}>Chưa có chuyến đi</Text>
-            </View>
-        );
-    }, []);
+    const { route } = props;
+    useFetchOrderFinished();
+    const { data, isLoading } = useSelectOrderFinished();
 
     return (
         <View style={styles.container}>
-            <FlatList
-                renderItem={(item) => <View />}
-                data={[]}
-                keyExtractor={(item) => item.id.toString()}
-                ListEmptyComponent={renderNoData}
-                initialNumToRender={10}
-                showsVerticalScrollIndicator={false}
-            />
+            <ListTourStatus route={route} data={data} isLoading={isLoading} />
         </View>
     );
 };
@@ -42,25 +33,6 @@ const myStyles = (theme: string) => {
         container: {
             flex: 1,
             backgroundColor: color.Color_Bg,
-        },
-        noDataContainer: {
-            marginTop: scales(26),
-            marginHorizontal: scales(15),
-            marginBottom: scales(25),
-            alignItems: 'center',
-        },
-        textNoData: {
-            color: color.Color_Red_2,
-            marginTop: scales(29),
-            marginBottom: scales(15),
-            ...Fonts.inter700,
-            fontSize: scales(12),
-            fontStyle: 'normal',
-        },
-        image: {
-            width: Sizes.scrWidth - scales(30),
-            height: scales(135),
-            borderRadius: scales(20),
         },
     });
 };

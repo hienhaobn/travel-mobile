@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectOrderWaiting } from './selectors';
+import { selectOrderFinished, selectOrderProcessing, selectOrderWaiting } from './selectors';
 
-import { fetchOrderWaiting } from '.';
+import { fetchOrderFinished, fetchOrderProcessing, fetchOrderWaiting } from '.';
 
 import { useAppDispatch } from 'states';
 
@@ -14,6 +14,28 @@ export const useFetchOrderWaiting = () => {
     }, [dispatch]);
 };
 
+export const useFetchOrderProcessing = () => {
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(fetchOrderProcessing());
+    }, [dispatch]);
+};
+
+export const useFetchOrderFinished = () => {
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(fetchOrderFinished());
+    }, [dispatch]);
+};
+
 export const useSelectOrderWaiting = () => {
     return useSelector(selectOrderWaiting);
+};
+
+export const useSelectOrderProcessing = () => {
+    return useSelector(selectOrderProcessing);
+};
+
+export const useSelectOrderFinished = () => {
+    return useSelector(selectOrderFinished);
 };

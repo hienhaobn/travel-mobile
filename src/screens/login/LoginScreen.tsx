@@ -29,10 +29,10 @@ const LoginScreen = () => {
             showLoading();
             const response = await apiLogin(email, password);
             hideLoading();
-            if (response?.data?.accessToken) {
+            if (response?.returnValue?.accessToken) {
                 GlobalVariables.tokenInfo = {
-                    accessToken: response?.data?.accessToken,
-                    refreshToken: response?.data?.refreshToken,
+                    accessToken: response?.returnValue?.accessToken,
+                    refreshToken: response?.returnValue?.refreshToken,
                 };
                 Storages.saveObject(KeyStorage.Token, GlobalVariables.tokenInfo);
                 resetStack('Main');

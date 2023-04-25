@@ -25,6 +25,12 @@ const renderScene = SceneMap({
     tourFinish: TourFinishScene,
 });
 
+export enum ETourStatusScreenTabKey {
+    tourWaiting = 'tourWaiting',
+    tourProcess = 'tourProcess',
+    tourFinish = 'tourFinish',
+}
+
 const TourStatusScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
@@ -32,9 +38,9 @@ const TourStatusScreen = () => {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'tourWaiting', title: 'Đang chờ' },
-        { key: 'tourProcess', title: 'Đang thực hiện' },
-        { key: 'tourFinish', title: 'Hoàn thành' },
+        { key: ETourStatusScreenTabKey.tourWaiting, title: 'Đang chờ' },
+        { key: ETourStatusScreenTabKey.tourProcess, title: 'Đang thực hiện' },
+        { key: ETourStatusScreenTabKey.tourFinish, title: 'Hoàn thành' },
     ]);
 
     const renderTabItem = (tabProps: TabBarItemProps<TourStatusScreenRouteProps>) => {

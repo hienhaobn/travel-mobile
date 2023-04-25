@@ -14,7 +14,7 @@ interface UserState {
 }
 
 interface TourOrderStatus {
-    data: tour.Tour[];
+    data: order.OrderRoleUser[];
     isLoading: boolean;
 }
 

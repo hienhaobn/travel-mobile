@@ -1,4 +1,5 @@
 import Account from './account/AccountScreen';
+import TourStatusDetail from './account/TourStatusDetailScreen';
 import TourStatus from './account/TourStatusScreen';
 import Favorite from './favorite/FavoriteScreen';
 import Home from './home/HomeScreen';
@@ -24,4 +25,5 @@ export const Screen = {
     Login,
     Register,
     TourStatus,
+    TourStatusDetail,
 };

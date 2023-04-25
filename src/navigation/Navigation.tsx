@@ -40,6 +40,8 @@ const RootStack = () => {
             <Stack.Screen name="Register" component={Screen.Register} />
 
             <Stack.Screen name="TourStatus" component={Screen.TourStatus} />
+
+            <Stack.Screen name="TourStatusDetail" component={Screen.TourStatusDetail} />
         </Stack.Navigator>
     );
 };

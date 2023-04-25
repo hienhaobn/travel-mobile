@@ -1,51 +1,24 @@
-import React, { useCallback, useEffect } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-
-import Images from 'assets/images';
-
+import { StyleSheet } from 'react-native';
 import { useTheme } from 'hooks/useTheme';
-
+import React from 'react';
+import ListTourStatus from 'screens/account/src/components/ListTourStatus';
+import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
 import { useFetchOrderWaiting, useSelectOrderWaiting } from 'states/tours/hooks';
-
-import { Fonts, Sizes } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
-import { scales } from 'utils/scales';
 
-const TourWaitingScene = () => {
+interface TourWaitingSceneProps {
+    route: TourStatusScreenRouteProps
+}
+
+const TourWaitingScene = (props: TourWaitingSceneProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-    // get order waiting
+    const { route } = props;
     useFetchOrderWaiting();
-
     const { data, isLoading } = useSelectOrderWaiting();
 
-    const renderNoData = useCallback(() => {
-        return (
-            <View style={styles.noDataContainer}>
-                <Image source={Images.NoData} style={styles.image} resizeMode={'contain'} />
-                <Text style={styles.textNoData}>Chưa có chuyến đi</Text>
-            </View>
-        );
-    }, []);
-
     return (
-        <View style={styles.container}>
-            {isLoading ? (
-                <View>
-                    <Text>Loading</Text>
-                </View>
-            ) : (
-                <FlatList
-                    renderItem={(item) => <View />}
-                    data={data}
-                    keyExtractor={(item) => item.id.toString()}
-                    ListEmptyComponent={renderNoData}
-                    initialNumToRender={10}
-                    showsVerticalScrollIndicator={false}
-                />
-            )}
-        </View>
+        <ListTourStatus route={route} data={data} isLoading={isLoading} />
     );
 };
 
@@ -57,25 +30,6 @@ const myStyles = (theme: string) => {
         container: {
             flex: 1,
             backgroundColor: color.Color_Bg,
-        },
-        noDataContainer: {
-            marginTop: scales(26),
-            marginHorizontal: scales(15),
-            marginBottom: scales(25),
-            alignItems: 'center',
-        },
-        textNoData: {
-            color: color.Color_Red_2,
-            marginTop: scales(29),
-            marginBottom: scales(15),
-            ...Fonts.inter700,
-            fontSize: scales(12),
-            fontStyle: 'normal',
-        },
-        image: {
-            width: Sizes.scrWidth - scales(30),
-            height: scales(135),
-            borderRadius: scales(20),
         },
     });
 };
