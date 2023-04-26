@@ -2,11 +2,12 @@ import { indexOf } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
-import LoginCommon from 'screens/login/src/components/LoginCommon';
+
 
 import SvgIcons from 'assets/svgs';
 import TouchableOpacity from 'components/TouchableOpacity';
 import { useTheme } from 'hooks/useTheme';
+import LoginCommon from 'screens/login/src/components/LoginCommon';
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
@@ -90,12 +91,20 @@ const LoginScreen = () => {
     );
   }, []);
 
-  return (
-    <View style={styles.container}>
-      {renderHeader()}
-      {renderContent()}
-    </View>
-  );
+  const renderHeader = useCallback(() => {
+    return (
+      <View style={styles.headerContainer}>
+        <View style={styles.iconHeaderContainer}>
+          <SvgIcons.IcLogoLaunch width={scales(150)} height={scales(150)} />
+        </View>
+      </View>
+    );
+  }, []);
+
+  return (<View style={styles.container}>
+    {renderHeader()}
+    {renderContent()}
+  </View>);
 };
 
 export default LoginScreen;
@@ -110,6 +119,7 @@ const myStyles = (theme: string) => {
     tabview: {
       backgroundColor: color.Color_Bg,
       marginLeft: scales(15),
+      shadowColor: 'transparent',
     },
     labelTabText: {
       ...Fonts.inter700,
