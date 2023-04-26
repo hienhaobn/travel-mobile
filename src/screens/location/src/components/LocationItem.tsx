@@ -27,7 +27,7 @@ const LocationData = (props: IProps) => {
         <TouchableOpacity style={styles.itemSwipe} onPress={() => goToLocationDetail(province?.id)}>
             <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
             <View style={styles.tourInfo}>
-                <Text style={styles.provinceText}>{province?.name}</Text>
+                <Text style={styles.provinceText}>{province?.name?.trim()}</Text>
                 <Text style={styles.tourText}>{province?.tours?.length} tour</Text>
             </View>
         </TouchableOpacity>
@@ -53,21 +53,22 @@ const myStyles = (themeCurrent: string) => {
             ...Fonts.inter600,
             fontSize: scales(16),
             color: color.white,
+            left: scales(10),
         },
         tourText: {
             ...Fonts.inter400,
             fontSize: scales(14),
             color: color.white,
+            left: scales(10),
         },
         tourInfo: {
             position: 'absolute',
-            bottom: scales(10),
-            left: scales(30),
-        },
-        gradient: {
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
+            bottom: scales(8),
+            left: scales(15),
+            backgroundColor: '#8EC3B0',
+            right: Sizes.scrWidth / 2 - scales(15),
+            paddingTop: scales(5),
+            borderTopRightRadius: scales(30),
         },
     });
 };

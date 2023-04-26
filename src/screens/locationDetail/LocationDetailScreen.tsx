@@ -74,7 +74,6 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     const onRegisterEventBus = () => {
         subScription.add(EventBus.getInstance().events.subscribe((res: BaseEvent<tour.Tour>) => {
             if (res?.type === EventBusName.OPEN_BOTTOM_SHEET_ORDER_TOUR) {
-                console.log(res?.payload?.id);
                 setTourSelected(res?.payload);
                 showOrderTour();
             }

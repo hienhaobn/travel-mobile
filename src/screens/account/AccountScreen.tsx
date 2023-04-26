@@ -1,117 +1,203 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import Images from 'assets/images';
+import SvgIcons from 'assets/svgs';
 
-import Header from 'components/Header';
+import Button from 'components/Button/Button';
+import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
 
-import { Fonts, Sizes } from 'themes';
+import { navigate, resetStack } from 'navigation/utils';
+
+import { Fonts } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import Storages, { KeyStorage } from 'utils/storages';
 
 const AccountScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+
+    const onLogOut = () => {
+        Storages.remove(KeyStorage.Token);
+        resetStack('Login');
+    };
+
     return (
-        <>
-            <Header iconLeft={<Text style={styles.textTitle}>Tài khoản</Text>} />
-        </>
+        <View style={styles.container}>
+            <ScrollView
+                style={styles.wrapperContent}
+                contentContainerStyle={styles.contentContainer}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}>
+                <View style={styles.itemsContainer}>
+                    <Text style={styles.titleHeader}>Tài khoản</Text>
+                    <TouchableOpacity style={styles.itemContainer}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcUserInfo
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Thông tin tài khoản</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcTourAccount
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Chuyến đi</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcWallet
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Phương thức thanh toán</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Login')}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcVoucher
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Voucher</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Login')}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcForgotPassword
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Đổi mật khẩu</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Login')}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcMessageQuestion
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Trung tâm hỗ trợ</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+            <Button title="Đăng xuất" customStyles={styles.button} onPress={onLogOut}/>
+        </View>
     );
 };
+
 const myStyles = (themeCurrent: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
-        contentContainer: {
+        container: {
+            flex: 1,
             backgroundColor: color.Color_Bg,
-            borderTopRightRadius: scales(6),
-            borderTopLeftRadius: scales(6),
         },
-        headerContainer: {
-            alignItems: 'center',
+        wrapperContent: {
+            flexGrow: 1,
+            paddingHorizontal: scales(15),
+        },
+        contentContainer: {
+            paddingBottom: scales(30),
+            paddingTop: scales(20),
+        },
+        itemsContainer: {
+            marginTop: scales(30),
+        },
+        itemContainer: {
+            flexDirection: 'row',
             justifyContent: 'space-between',
-            flexDirection: 'row',
-            paddingTop: Sizes.statusBarHeight + scales(20),
-            marginHorizontal: scales(15),
-            paddingBottom: scales(12),
+            alignItems: 'center',
+            marginBottom: scales(15),
         },
-        headerLeftContainer: {
+        itemIconLeft: {
+            width: scales(30),
+            height: scales(30),
+        },
+        itemLeftContainer: {
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
         },
-        headerLeftText: {
+        title: {
             ...Fonts.inter400,
             fontSize: scales(12),
             color: color.Text_Dark_1,
-            marginHorizontal: scales(5),
-        },
-        headerRightContainer: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        icNotification: {
-            marginRight: scales(15),
-        },
-        searchContainer: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: scales(15),
-            marginTop: scales(12),
-        },
-        icScan: {
-            backgroundColor: color.Color_Bg,
-            height: scales(46),
-            justifyContent: 'center',
-            paddingHorizontal: scales(20),
-            borderRadius: scales(6),
-
-            shadowColor: color.Text_Dark_1,
-            shadowOffset: { width: -1, height: 4 },
-            shadowOpacity: 0.2,
-            shadowRadius: 3,
-        },
-        inputContainer: {
-            flex: 1,
             marginLeft: scales(15),
-            shadowColor: getThemeColor().Text_Dark_1,
-            shadowOffset: { width: -1, height: 4 },
-            shadowOpacity: 0.2,
-            shadowRadius: 3,
-            borderRadius: 50,
         },
-        imageOptions: {
-            width: scales(45),
-            height: scales(45),
+        line: {
+            borderWidth: 0.5,
+            borderColor: color.Text_Dark_5,
+            marginBottom: scales(15),
         },
-        optionsContainer: {
-            marginTop: scales(26),
+        button: {
             marginHorizontal: scales(15),
-            flexDirection: 'row',
-            marginBottom: scales(25),
+            marginBottom: scales(15),
         },
-        optionItem: {
-            alignItems: 'center',
-            width: Sizes.scrWidth / 6,
-        },
-        optionText: {
-            ...Fonts.inter400,
-            fontSize: scales(12),
-            color: color.Text_Dark_2,
-            marginTop: scales(8),
-            textAlign: 'center',
-        },
-        mh5: {
-            marginHorizontal: scales(5),
-        },
-        textTitle: {
+        titleHeader: {
             ...Fonts.inter700,
-            fontSize: scales(32),
-            color: color.Text_Dark_2,
+            fontSize: scales(24),
+            color: color.Text_Dark_1,
+            marginBottom: scales(30),
         },
     });
 };
+
 export default AccountScreen;

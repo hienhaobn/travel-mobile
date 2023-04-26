@@ -9,10 +9,10 @@ import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
 
+import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-
-import { Fonts, Sizes } from 'themes';
 
 const MessengerScreen = () => {
     const { theme } = useTheme();
@@ -60,13 +60,16 @@ const MessengerScreen = () => {
         []
     );
     return (
-        <FlatList
-            data={[1, 2, 3, 4]}
-            renderItem={renderConvention}
-            keyExtractor={(item) => item.toString()}
-            ListHeaderComponent={renderHeader}
-            style={styles.container}
-        />
+        <View style={styles.container}>
+            {renderHeader()}
+            <FlatList
+                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}
+                renderItem={renderConvention}
+                keyExtractor={(item) => item.toString()}
+                initialNumToRender={10}
+                showsVerticalScrollIndicator={false}
+            />
+        </View>
     );
 };
 
