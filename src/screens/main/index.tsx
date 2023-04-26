@@ -7,11 +7,13 @@ import { RootNavigatorParamList } from 'navigation/types';
 
 import { Screen } from 'screens/screens';
 import { useFetchProvinces } from 'states/provinces/hooks';
+import { useFetchMe } from 'states/user/hooks';
 
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
 const Main = () => {
-    useFetchProvinces()
+    useFetchProvinces();
+    useFetchMe();
     const renderTabBar = (bottomTabBarProps: BottomTabBarProps) => {
         return <MyTabBar {...bottomTabBarProps} />;
     };

@@ -3,7 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 
-import CounterReducer from './counter';
+import userReducer from './user';
 import provincesReducer from './provinces';
 import toursReducer from './tours';
 
@@ -22,7 +22,7 @@ const persistedReducer = persistReducer(
     persistConfig,
     combineReducers({
         // add something
-        counter: CounterReducer,
+        user: userReducer,
         provinces: provincesReducer,
         tours: toursReducer,
     })

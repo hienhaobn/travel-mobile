@@ -2,8 +2,9 @@ interface ResponseApiBase {
     code: string;
     message: string;
     statusCode: number;
-    returnValue: []
+    returnValue: [];
 }
+
 interface ProvincesState {
     data: location.Province[];
     loadingKeys: Record<string, boolean>;
@@ -11,6 +12,44 @@ interface ProvincesState {
 
 interface UserState {
     token: string;
+    id: number;
+    email: string;
+    username: string;
+    phone: string;
+    balance: string;
+    availableBalance: string;
+    voucherPoint: number;
+    avatar: string;
+    verifyStatus: string;
+    isSetup: boolean;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string;
+    userVouchers: [];
+    userFavorites: [];
+    orders: [];
+    role: string;
+    isLoading: boolean;
+}
+
+interface UserResponse {
+    id: number;
+    email: string;
+    username: string;
+    phone: string;
+    balance: string;
+    availableBalance: string;
+    voucherPoint: number;
+    avatar: string;
+    verifyStatus: string;
+    isSetup: boolean;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string;
+    userVouchers: [];
+    userFavorites: [];
+    orders: [];
+    role: string;
 }
 
 interface TourOrderStatus {
