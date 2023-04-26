@@ -24,6 +24,10 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
         onPushEventBus(EventBusName.OPEN_BOTTOM_SHEET_ORDER_TOUR, tour);
     };
 
+    const onGoToTourDetail = () => {
+        goToTourDetail(tour);
+    };
+
     return (
         <View style={styles.itemContainer}>
             <View style={styles.itemContentContainer}>
@@ -56,7 +60,7 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
                         <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
                         <Text style={styles.sellNow}>Đặt ngay</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.showInfoContainer} onPress={goToTourDetail}>
+                    <TouchableOpacity style={styles.showInfoContainer} onPress={onGoToTourDetail}>
                         <Text style={styles.textShowInfo}>Xem chi tiết</Text>
                     </TouchableOpacity>
                 </View>

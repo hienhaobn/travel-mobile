@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import Orientation from 'react-native-orientation-locker';
 
 import SvgIcons from 'assets/svgs';
 
@@ -16,6 +17,7 @@ import { getThemeColor } from 'utils/getThemeColor';
 import Storages, { KeyStorage } from 'utils/storages';
 
 import 'i18n';
+import { useFetchProvinces } from 'states/provinces/hooks';
 
 const LaunchScreen = () => {
     const { theme } = useTheme();
@@ -33,13 +35,12 @@ const LaunchScreen = () => {
 
     useEffect(() => {
         SplashScreen.hide();
+        Orientation.lockToPortrait();
         onNavigator();
     }, []);
 
     const onNavigator = async () => {
         const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
-
-        console.log('tokenInfo', tokenInfo)
 
         let screenName: keyof RootNavigatorParamList = 'Login';
         if (tokenInfo?.accessToken) {

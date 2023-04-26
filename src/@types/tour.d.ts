@@ -8,11 +8,10 @@ declare namespace tour {
         maxMember: string;
         numOfFreeMember: string;
         feePerMember: string;
-        status: string;
         createdAt: string;
         updatedAt: string;
         deletedAt: string;
-        status: '1';
+        status: string;
         images: string[];
         rates: string[];
         tourGuide: tourGuide.TourGuide[];

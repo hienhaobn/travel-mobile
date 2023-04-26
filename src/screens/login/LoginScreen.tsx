@@ -1,54 +1,84 @@
+import { indexOf } from 'lodash';
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import { apiLogin } from './src/api';
-import { goToMain } from './src/utils';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
+import LoginCommon from 'screens/login/src/components/LoginCommon';
 
 import SvgIcons from 'assets/svgs';
-
-import Button from 'components/Button/Button';
-import Input from 'components/Input';
-import { hideLoading, showLoading } from 'components/Loading';
 import TouchableOpacity from 'components/TouchableOpacity';
-
-import { GlobalVariables } from 'constants/index';
-
 import { useTheme } from 'hooks/useTheme';
-
-import { resetStack } from 'navigation/utils';
-
 import { Fonts, Sizes } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import Storages, { KeyStorage } from 'utils/storages';
+
+export interface LoginScreenRouteProps {
+  key: string;
+  title?: string;
+}
+
+const renderScene = SceneMap({
+  user: LoginCommon,
+  tourGuide: LoginCommon,
+});
+
+export enum ELoginScreenTabKey {
+  tourGuide = 'tourGuide',
+  user = 'user',
+}
 
 const LoginScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
-  const [securePassword, setSecurePassword] = useState<boolean>(true);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const layout = useWindowDimensions();
 
-  const onLogin = async () => {
-    try {
-      showLoading();
-      const response = await apiLogin(email, password);
-      hideLoading();
-      if (response?.data?.accessToken) {
-        GlobalVariables.tokenInfo = {
-          accessToken: response?.data?.accessToken,
-          refreshToken: response?.data?.refreshToken,
-        };
-        Storages.saveObject(KeyStorage.Token, GlobalVariables.tokenInfo);
-        resetStack('Main');
-      }
-    } catch (error) {
-      hideLoading()
-      console.log('error', error);
-    }
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: ELoginScreenTabKey.tourGuide, title: 'Hướng dẫn viên' },
+    { key: ELoginScreenTabKey.user, title: 'Người dùng' },
+  ]);
+
+  const renderTabItem = (tabProps: TabBarItemProps<LoginScreenRouteProps>) => {
+    const { title } = tabProps.route;
+    const active = indexOf(routes, tabProps.route) === tabProps.navigationState.index;
+    return (
+      <TouchableOpacity
+        style={{
+          marginRight: scales(20),
+          paddingVertical: scales(16),
+        }}
+        onPress={() => {
+          setIndex(indexOf(routes, tabProps.route));
+        }}
+      >
+        <Text
+          style={[
+            styles.labelTabText,
+            active ? { color: getThemeColor().Color_Primary } : { color: getThemeColor().Text_Dark_1 },
+          ]}
+        >
+          {title}
+        </Text>
+      </TouchableOpacity>
+    );
   };
+
+  const renderTabBar = (tabbarProps) => (
+    <TabBar {...tabbarProps} style={styles.tabview} renderIndicator={() => null} renderTabBarItem={renderTabItem} />
+  );
+
+  const renderContent = () => (
+    <View style={{ flex: 1 }}>
+      <TabView
+        lazy
+        navigationState={{ index, routes }}
+        style={{ backgroundColor: getThemeColor().Color_Bg }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        renderTabBar={renderTabBar}
+      />
+    </View>
+  );
 
   const renderHeader = useCallback(() => {
     return (
@@ -60,65 +90,12 @@ const LoginScreen = () => {
     );
   }, []);
 
-  const renderInputEmail = () => (
-    <View>
-      <Text style={styles.title}>Email</Text>
-      <Input value={email} onChangeText={setEmail} placeholder="Vui lòng nhập email" />
-    </View>
-  );
-
-  const renderInputPassword = () => {
-    const Icon = SvgIcons[`IcVisibility${securePassword ? 'Off' : ''}`];
-    return (
-      <View style={styles.inputPasswordContainer}>
-        <Text style={styles.title}>Mật khẩu</Text>
-        <Input
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Vui lòng nhập mật khẩu"
-          secureTextEntry={securePassword}
-          icon={<Icon width={scales(15)} height={scales(15)} />}
-          onPressIcon={() => setSecurePassword(!securePassword)}
-        />
-      </View>
-    );
-  };
-
-  const renderForgotPasswordAndRegister = () => (
-    <View style={styles.forgotAndRegisterContainer}>
-      <TouchableOpacity>
-        <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={styles.register}>Đăng ký</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderButton = () => (
-    <Button
-      title="Đăng nhập"
-      onPress={onLogin}
-      customStyles={{ marginTop: scales(30), marginBottom: scales(20) }}
-    />
-  );
-
-  const renderContent = () => (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.content}
-      extraHeight={scales(125)}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-      enableOnAndroid>
+  return (
+    <View style={styles.container}>
       {renderHeader()}
-      {renderInputEmail()}
-      {renderInputPassword()}
-      {renderForgotPasswordAndRegister()}
-      {renderButton()}
-    </KeyboardAwareScrollView>
+      {renderContent()}
+    </View>
   );
-
-  return <View style={styles.container}>{renderContent()}</View>;
 };
 
 export default LoginScreen;
@@ -128,16 +105,21 @@ const myStyles = (theme: string) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: Sizes.statusBarHeight,
       backgroundColor: color.Color_Bg,
     },
-    content: {
-      marginHorizontal: scales(15),
+    tabview: {
+      backgroundColor: color.Color_Bg,
+      marginLeft: scales(15),
+    },
+    labelTabText: {
+      ...Fonts.inter700,
+      fontSize: scales(17),
+      color: color.Text_Dark_1,
     },
     headerContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: scales(40),
+      marginTop: Sizes.statusBarHeight + scales(40),
     },
     textHeader: {
       ...Fonts.inter700,
@@ -146,32 +128,6 @@ const myStyles = (theme: string) => {
     },
     iconHeaderContainer: {
       marginTop: scales(20),
-    },
-    title: {
-      ...Fonts.inter400,
-      fontSize: scales(14),
-      color: color.Text_Dark_1,
-      marginBottom: scales(8),
-    },
-    inputPasswordContainer: {
-      marginTop: scales(20),
-    },
-    forgotAndRegisterContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: scales(20),
-    },
-    forgotPassword: {
-      ...Fonts.inter600,
-      fontSize: scales(14),
-      color: color.Text_Dark_1,
-      textDecorationLine: 'underline',
-    },
-    register: {
-      ...Fonts.inter600,
-      fontSize: scales(14),
-      color: color.Text_Dark_1,
     },
   });
 };

@@ -1,18 +1,14 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import Images from 'assets/images';
-import SvgIcons from 'assets/svgs';
+import { goToTourStatus } from './src/utils';
 
+import SvgIcons from 'assets/svgs';
 import Button from 'components/Button/Button';
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { navigate, resetStack } from 'navigation/utils';
-
 import { Fonts } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
@@ -32,7 +28,8 @@ const AccountScreen = () => {
                 style={styles.wrapperContent}
                 contentContainerStyle={styles.contentContainer}
                 keyboardShouldPersistTaps="handled"
-                showsVerticalScrollIndicator={false}>
+                showsVerticalScrollIndicator={false}
+            >
                 <View style={styles.itemsContainer}>
                     <Text style={styles.titleHeader}>Tài khoản</Text>
                     <TouchableOpacity style={styles.itemContainer}>
@@ -52,7 +49,7 @@ const AccountScreen = () => {
                             color={getThemeColor().Text_Dark_1}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.itemContainer}>
+                    <TouchableOpacity style={styles.itemContainer} onPress={goToTourStatus}>
                         <View style={styles.itemLeftContainer}>
                             <View>
                                 <SvgIcons.IcTourAccount
@@ -137,9 +134,25 @@ const AccountScreen = () => {
                             color={getThemeColor().Text_Dark_1}
                         />
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.itemContainer} onPress={onLogOut}>
+                        <View style={styles.itemLeftContainer}>
+                            <View>
+                                <SvgIcons.IcLogoLaunch
+                                    width={scales(30)}
+                                    height={scales(30)}
+                                    color={getThemeColor().Text_Dark_1}
+                                />
+                            </View>
+                            <Text style={styles.title}>Đăng xuất</Text>
+                        </View>
+                        <SvgIcons.IcForward
+                            width={scales(15)}
+                            height={scales(15)}
+                            color={getThemeColor().Text_Dark_1}
+                        />
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
-            <Button title="Đăng xuất" customStyles={styles.button} onPress={onLogOut}/>
         </View>
     );
 };

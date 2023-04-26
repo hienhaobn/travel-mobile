@@ -3,9 +3,11 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 
-import CounterReducer from './counter';
+import userReducer from './user';
+import provincesReducer from './provinces';
+import toursReducer from './tours';
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions'];
+const PERSISTED_KEYS: string[] = ['user'];
 
 const persistConfig = {
     key: 'primary',
@@ -16,34 +18,34 @@ const persistConfig = {
 };
 
 // const logger = createLogger();
-
 const persistedReducer = persistReducer(
-  persistConfig,
-  combineReducers({
-    // add something
-    counter: CounterReducer,
-  }),
+    persistConfig,
+    combineReducers({
+        // add something
+        user: userReducer,
+        provinces: provincesReducer,
+        tours: toursReducer,
+    })
 );
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      thunk: true,
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-  devTools: process.env.NODE_ENV === 'development',
-})
-
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            thunk: true,
+            serializableCheck: {
+                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }),
+    devTools: process.env.NODE_ENV === 'development',
+});
 
 /**
  * @see https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
  */
-export type AppDispatch = typeof store.dispatch
-export type AppState = ReturnType<typeof store.getState>
-export const useAppDispatch = () => useDispatch<AppDispatch>()
+export type AppDispatch = typeof store.dispatch;
+export type AppState = ReturnType<typeof store.getState>;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export const persistor = persistStore(store);
 

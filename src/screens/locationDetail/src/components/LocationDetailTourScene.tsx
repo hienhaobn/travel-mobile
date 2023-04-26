@@ -1,33 +1,33 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { apiGetTours } from '../api';
 
 import { useTheme } from 'hooks/useTheme';
 
+import { LocationDetailScreenRouteProps } from 'screens/locationDetail/LocationDetailScreen';
 import LocationDetailTourItem from 'screens/locationDetail/src/components/LocationDetailTourItem';
-
+import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import Images from 'assets/images';
 
-const LocationDetailTourScene = () => {
+interface LocationDetailTourSceneProps {
+    route: LocationDetailScreenRouteProps;
+}
+
+const LocationDetailTourScene = (props: LocationDetailTourSceneProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-    const [tours, setTours] = useState([]);
+    const { province } = props.route;
 
-    const getTours = async () => {
-        try {
-            const response = await apiGetTours();
-            if (response) {
-                setTours(response);
-            }
-        } catch (error) {
-            console.log('error get tour', error.message);
-        }
-    };
-
-    useEffect(() => {
-        getTours();
+    const renderNoData = useCallback(() => {
+        return (
+            <View style={styles.noDataContainer}>
+                <Image source={Images.NoData} style={styles.image} resizeMode={'contain'} />
+                <Text style={styles.textNoData}>Chưa có dữ liệu tour</Text>
+            </View>
+        );
     }, []);
 
     const renderSection = () => {
@@ -37,8 +37,9 @@ const LocationDetailTourScene = () => {
                 contentContainerStyle={{
                     paddingBottom: scales(20),
                 }}
-                data={tours}
+                data={province?.tours}
                 keyExtractor={(item) => item.id.toString()}
+                ListEmptyComponent={renderNoData()}
             />
         );
     };
@@ -52,7 +53,33 @@ const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {
+            flex: 1,
             marginHorizontal: scales(15),
+        },
+        noDataContainer: {
+            marginTop: scales(26),
+            marginHorizontal: scales(15),
+            marginBottom: scales(25),
+            alignItems: 'center',
+        },
+        textNoData: {
+            color: color.Color_Red_2,
+            marginTop: scales(29),
+            marginBottom: scales(15),
+            ...Fonts.inter700,
+            fontSize: scales(12),
+            fontStyle: 'normal',
+        },
+        textInputData: {
+            color: color.Color_Gray3,
+            fontWeight: '300',
+            fontSize: scales(12),
+            fontStyle: 'normal',
+        },
+        image: {
+            width: Sizes.scrWidth - scales(30),
+            height: scales(135),
+            borderRadius: scales(20),
         },
     });
 };

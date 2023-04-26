@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Images from 'assets/images';
 
@@ -25,7 +26,16 @@ const LocationData = (props: IProps) => {
 
     return (
         <TouchableOpacity style={styles.itemSwipe} onPress={() => goToLocationDetail(province?.id)}>
-            <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
+            <FastImage
+                source={
+                    province?.images
+                        ? {
+                              uri: province?.images,
+                          }
+                        : Images.BacNinhImg
+                }
+                style={styles.image}
+            />
             <View style={styles.tourInfo}>
                 <Text style={styles.provinceText}>{province?.name?.trim()}</Text>
                 <Text style={styles.tourText}>{province?.tours?.length} tour</Text>
@@ -65,7 +75,7 @@ const myStyles = (themeCurrent: string) => {
             position: 'absolute',
             bottom: scales(8),
             left: scales(15),
-            backgroundColor: '#8EC3B0',
+            backgroundColor: '#8EC3B0AA',
             right: Sizes.scrWidth / 2 - scales(15),
             paddingTop: scales(5),
             borderTopRightRadius: scales(30),
