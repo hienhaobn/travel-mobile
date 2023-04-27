@@ -1,16 +1,22 @@
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
 import Header from 'components/Header';
 import { useTheme } from 'hooks/useTheme';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { fetchOrderById } from 'states/orders/fetchOrder';
 import { getThemeColor } from 'utils/getThemeColor';
 
 const TourStatusDetailScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
 
+    useEffect(() => {
+        const data = fetchOrderById(1);
+    }, []);
+
     return (
         <View style={styles.container}>
-            <Header title='Chi tiết chuyến đi' />
+            <Header title="Chi tiết chuyến đi" />
             <Text>TourStatusDetailScreen</Text>
         </View>
     );

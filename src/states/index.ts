@@ -3,9 +3,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 
-import userReducer from './user';
+import ordersReducer from './orders';
 import provincesReducer from './provinces';
-import toursReducer from './tours';
+import userReducer from './user';
 
 const PERSISTED_KEYS: string[] = ['user'];
 
@@ -24,7 +24,7 @@ const persistedReducer = persistReducer(
         // add something
         user: userReducer,
         provinces: provincesReducer,
-        tours: toursReducer,
+        orders: ordersReducer,
     })
 );
 

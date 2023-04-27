@@ -3,7 +3,7 @@ import { useTheme } from 'hooks/useTheme';
 import React from 'react';
 import ListTourStatus from 'screens/account/src/components/ListTourStatus';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
-import { useFetchOrderWaiting, useSelectOrderWaiting } from 'states/tours/hooks';
+import { useFetchOrderWaiting, useSelectOrderWaiting } from 'states/orders/hooks';
 import { getThemeColor } from 'utils/getThemeColor';
 
 interface TourWaitingSceneProps {

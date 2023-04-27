@@ -36,7 +36,7 @@ declare namespace order {
         verifyStatus: string;
     }
 
-    interface OrderRoleUser {
+    interface OrderDetail {
         createdAt: string;
         deletedAt: null;
         endDate: string;
