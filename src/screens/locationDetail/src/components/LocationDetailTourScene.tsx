@@ -40,6 +40,7 @@ const LocationDetailTourScene = (props: LocationDetailTourSceneProps) => {
                 data={province?.tours}
                 keyExtractor={(item) => item.id.toString()}
                 ListEmptyComponent={renderNoData()}
+                showsVerticalScrollIndicator={false}
             />
         );
     };

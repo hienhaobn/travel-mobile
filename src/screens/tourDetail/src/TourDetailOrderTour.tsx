@@ -1,12 +1,16 @@
 import BigNumber from 'bignumber.js';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-import { apiPostOrder } from '../api';
+import { apiPostOrder } from '../../locationDetail/src/api';
+
+import SvgIcons from 'assets/svgs';
 
 import Button from 'components/Button/Button';
+import DialogUtil from 'components/Dialog';
+import { DropdownProps } from 'components/Dialog/DropdownItem';
 import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
@@ -17,22 +21,26 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import { showCustomToast } from 'utils/toast';
 
-interface LocationDetailOrderTourProps {
+interface TourDetailOrderTourProps {
     tour: tour.Tour;
     dismissBottomSheet: () => void;
 }
 
-const LocationDetailOrderTour = (props: LocationDetailOrderTourProps) => {
+const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
     const { tour, dismissBottomSheet } = props;
     const fromDateDefault = moment().subtract(7, 'days').toDate();
     const toDateDefault = moment().toDate();
+    const [type, setType] = useState<string>('');
+    const [types, setTypes] = useState<string[]>(null);
     const [selectDateVisible, setSelectDateVisible] = useState<boolean>(false);
     const [startTime, setStartTime] = useState<Date>(new Date());
     const [endTime, setEndTime] = useState<Date>(moment().subtract(7, 'days').toDate());
     const [countAdult, setCountAdult] = useState<number>(0);
-    const [countChildren, setCountChildren] = useState<number>(0);
+    const [isVisibleDropDownType, setIsVisibleDropDownType] = useState<boolean>(false);
+
+    const dropdownVoucher = useRef<View>(null);
 
     const renderHeader = () => (
         <View style={styles.headerView}>
@@ -53,17 +61,48 @@ const LocationDetailOrderTour = (props: LocationDetailOrderTourProps) => {
                 </TouchableOpacity>
                 <Text style={styles.textTo}>đến</Text>
                 <View style={styles.dateContainer}>
-                    <Text style={styles.dateText}>{moment(endTime).format('YYYY-MM-DD')}</Text>
+                    <Text style={styles.dateText}>
+                        {moment(startTime)
+                            .subtract(tour?.tourSchedule?.length + 1, 'days')
+                            .format('YYYY-MM-DD')}
+                    </Text>
                 </View>
             </View>
         </View>
     );
 
+    const onShowDropdown = () => {
+        dropdownVoucher.current.measure((x, y, width, height, px, py) => {
+            const dropdownConfig: DropdownProps = {
+                width,
+                height,
+                px,
+                py: py + scales(5),
+                selected: type,
+                data: types,
+                onSelect: setType,
+                theme,
+                dismissCallback: () => setIsVisibleDropDownType(false),
+            };
+            DialogUtil.showDropdown(dropdownConfig).catch();
+        });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const onChangeCountAdult = (type: 'increase' | 'decrease') => {
+        if (type === 'increase' && countAdult < parseInt(tour?.maxMember)) {
+            setCountAdult(countAdult + 1);
+        }
+        if (type === 'decrease' && countAdult > 0) {
+            setCountAdult(countAdult - 1);
+        }
+    };
+
     const onConfirm = async () => {
         try {
             const response = await apiPostOrder({
                 tourId: tour?.id,
-                numberOfMember: new BigNumber(countAdult).plus(countChildren).toNumber(),
+                numberOfMember: new BigNumber(countAdult).toNumber(),
                 price: parseFloat(tour.basePrice),
                 startDate: moment(startTime).format('YYYY-MM-DD'),
             });
@@ -122,51 +161,16 @@ const LocationDetailOrderTour = (props: LocationDetailOrderTourProps) => {
         />
     );
 
-    const onChangeCountAdult = (type: 'increase' | 'decrease') => {
-        if (type === 'increase' && countAdult + countChildren < parseInt(tour?.maxMember)) {
-            setCountAdult(countAdult + 1);
-        }
-        if (type === 'decrease' && countAdult > 0) {
-            setCountAdult(countAdult - 1);
-        }
-    };
-
-    const onChangeCountChildren = (type: 'increase' | 'decrease') => {
-        if (type === 'increase' && countChildren + countAdult < parseInt(tour?.maxMember)) {
-            setCountChildren(countChildren + 1);
-        }
-        if (type === 'decrease' && countChildren > 0) {
-            setCountChildren(countChildren - 1);
-        }
-    };
-
     const renderCountPerson = () => (
         <View>
-            <Text style={styles.titleContentSheet}>Số lượng người</Text>
             <View style={styles.row}>
-                <Text style={styles.titleCount}>Người lớn</Text>
+                <Text style={styles.titleCount}>Số lượng người</Text>
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.decreaseContainer} onPress={() => onChangeCountAdult('decrease')}>
                         <Text style={styles.decreaseTxt}>-</Text>
                     </TouchableOpacity>
                     <Text style={styles.count}>{countAdult}</Text>
                     <TouchableOpacity style={styles.increaseContainer} onPress={() => onChangeCountAdult('increase')}>
-                        <Text style={styles.increaseTxt}>+</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={[styles.row, styles.childrenContainer]}>
-                <Text style={styles.titleCount}>Trẻ em</Text>
-                <View style={styles.row}>
-                    <TouchableOpacity
-                        style={styles.decreaseContainer}
-                        onPress={() => onChangeCountChildren('decrease')}>
-                        <Text style={styles.decreaseTxt}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.count}>{countChildren}</Text>
-                    <TouchableOpacity
-                        style={styles.increaseContainer}
-                        onPress={() => onChangeCountChildren('increase')}>
                         <Text style={styles.increaseTxt}>+</Text>
                     </TouchableOpacity>
                 </View>
@@ -191,10 +195,25 @@ const LocationDetailOrderTour = (props: LocationDetailOrderTourProps) => {
         </View>
     );
 
+    const renderVoucher = () => (
+        <View style={styles.dropdownContainer}>
+            <Text style={styles.titlePrice}>Voucher</Text>
+            <View ref={dropdownVoucher} style={styles.dropdownSelectedContainer} collapsable={false}>
+                <TouchableOpacity style={styles.dropdownButton} onPress={onShowDropdown}>
+                    <Text style={styles.dropdownText}>Voucher</Text>
+                    <View style={isVisibleDropDownType ? { transform: [{ rotate: '180deg' }]} : {}}>
+                        <SvgIcons.IcDownReward color={getThemeColor().Text_Dark_2} width={scales(12)} height={scales(10)} scaleX={-1} />
+                    </View>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+
     const renderContent = () => (
         <View style={styles.content}>
             {renderSelectTime()}
             {renderCountPerson()}
+            {renderVoucher()}
             {renderPrice()}
             {renderButtons()}
         </View>
@@ -209,7 +228,7 @@ const LocationDetailOrderTour = (props: LocationDetailOrderTourProps) => {
     );
 };
 
-export default LocationDetailOrderTour;
+export default TourDetailOrderTour;
 
 const myStyles = (theme: string) => {
     const color = getThemeColor();
@@ -319,9 +338,6 @@ const myStyles = (theme: string) => {
             fontSize: scales(14),
             color: color.Text_Dark_1,
         },
-        childrenContainer: {
-            marginTop: scales(15),
-        },
         titleContentSheet: {
             ...Fonts.inter600,
             fontSize: scales(16),
@@ -349,6 +365,27 @@ const myStyles = (theme: string) => {
         },
         valuePrice: {
             ...Fonts.inter400,
+            fontSize: scales(14),
+            color: color.Text_Dark_1,
+        },
+        dropdownContainer: {
+            paddingTop: scales(20),
+        },
+        dropdownSelectedContainer: {
+            marginTop: scales(8),
+        },
+        dropdownButton: {
+            flexDirection: 'row',
+            height: scales(45),
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: scales(15),
+            borderColor: color.Text_Dark_4,
+            borderWidth: scales(1),
+            borderRadius: scales(5),
+        },
+        dropdownText: {
+            ...Fonts.inter600,
             fontSize: scales(14),
             color: color.Text_Dark_1,
         },

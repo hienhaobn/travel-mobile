@@ -1,3 +1,4 @@
+import IcDownReward from './down_reward.svg';
 import IcBack from './ic_back.svg';
 import IcForgotPassword from './ic_forgot_password.svg';
 import IcForward from './ic_forward.svg';
@@ -60,6 +61,7 @@ const SvgIcons = {
     IcForgotPassword,
     IcWallet,
     IcTourAccount,
+    IcDownReward,
 };
 
 export default SvgIcons;
