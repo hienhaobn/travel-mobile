@@ -29,6 +29,8 @@ const TourStatusItem = (props: TourStatusItemProps) => {
     const { order, route } = props;
     const { tour } = order;
 
+    console.log(tour)
+
     const renderButtonLeft = () => (
         <>
             {route.key === ETourStatusScreenTabKey.tourWaiting ? (

@@ -1,13 +1,17 @@
-import { StyleSheet } from 'react-native';
-import { useTheme } from 'hooks/useTheme';
 import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { useTheme } from 'hooks/useTheme';
+
 import ListTourStatus from 'screens/account/src/components/ListTourStatus';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
+
 import { useFetchOrderWaiting, useSelectOrderWaiting } from 'states/orders/hooks';
+
 import { getThemeColor } from 'utils/getThemeColor';
 
 interface TourWaitingSceneProps {
-    route: TourStatusScreenRouteProps
+    route: TourStatusScreenRouteProps;
 }
 
 const TourWaitingScene = (props: TourWaitingSceneProps) => {
@@ -17,9 +21,7 @@ const TourWaitingScene = (props: TourWaitingSceneProps) => {
     useFetchOrderWaiting();
     const { data, isLoading } = useSelectOrderWaiting();
 
-    return (
-        <ListTourStatus route={route} data={data} isLoading={isLoading} />
-    );
+    return <ListTourStatus route={route} data={data} isLoading={isLoading} />;
 };
 
 export default TourWaitingScene;

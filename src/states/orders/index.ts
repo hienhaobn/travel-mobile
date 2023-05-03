@@ -20,7 +20,7 @@ const initialState: OrdersState = {
 
 export const fetchOrderWaiting = createAsyncThunk<{ returnValue: order.OrderDetail[] }>('tours/fetchOrderWaiting', async () => {
     try {
-        return await axiosInstance.get('/orders', {
+        return await axiosInstance.get('/orders/user', {
             params: {
                 type: 'waiting',
             },
@@ -32,7 +32,7 @@ export const fetchOrderWaiting = createAsyncThunk<{ returnValue: order.OrderDeta
 
 export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderDetail[] }>('tours/fetchOrderProcessing', async () => {
     try {
-        return await axiosInstance.get('/orders', {
+        return await axiosInstance.get('/orders/user', {
             params: {
                 type: 'waiting',
             },
@@ -45,7 +45,7 @@ export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderD
 
 export const fetchOrderFinished = createAsyncThunk<{ returnValue: order.OrderDetail[] }>('tours/fetchOrderDone', async () => {
     try {
-        return await axiosInstance.get('/orders', {
+        return await axiosInstance.get('/orders/user', {
             params: {
                 type: 'waiting',
             },
