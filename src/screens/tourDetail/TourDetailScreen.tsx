@@ -19,6 +19,7 @@ import { RootNavigatorParamList } from 'navigation/types';
 import LocationDetailOrderTour from 'screens/tourDetail/src/TourDetailOrderTour';
 
 import { fetchTourById } from 'states/tours/fetchTours';
+import { fetchVouchers } from 'states/user/fetchVoucher';
 
 import { Fonts, Sizes } from 'themes';
 
@@ -36,6 +37,23 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
     const { tour } = props.route.params;
     const [tourDetail, setTourDetail] = useState<tour.Tour>(null);
     const bottomSheetOrderTourRef = useRef<CustomBottomSheetRefType>(null);
+    const [vouchers, setVouchers] = useState<user.Voucher[]>([]);
+
+    // get voucher
+    const getVoucher = async () => {
+        const response = await fetchVouchers();
+        setVouchers(response?.data);
+    };
+
+    const getTourById = async () => {
+        const response = await fetchTourById(tour.id);
+        setTourDetail(response);
+    };
+
+    useEffect(() => {
+        getVoucher();
+        getTourById();
+    }, []);
 
     const showOrderTour = () => {
         if (bottomSheetOrderTourRef) {
@@ -54,19 +72,11 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
             isDynamicSnapPoints
             ref={bottomSheetOrderTourRef}
             handleCloseModal={dismissBottomSheet}
-            enablePanDownToClose>
-            <LocationDetailOrderTour tour={tourDetail} dismissBottomSheet={dismissBottomSheet} />
+            enablePanDownToClose
+        >
+            <LocationDetailOrderTour tour={tourDetail} vouchers={vouchers} dismissBottomSheet={dismissBottomSheet} />
         </BottomSheet>
     );
-
-    const getTourById = async () => {
-        const response = await fetchTourById(tour.id);
-        setTourDetail(response);
-    };
-
-    useEffect(() => {
-        getTourById();
-    }, []);
 
     const renderContent = () => (
         <View style={styles.content}>
@@ -79,14 +89,7 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
                         }}>
                         <View>
                             <View style={styles.voteContainer}>
-                                <Text
-                                    style={{
-                                        ...Fonts.inter600,
-                                        fontSize: scales(16),
-                                        color: getThemeColor().Text_Dark_1,
-                                    }}>
-                                    9
-                                </Text>
+                                <Text style={styles.textBold}>9</Text>
                             </View>
                             <View style={styles.voteBka} />
                         </View>
@@ -98,20 +101,24 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
                             <Text style={styles.care}>233 quan tâm</Text>
                         </View>
                     </View>
-                    <View>
-                        <Text>{ETourTypesValue[tourDetail?.type]}</Text>
+                    <View style={styles.typeContainer}>
+                        <Text style={styles.desc}>{ETourTypesValue[tourDetail?.type]}</Text>
                     </View>
                 </View>
             </View>
             <View>
                 <View>
-                    <Text>Số người tối đa: {tourDetail?.maxMember}</Text>
+                    <Text style={styles.desc}>
+                        Số người tối đa: <Text style={styles.textBold}>{tourDetail?.maxMember}</Text>
+                    </Text>
                     <View>
-                        <Text>Phí phụ thu: {tourDetail?.numOfFreeMember}/người</Text>
-                        <Text>(Khi vượt quá tối đa người)</Text>
+                        <Text style={styles.desc}>
+                            Phí phụ thu: <Text style={styles.textBold}>{tourDetail?.numOfFreeMember}/người</Text>
+                        </Text>
+                        <Text style={styles.desc}>(Khi vượt quá tối đa người)</Text>
                     </View>
                 </View>
-                <View style={styles.buttonContainer}>
+                <View style={styles.priceContainer}>
                     <Text style={styles.priceTitle}>Giá: </Text>
                     <Text style={styles.priceTxt}>{formatCurrency(tourDetail?.basePrice)}đ</Text>
                 </View>
@@ -119,19 +126,21 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
             <TourDetailImages />
             {/* Mo ta tour */}
             <View>
-                <Text>{tourDetail?.description}</Text>
+                <Text style={styles.desc}>{tourDetail?.description?.trim()}</Text>
             </View>
-            <View>
-                <Text>{tourDetail?.overview}</Text>
+            <View style={styles.overviewContainer}>
+                <Text style={styles.textBold}>ĐIỂM NỔI BẬT NHẤT</Text>
+                <Text style={styles.desc}>{tourDetail?.overview?.trim()}</Text>
             </View>
             {/* Lich trinh */}
-            <View>
+            <View style={styles.scheduleContainer}>
+                <Text style={styles.textBold}>LỊCH TRÌNH</Text>
                 {tourDetail?.tourSchedule?.map((element, index) => (
                     <View key={element.id}>
                         <Text style={styles.textBold}>
                             Ngày {index + 1}: {element.title}
                         </Text>
-                        <Text>{element.content}</Text>
+                        <Text style={styles.desc}>{element.content}</Text>
                     </View>
                 ))}
             </View>
@@ -141,7 +150,7 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
     return (
         <View style={styles.container}>
             <Header />
-            <FlatList data={[1]} renderItem={renderContent} />
+            <FlatList data={[1]} renderItem={renderContent} showsVerticalScrollIndicator={false} />
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.shopContainer} onPress={showOrderTour}>
                     <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
@@ -176,6 +185,7 @@ const myStyles = (theme: string) => {
         rateContainer: {
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'flex-start',
         },
         rate: {
             ...Fonts.inter400,
@@ -218,10 +228,17 @@ const myStyles = (theme: string) => {
         },
         buttonContainer: {
             flexDirection: 'row',
-            paddingTop: scales(10),
             justifyContent: 'flex-end',
             alignItems: 'center',
             marginBottom: Sizes.bottomSpace + scales(5),
+            marginHorizontal: scales(15),
+        },
+        priceContainer: {
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            marginBottom: scales(15),
+            marginHorizontal: scales(15),
         },
         priceTxt: {
             ...Fonts.inter600,
@@ -267,6 +284,25 @@ const myStyles = (theme: string) => {
             borderRadius: scales(4),
             justifyContent: 'center',
             alignItems: 'center',
+        },
+        desc: {
+            ...Fonts.inter400,
+            fontSize: scales(12),
+            color: getThemeColor().Text_Dark_1,
+            lineHeight: scales(19),
+        },
+        scheduleContainer: {
+            marginBottom: scales(15),
+            marginTop: scales(20),
+        },
+        typeContainer: {
+            backgroundColor: color.Color_Gray2,
+            paddingHorizontal: scales(10),
+            paddingVertical: scales(2),
+            borderRadius: scales(8),
+        },
+        overviewContainer: {
+            marginTop: scales(20),
         },
     });
 };

@@ -18,22 +18,21 @@ import { useTheme } from 'hooks/useTheme';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
+import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
 import { showCustomToast } from 'utils/toast';
 
 interface TourDetailOrderTourProps {
     tour: tour.Tour;
+    vouchers: user.Voucher[];
     dismissBottomSheet: () => void;
 }
 
 const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-    const { tour, dismissBottomSheet } = props;
-    const fromDateDefault = moment().subtract(7, 'days').toDate();
-    const toDateDefault = moment().toDate();
-    const [type, setType] = useState<string>('');
-    const [types, setTypes] = useState<string[]>(null);
+    const { tour, dismissBottomSheet, vouchers } = props;
+    const [voucher, setVoucher] = useState<string>('');
     const [selectDateVisible, setSelectDateVisible] = useState<boolean>(false);
     const [startTime, setStartTime] = useState<Date>(new Date());
     const [endTime, setEndTime] = useState<Date>(moment().subtract(7, 'days').toDate());
@@ -47,6 +46,12 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
             <Text style={styles.headerText}>{tour?.name}</Text>
         </View>
     );
+
+    const getVoucherByDiscountName = (): user.Voucher => {
+        if (voucher) {
+            return vouchers?.find(element => element?.name === voucher);
+        }
+    };
 
     const onShowSelectDate = () => {
         setSelectDateVisible(true);
@@ -78,9 +83,9 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
                 height,
                 px,
                 py: py + scales(5),
-                selected: type,
-                data: types,
-                onSelect: setType,
+                selected: voucher,
+                data: vouchers?.map((element) => element.name),
+                onSelect: setVoucher,
                 theme,
                 dismissCallback: () => setIsVisibleDropDownType(false),
             };
@@ -100,10 +105,12 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
 
     const onConfirm = async () => {
         try {
+            if (countAdult === 0) {
+                showCustomToast('Vui lòng chọn số người');
+            }
             const response = await apiPostOrder({
                 tourId: tour?.id,
                 numberOfMember: new BigNumber(countAdult).toNumber(),
-                price: parseFloat(tour.basePrice),
                 startDate: moment(startTime).format('YYYY-MM-DD'),
             });
             dismissBottomSheet();
@@ -121,8 +128,8 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
     };
 
     const onReset = () => {
-        setStartTime(fromDateDefault);
-        setEndTime(toDateDefault);
+        setStartTime(new Date());
+        setEndTime(moment().subtract(tour?.tourSchedule?.length, 'days').toDate());
     };
 
     const renderButtons = () => (
@@ -140,7 +147,7 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
 
     const onConfirmDate = (value: Date) => {
         setStartTime(value);
-        setEndTime(moment(value).subtract(7, 'days').toDate());
+        setEndTime(moment(value).subtract(tour?.tourSchedule?.length, 'days').toDate());
         setSelectDateVisible(false);
     };
 
@@ -178,31 +185,43 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
         </View>
     );
 
-    const renderPrice = () => (
-        <View style={styles.priceContainer}>
-            <View style={styles.itemPriceContainer}>
-                <Text style={styles.titlePrice}>Tiền tour</Text>
-                <Text style={styles.valuePrice}>2,300,000</Text>
+    const renderPrice = () => {
+        const discount = getVoucherByDiscountName();
+        const result = BigNumber(tour?.basePrice).minus(discount?.value || 0).toNumber();
+        return (
+            <View style={styles.priceContainer}>
+                <View style={styles.itemPriceContainer}>
+                    <Text style={styles.titlePrice}>Tiền chuyến đi</Text>
+                    <Text style={styles.valuePrice}>{formatCurrency(tour?.basePrice)}đ</Text>
+                </View>
+                {discount ? (
+                    <View style={styles.itemPriceContainer}>
+                        <Text style={styles.titlePrice}>Giảm</Text>
+                        <Text style={styles.valuePrice}>{formatCurrency(discount?.value)}đ</Text>
+                    </View>
+                ) : null}
+
+                <View style={styles.itemPriceContainer}>
+                    <Text style={styles.titlePrice}>Thành tiền</Text>
+                    <Text style={styles.valuePrice}>{formatCurrency(result)}đ</Text>
+                </View>
             </View>
-            <View style={styles.itemPriceContainer}>
-                <Text style={styles.titlePrice}>Giảm</Text>
-                <Text style={styles.valuePrice}>2,300,000</Text>
-            </View>
-            <View style={styles.itemPriceContainer}>
-                <Text style={styles.titlePrice}>Thành tiền</Text>
-                <Text style={styles.valuePrice}>2,300,000</Text>
-            </View>
-        </View>
-    );
+        );
+    };
 
     const renderVoucher = () => (
         <View style={styles.dropdownContainer}>
             <Text style={styles.titlePrice}>Voucher</Text>
             <View ref={dropdownVoucher} style={styles.dropdownSelectedContainer} collapsable={false}>
                 <TouchableOpacity style={styles.dropdownButton} onPress={onShowDropdown}>
-                    <Text style={styles.dropdownText}>Voucher</Text>
-                    <View style={isVisibleDropDownType ? { transform: [{ rotate: '180deg' }]} : {}}>
-                        <SvgIcons.IcDownReward color={getThemeColor().Text_Dark_2} width={scales(12)} height={scales(10)} scaleX={-1} />
+                    <Text style={styles.dropdownText}>{voucher ? voucher : 'Voucher'}</Text>
+                    <View style={isVisibleDropDownType ? { transform: [{ rotate: '180deg' }] } : {}}>
+                        <SvgIcons.IcDownReward
+                            color={getThemeColor().Text_Dark_2}
+                            width={scales(12)}
+                            height={scales(10)}
+                            scaleX={-1}
+                        />
                     </View>
                 </TouchableOpacity>
             </View>

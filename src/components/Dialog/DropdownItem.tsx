@@ -80,7 +80,7 @@ const myStyles = (theme: string) => {
         },
         text: {
             ...Fonts.inter400,
-            color: color.Text_Color_Opacity_50,
+            color: color.Text_Dark_1,
             fontSize: scales(14),
         },
     });

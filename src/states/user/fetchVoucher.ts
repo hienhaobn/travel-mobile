@@ -7,9 +7,9 @@ export const fetchVouchers = async (discountType?: '0' | '1') => {
     try {
         const url = discountType? `/vourchers/${discountType}` : '/vourchers'
         showLoading();
-        const res: user.VoucherResponse = await axiosInstance.get(url);
+        const res: { returnValue: user.VoucherResponse } = await axiosInstance.get(url);
         hideLoading();
-        return res;
+        return res.returnValue;
     } catch (error) {
         hideLoading();
         showCustomToast('Thất bại');
