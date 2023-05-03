@@ -21,6 +21,7 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
 import { showCustomToast } from 'utils/toast';
+import { goBack } from 'navigation/utils';
 
 interface TourDetailOrderTourProps {
     tour: tour.Tour;
@@ -105,18 +106,20 @@ const TourDetailOrderTour = (props: TourDetailOrderTourProps) => {
 
     const onConfirm = async () => {
         try {
+            dismissBottomSheet();
             if (countAdult === 0) {
                 showCustomToast('Vui lòng chọn số người');
+                return;
             }
             const response = await apiPostOrder({
                 tourId: tour?.id,
                 numberOfMember: new BigNumber(countAdult).toNumber(),
                 startDate: moment(startTime).format('YYYY-MM-DD'),
             });
-            dismissBottomSheet();
-            if (response?.status === 201) {
+            if (response?.statusCode === 201 || response?.statusCode === 200) {
                 // TODO: call api fetch data tour
                 showCustomToast('Đặt tour thành công');
+                goBack();
             } else {
                 showCustomToast('Đặt tour thất bại');
             }

@@ -8,6 +8,9 @@ export const apiGetTours = async () => {
 };
 
 export const apiPostOrder = async (body: OrderTourRequest) => {
-    const response = await axiosInstance.post(`${BASE_URL}/orders`, body);
+    const response: { code: string ; message: string; statusCode: number } = await axiosInstance.post(
+        `${BASE_URL}/orders`,
+        body
+    );
     return response;
 };
