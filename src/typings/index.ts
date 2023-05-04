@@ -10,8 +10,7 @@ interface ProvincesState {
     loadingKeys: Record<string, boolean>;
 }
 
-interface UserState {
-    token: string;
+interface Profile {
     id: number;
     email: string;
     username: string;
@@ -25,10 +24,15 @@ interface UserState {
     createdAt: string;
     updatedAt: string;
     deletedAt: string;
+    role: string;
+}
+
+interface UserState {
+    profile: Profile;
+    token: string;
     userVouchers: [];
     userFavorites: [];
     orders: [];
-    role: string;
     isLoading: boolean;
 }
 
@@ -52,15 +56,14 @@ interface UserResponse {
     role: string;
 }
 
-interface TourOrderStatus {
-    data: order.OrderRoleUser[];
+interface OrderStatus {
+    data: order.OrderDetail[];
     isLoading: boolean;
 }
 
-interface ToursState {
-    data: tour.Tour[];
-    orderWaiting: TourOrderStatus;
-    orderProcessing: TourOrderStatus;
-    orderFinished: TourOrderStatus;
+interface OrdersState {
+    orderWaiting: OrderStatus;
+    orderProcessing: OrderStatus;
+    orderFinished: OrderStatus;
     loadingKeys: Record<string, boolean>;
 }

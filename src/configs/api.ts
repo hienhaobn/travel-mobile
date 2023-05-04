@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://35.240.179.203:3000';
+export const BASE_URL = 'https://api.ktravel.online';

@@ -1,25 +1,28 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
 import axiosInstance from 'services/api-requests';
 
 const initialState: UserState = {
-    token: '',
-    id: null,
-    email: '',
-    username: '',
-    phone: '',
-    balance: '',
-    availableBalance: '',
-    voucherPoint: null,
-    avatar: '',
-    verifyStatus: '',
-    isSetup: false,
-    createdAt: '',
-    updatedAt: '',
-    deletedAt: '',
+    profile: {
+        id: null,
+        email: '',
+        username: '',
+        phone: '',
+        balance: '',
+        availableBalance: '',
+        voucherPoint: null,
+        avatar: '',
+        verifyStatus: '',
+        isSetup: false,
+        createdAt: '',
+        updatedAt: '',
+        deletedAt: '',
+        role: '',
+    },
     userVouchers: [],
     userFavorites: [],
     orders: [],
-    role: '',
+    token: '',
     isLoading: false,
 };
 
@@ -36,20 +39,20 @@ export const userSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(fetchMe.pending, (state) => {
-            state.isLoading = true;
-        })
-        .addCase(fetchMe.rejected, (state) => {
-            state.isLoading = false;
-        })
-        .addCase(fetchMe.fulfilled, (state, action) => {
-            const data = action.payload.returnValue;
-            console.log('data', data)
-            state = {
-                ...data,
-                isLoading: false,
-            } as UserState;
-        })
+        builder
+            .addCase(fetchMe.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchMe.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(fetchMe.fulfilled, (state, action) => {
+                const { userVouchers, userFavorites, orders, ...others } = action.payload.returnValue;
+                state.profile = others;
+                state.orders = orders;
+                state.userVouchers = userVouchers;
+                state.userFavorites= userFavorites;
+            });
     },
 });
 

@@ -1,4 +1,13 @@
 declare namespace tour {
+    interface TourSchedule {
+        id: number;
+        content: string;
+        image: string;
+        title: string;
+        createdAt: string;
+        updatedAt: string;
+        deletedAt: string;
+    }
     interface Tour {
         id: number;
         name: string;
@@ -16,7 +25,9 @@ declare namespace tour {
         rates: string[];
         tourGuide: tourGuide.TourGuide[];
         userFavorites: [];
-        tourSchedule: [];
+        tourSchedule: TourSchedule[];
         province: location.Province;
+        overview: string;
+        type: string;
     }
 }

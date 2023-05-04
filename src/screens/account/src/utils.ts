@@ -3,7 +3,7 @@ import { navigate } from 'navigation/utils';
 
 export const goToTourStatus = () => navigate('TourStatus');
 
-export const goToTourStatusDetail = () => navigate('TourStatusDetail');
+export const goToTourStatusDetail = (order: order.OrderDetail) => navigate('TourStatusDetail', { order });
 
 export const getOrderStatus = (status: string) => {
     if (status === EOrderStatus.WAITING_TOUR_GUIDE) {

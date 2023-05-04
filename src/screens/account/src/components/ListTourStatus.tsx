@@ -1,17 +1,19 @@
-import LoadingView from 'components/Loading/LoadingView';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-import Images from 'assets/images';
-import { useTheme } from 'hooks/useTheme';
 import React, { useCallback } from 'react';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+
+import TourStatusItem from './TourStatusItem';
+
+import Images from 'assets/images';
+import LoadingView from 'components/Loading/LoadingView';
+import { useTheme } from 'hooks/useTheme';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import TourStatusItem from './TourStatusItem';
 
 interface ListTourStatusProps {
     route: TourStatusScreenRouteProps;
-    data: order.OrderRoleUser[];
+    data: order.OrderDetail[];
     isLoading: boolean;
 }
 
@@ -37,7 +39,7 @@ const ListTourStatus = (props: ListTourStatusProps) => {
                 </View>
             ) : (
                 <FlatList
-                    renderItem={(item) => <TourStatusItem order={item.item} route={route}/>}
+                    renderItem={(item) => <TourStatusItem order={item.item} route={route} />}
                     data={data}
                     keyExtractor={(item) => item.id.toString()}
                     ListEmptyComponent={renderNoData}

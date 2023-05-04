@@ -95,7 +95,11 @@ export const ColorLightTheme = {
     Text_Dark_4: '#9EA0AF',
     Text_Dark_5: '#CDD2DD',
     Text_Color_Opacity_30: 'rgba(225, 225, 225, 0.3)',
+    Text_Color_Opacity_50: 'rgba(225, 225, 225, 0.5)',
     Text_Color_Opacity_5: 'rgba(225, 225, 225, 0.05)',
+    Text_Color_Opacity_10: 'rgba(225, 225, 225, 0.1)',
+    bgDropdownActive: '#E8E8E8',
+    bgDropdown: '#F8F8F8',
 
     // Light
     Color_White: '#FFFFFF',

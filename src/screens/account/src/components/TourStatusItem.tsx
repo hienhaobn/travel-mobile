@@ -4,17 +4,22 @@ import FastImage from 'react-native-fast-image';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
+
 import TouchableOpacity from 'components/TouchableOpacity';
+
 import { useTheme } from 'hooks/useTheme';
-import { getOrderStatus, goToTourStatusDetail } from 'screens/account/src/utils';
+
 import { ETourStatusScreenTabKey, TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
+import { getOrderStatus, goToTourStatusDetail } from 'screens/account/src/utils';
+
 import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
 
 interface TourStatusItemProps {
-    order: order.OrderRoleUser;
+    order: order.OrderDetail;
     route: TourStatusScreenRouteProps;
 }
 
@@ -24,24 +29,20 @@ const TourStatusItem = (props: TourStatusItemProps) => {
     const { order, route } = props;
     const { tour } = order;
 
+    console.log(tour)
+
     const renderButtonLeft = () => (
         <>
-            {
-                route.key === ETourStatusScreenTabKey.tourWaiting ? (
-                    <TouchableOpacity style={styles.shopContainer}>
-                        <SvgIcons.IcShopOutline
-                            color={getThemeColor().white}
-                            width={scales(17)}
-                            height={scales(17)}
-                        />
-                        <Text style={styles.sellNow}>Thanh toán</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <View />
-                )
-            }
+            {route.key === ETourStatusScreenTabKey.tourWaiting ? (
+                <TouchableOpacity style={styles.shopContainer}>
+                    <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+                    <Text style={styles.sellNow}>Thanh toán</Text>
+                </TouchableOpacity>
+            ) : (
+                <View />
+            )}
         </>
-    )
+    );
 
     return (
         <View style={styles.container}>
@@ -72,9 +73,9 @@ const TourStatusItem = (props: TourStatusItemProps) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.headerRow}>
-                        <Text style={styles.timeStartContainer}>{order?.startDate} - Giờ đi: 07:10 AM</Text>
-                        <View>
-                            <Text>{getOrderStatus(order.status)}</Text>
+                            <Text style={styles.timeStartContainer}>{order?.startDate} - Giờ đi: 07:10 AM</Text>
+                        <View style={styles.statusContainer}>
+                            <Text style={styles.statusTxt}>{getOrderStatus(order.status)}</Text>
                         </View>
                     </View>
                     <View style={styles.itemHeaderContainer}>
@@ -89,7 +90,7 @@ const TourStatusItem = (props: TourStatusItemProps) => {
                     <Text style={styles.textPrice}>{formatCurrency(order.price)} đ</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: scales(10) }}>
                         {renderButtonLeft()}
-                        <TouchableOpacity style={styles.showInfoContainer} onPress={goToTourStatusDetail}>
+                        <TouchableOpacity style={styles.showInfoContainer} onPress={() => goToTourStatusDetail(order)}>
                             <Text style={styles.textShowInfo}>Xem chi tiết</Text>
                         </TouchableOpacity>
                     </View>
@@ -221,6 +222,20 @@ const myStyles = (theme: string) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-        }
+            marginTop: scales(8),
+        },
+        statusContainer: {
+            paddingVertical: scales(5),
+            paddingHorizontal: scales(5),
+            backgroundColor: color.Text_Color_Opacity_30,
+            borderRadius: scales(2),
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        statusTxt: {
+            ...Fonts.inter600,
+            fontSize: scales(12),
+            color: getThemeColor().Text_Dark_1,
+        },
     });
 };

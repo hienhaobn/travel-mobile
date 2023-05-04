@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'hooks/useTheme';
 import ListTourStatus from 'screens/account/src/components/ListTourStatus';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
-import { useFetchOrderProcessing, useSelectOrderProcessing } from 'states/tours/hooks';
+import { useFetchOrderProcessing, useSelectOrderProcessing } from 'states/orders/hooks';
 import { getThemeColor } from 'utils/getThemeColor';
 
 interface TourProcessSceneProps {

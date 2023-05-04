@@ -3,11 +3,17 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
+
 import TouchableOpacity from 'components/TouchableOpacity';
+
 import { useTheme } from 'hooks/useTheme';
+
 import { goToTourDetail } from 'screens/tourDetail/src/utils';
+
 import { EventBusName, onPushEventBus } from 'services/event-bus';
+
 import { Fonts, Sizes } from 'themes';
+
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
@@ -46,9 +52,11 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
                 </View>
                 <View style={styles.itemHeaderContainer}>
                     <Text style={styles.tourGuideName} numberOfLines={3}>
-                        Đà Nẵng - Huế - Đầm Lập An - La Vang - Động Phong Nha & Thiên Đường - KDL Bà Nà - Cầu Vàng -Sơn
-                        Trà - Hội An - Đà Nẵng (Khách sạn 4* trọn tour)
+                        {tour.name}
                     </Text>
+                </View>
+                <View style={styles.locationContainer}>
+                    <Text style={styles.textLocation}>{tour.description}</Text>
                 </View>
                 <View style={styles.locationContainer}>
                     <Text style={styles.textLocation}>Nơi khởi hành: </Text>
@@ -56,10 +64,7 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
                 </View>
                 <Text style={styles.textPrice}>7,690,000đ</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: scales(10) }}>
-                    <TouchableOpacity style={styles.shopContainer} onPress={onTourOrder}>
-                        <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
-                        <Text style={styles.sellNow}>Đặt ngay</Text>
-                    </TouchableOpacity>
+                    <View />
                     <TouchableOpacity style={styles.showInfoContainer} onPress={onGoToTourDetail}>
                         <Text style={styles.textShowInfo}>Xem chi tiết</Text>
                     </TouchableOpacity>
@@ -98,6 +103,12 @@ const myStyles = (theme: string) => {
         itemContainer: {
             marginTop: scales(20),
             borderRadius: scales(8),
+            backgroundColor: color.Color_Bg,
+
+            // shadowColor: color.Text_Dark_1,
+            // shadowOffset: { width: -1, height: 4 },
+            // shadowOpacity: 0.3,
+            // shadowRadius: 3,
         },
         itemContentContainer: {},
         itemImages: {

@@ -5,12 +5,13 @@ import Swiper from 'react-native-swiper';
 import Images from 'assets/images';
 
 import { useTheme } from 'hooks/useTheme';
+
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-const HomeBanner = () => {
+const TourDetailImages = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
 
@@ -21,42 +22,25 @@ const HomeBanner = () => {
                 autoplay
                 removeClippedSubviews={false}
                 dot={<View style={styles.dot} />}
-                activeDot={<View style={styles.activeDot} />}
-            >
+                activeDot={<View style={styles.activeDot} />}>
                 <Pressable style={styles.itemSwipe}>
                     <Image source={Images.BacNinhImg} style={styles.image} resizeMode={'cover'} />
-                    <View style={styles.tourInfo}>
-                        <Text style={styles.provinceText}>Bắc Ninh</Text>
-                        <Text style={styles.tourText}>5 tour</Text>
-                    </View>
                 </Pressable>
                 <Pressable style={styles.itemSwipe}>
                     <Image source={Images.HaGiangImg} style={styles.image} resizeMode={'cover'} />
-                    <View style={styles.tourInfo}>
-                        <Text style={styles.provinceText}>Hà Giang</Text>
-                        <Text style={styles.tourText}>10 tour</Text>
-                    </View>
                 </Pressable>
                 <Pressable style={styles.itemSwipe}>
                     <Image source={Images.NinhBinhImg} style={styles.image} resizeMode={'cover'} />
-                    <View style={styles.tourInfo}>
-                        <Text style={styles.provinceText}>Ninh Bình</Text>
-                        <Text style={styles.tourText}>20 tour</Text>
-                    </View>
                 </Pressable>
                 <Pressable style={styles.itemSwipe}>
                     <Image source={Images.DaNangImg} style={styles.image} resizeMode={'cover'} />
-                    <View style={styles.tourInfo}>
-                        <Text style={styles.provinceText}>Đà Nẵng</Text>
-                        <Text style={styles.tourText}>43 tour</Text>
-                    </View>
                 </Pressable>
             </Swiper>
         </View>
     );
 };
 
-export default React.memo(HomeBanner);
+export default React.memo(TourDetailImages);
 
 const myStyles = (theme: string) => {
     const color = getThemeColor();
@@ -97,21 +81,6 @@ const myStyles = (theme: string) => {
             width: Sizes.scrWidth - scales(30),
             height: scales(135),
             borderRadius: scales(20),
-        },
-        provinceText: {
-            ...Fonts.inter600,
-            fontSize: scales(16),
-            color: color.white,
-        },
-        tourText: {
-            ...Fonts.inter400,
-            fontSize: scales(14),
-            color: color.white,
-        },
-        tourInfo: {
-            position: 'absolute',
-            bottom: scales(10),
-            left: scales(30),
         },
     });
 };

@@ -6,7 +6,7 @@ import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-vie
 
 import { Subscription } from 'rxjs';
 
-import LocationDetailOrderTour from './src/components/LocationDetailOrderTour';
+import LocationDetailOrderTour from '../tourDetail/src/TourDetailOrderTour';
 import LocationDetailPostScene from './src/components/LocationDetailPostScene';
 
 import Images from 'assets/images';
@@ -51,7 +51,6 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     const styles = myStyles(theme);
     const layout = useWindowDimensions();
     const provinceId = props.route.params.provinceId;
-    const subScription = new Subscription();
     const province = useProvinceById(provinceId);
 
     const [index, setIndex] = React.useState(0);
@@ -60,50 +59,6 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
         { key: 'tour', title: 'Tour', province },
         { key: 'post', title: 'Bài viết', province },
     ]);
-    const [tourSelected, setTourSelected] = useState<tour.Tour>(null);
-
-    const bottomSheetOrderTourRef = useRef<CustomBottomSheetRefType>(null);
-
-
-    useEffect(() => {
-        onRegisterEventBus();
-
-        return () => {
-            subScription?.unsubscribe?.();
-        };
-    }, []);
-
-    const onRegisterEventBus = () => {
-        subScription.add(EventBus.getInstance().events.subscribe((res: BaseEvent<tour.Tour>) => {
-            if (res?.type === EventBusName.OPEN_BOTTOM_SHEET_ORDER_TOUR) {
-                setTourSelected(res?.payload);
-                showOrderTour();
-            }
-        }));
-    };
-
-    const showOrderTour = () => {
-        if (bottomSheetOrderTourRef) {
-            bottomSheetOrderTourRef.current?.open();
-        }
-    };
-
-    const dismissBottomSheet = () => {
-        if (bottomSheetOrderTourRef) {
-            bottomSheetOrderTourRef.current?.dismiss();
-        }
-    };
-
-    const renderOrderTour = () => (
-        <BottomSheet
-            isDynamicSnapPoints
-            ref={bottomSheetOrderTourRef}
-            handleCloseModal={dismissBottomSheet}
-            enablePanDownToClose
-        >
-            <LocationDetailOrderTour tour={tourSelected} dismissBottomSheet={dismissBottomSheet}/>
-        </BottomSheet>
-    );
 
     const renderHeader = () => (
         <View>
@@ -184,7 +139,6 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
         <View style={styles.container}>
             {renderHeader()}
             {renderContent()}
-            {renderOrderTour()}
         </View>
     );
 };

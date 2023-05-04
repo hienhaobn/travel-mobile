@@ -2,8 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import axiosInstance from 'services/api-requests';
 
-const initialState: ToursState = {
-    data: [],
+const initialState: OrdersState = {
     orderWaiting: {
         data: [],
         isLoading: false,
@@ -19,9 +18,9 @@ const initialState: ToursState = {
     loadingKeys: {},
 };
 
-export const fetchOrderWaiting = createAsyncThunk<{ returnValue: order.OrderRoleUser[] }>('tours/fetchOrderWaiting', async () => {
+export const fetchOrderWaiting = createAsyncThunk<{ returnValue: order.OrderDetail[] }>('tours/fetchOrderWaiting', async () => {
     try {
-        return await axiosInstance.get('/orders', {
+        return await axiosInstance.get('/orders/user', {
             params: {
                 type: 'waiting',
             },
@@ -31,9 +30,9 @@ export const fetchOrderWaiting = createAsyncThunk<{ returnValue: order.OrderRole
     }
 });
 
-export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderRoleUser[] }>('tours/fetchOrderProcessing', async () => {
+export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderDetail[] }>('tours/fetchOrderProcessing', async () => {
     try {
-        return await axiosInstance.get('/orders', {
+        return await axiosInstance.get('/orders/user', {
             params: {
                 type: 'waiting',
             },
@@ -44,9 +43,9 @@ export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderR
 });
 
 
-export const fetchOrderFinished = createAsyncThunk<{ returnValue: order.OrderRoleUser[] }>('tours/fetchOrderDone', async () => {
+export const fetchOrderFinished = createAsyncThunk<{ returnValue: order.OrderDetail[] }>('tours/fetchOrderDone', async () => {
     try {
-        return await axiosInstance.get('/orders', {
+        return await axiosInstance.get('/orders/user', {
             params: {
                 type: 'waiting',
             },
@@ -57,7 +56,7 @@ export const fetchOrderFinished = createAsyncThunk<{ returnValue: order.OrderRol
 });
 
 export const toursSlice = createSlice({
-    name: 'Tours',
+    name: 'Orders',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
