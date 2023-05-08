@@ -2,15 +2,17 @@ import React, { forwardRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import RNModal from 'react-native-modal';
 
+import { Rating } from 'react-native-ratings';
+
 import Button from 'components/Button/Button';
 
+import Input from 'components/Input';
 import { useTheme } from 'hooks/useTheme';
 
 import { Fonts } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import { Rating } from 'react-native-ratings';
 interface ITourStatusRatePopupProps {
   onConfirm?: () => void;
   price?: string;
@@ -64,13 +66,16 @@ const TourStatusRatePopup = (props: ITourStatusRatePopupProps, ref: React.Ref<IT
       <View style={styles.container}>
         <Text style={styles.title}>{title}</Text>
         <Rating
-          showRating
+          showRating={false}
           onFinishRating={() => { console.log(123) }}
           style={{ paddingVertical: 10 }}
         />
-        <Text style={styles.text}>
-          111
-        </Text>
+        <View style={{ marginVertical: 10 }}>
+          {/* <Text style={styles.title}>Email</Text> */}
+          <Input
+            // onChangeText={ }
+            placeholder="Vui lòng nhập đánh giá" />
+        </View>
         <View style={styles.groupButton}>
           <Button title="Đóng" customStyles={styles.buttonCancel} disableGradient customTextStyles={styles.buttonCancelText} onPress={hideModal} />
           <Button title="Xác nhận" customStyles={styles.buttonConfirm} onPress={handleConfirm} />

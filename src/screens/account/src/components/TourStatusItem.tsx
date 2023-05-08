@@ -1,48 +1,189 @@
-import React from 'react';
+import BigNumber from 'bignumber.js';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+
+import { apiEndOrder, apiPaidOrder, apiPrepaid, apiStartOrder, getInfor } from '../api';
+import TourStatusConfirmPopup, { ITourStatusConfirmPopupRef } from './TourStatusConfirmPopup';
+import TourStatusRatePopup, { ITourStatusRatePopupRef } from './TourStatusRatePopup';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
+import { hideLoading, showLoading } from 'components/Loading';
 import TouchableOpacity from 'components/TouchableOpacity';
+
+import { EOrderStatus } from 'constants/order';
 
 import { useTheme } from 'hooks/useTheme';
 
-import { ETourStatusScreenTabKey, TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
-import { getOrderStatus, goToTourStatusDetail } from 'screens/account/src/utils';
+import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
+import { convertDate, getOrderStatus, goToTourStatusDetail } from 'screens/account/src/utils';
 
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
+import { showCustomToast } from 'utils/toast';
 
 interface TourStatusItemProps {
     order: order.OrderDetail;
     route: TourStatusScreenRouteProps;
 }
 
+const handlePrePaid = async (orderId: number) => {
+    try {
+        showLoading();
+        const response = await apiPrepaid(orderId);
+        hideLoading();
+        showCustomToast('Đặt cọc thành công !');
+    } catch (error) {
+        hideLoading();
+        showCustomToast(error?.response?.data?.info?.message);
+    }
+};
+
+const handlePaid = async (orderId: number) => {
+    try {
+        showLoading();
+        const response = await apiPaidOrder(orderId);
+        hideLoading();
+        showCustomToast('Thanh toán chuyến đi thành công !');
+    } catch (error) {
+        hideLoading();
+        showCustomToast(error?.response?.data?.info?.message);
+    }
+};
+
+const handleStartOrder = async (orderId: number) => {
+    try {
+        showLoading();
+        const response = await apiStartOrder(orderId);
+        hideLoading();
+        showCustomToast('Bắt đầu chuyến đi !');
+    } catch (error) {
+        hideLoading();
+        if (error?.response?.data?.code === 'ERR_ORDER_002') {
+            showCustomToast('Chưa đến ngày bắt đầu!');
+        } else {
+            showCustomToast(error?.response?.data?.info?.message);
+        }
+    }
+};
+
+const handleEndOrder = async (orderId: number) => {
+    try {
+        showLoading();
+        const response = await apiEndOrder(orderId);
+        hideLoading();
+        showCustomToast('Chuyến đi kết thúc thành công !');
+    } catch (error) {
+        hideLoading();
+        if (error?.response?.data?.code === 'ERR_ORDER_002') {
+            showCustomToast('Chưa đến ngày bắt đầu!');
+        } else {
+            showCustomToast(error?.response?.data?.info?.message);
+        }
+    }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let actionButton: any = {};
+
 const TourStatusItem = (props: TourStatusItemProps) => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
     const { order, route } = props;
     const { tour } = order;
-
-    console.log(tour)
-
-    const renderButtonLeft = () => (
-        <>
-            {route.key === ETourStatusScreenTabKey.tourWaiting ? (
-                <TouchableOpacity style={styles.shopContainer}>
+    const refTourStatusConfirmPopup = useRef<ITourStatusConfirmPopupRef>(null);
+    const refTourStatusRatePopup = useRef<ITourStatusRatePopupRef>(null);
+    const [role, setRole] = useState('');
+    // let button;
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await getInfor();
+                setRole(response.role);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        fetchData();
+    }, []);
+    const renderButtonLeft = () => {
+        if (order.status === EOrderStatus.WAITING_TOUR_GUIDE) {
+            return <View />;
+        } else if (order.status === EOrderStatus.WAITING_PREPAID) {
+            actionButton = {
+                title: 'Đặt cọc chuyến đi',
+                onConfirm: () => handlePrePaid(order.id),
+                text: `Bạn có muốn đặt cọc số tiền ${formatCurrency(
+                    BigNumber(0.1).times(order.price).toString()
+                )} VNĐ cho chuyến đi này ?`,
+            };
+            return (
+                <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusConfirmPopup?.current?.showModal}>
+                    <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+                    <Text style={styles.sellNow}>Đặt cọc</Text>
+                </TouchableOpacity>
+            );
+        } else if (order.status === EOrderStatus.WAITING_PURCHASE) {
+            actionButton = {
+                title: 'Thanh toán chuyến đi',
+                onConfirm: () => handlePaid(order.id),
+                text: `Bạn có muốn thanh toán số tiền ${formatCurrency(
+                    BigNumber(order.price).minus(order.paid).toString()
+                )} VNĐ cho chuyến đi này ?`,
+            };
+            return (
+                <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusConfirmPopup?.current?.showModal}>
                     <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
                     <Text style={styles.sellNow}>Thanh toán</Text>
                 </TouchableOpacity>
+            );
+        } else if (order.status === EOrderStatus.WAITING_START) {
+            actionButton = {
+                title: 'Bắt đầu chuyến du lịch',
+                onConfirm: () => handleStartOrder(order.id),
+                text: `Bắt đầu chuyến du lịch thú vị cùng hướng dẫn viên: ${order.tourGuide.name}`,
+            };
+            return (
+                <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusConfirmPopup?.current?.showModal}>
+                    <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+                    <Text style={styles.sellNow}>Bắt đầu</Text>
+                </TouchableOpacity>
+            );
+        } else if (order.status === EOrderStatus.PROCESSING) {
+            actionButton = {
+                title: 'Kết thúc chuyến du lịch',
+                onConfirm: () => handleEndOrder(order.id),
+                text: `Cảm ơn bạn đã lựa chọn Ktravel.`,
+            };
+            return role === 'USER' ? (
+                <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusConfirmPopup?.current?.showModal}>
+                    <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+                    <Text style={styles.sellNow}>Kết thúc</Text>
+                </TouchableOpacity>
             ) : (
                 <View />
-            )}
-        </>
-    );
+            );
+        } else if (order.status === EOrderStatus.DONE) {
+            return order.star === null ? (
+                <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusRatePopup?.current?.showModal}>
+                    <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+                    <Text style={styles.sellNow}>Đánh giá</Text>
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity style={styles.disableButton} disabled>
+                    <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+                    <Text style={styles.sellNow}>Đã đánh giá</Text>
+                </TouchableOpacity>
+            );
+        } else if (order.status === EOrderStatus.REJECTED) {
+            return <View />;
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -50,7 +191,7 @@ const TourStatusItem = (props: TourStatusItemProps) => {
                 <View style={styles.itemContentContainer}>
                     <View>
                         <FastImage
-                            // source={
+                            // source={r
                             //     province?.images
                             //         ? {
                             //               uri: province?.images,
@@ -73,9 +214,11 @@ const TourStatusItem = (props: TourStatusItemProps) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.headerRow}>
-                            <Text style={styles.timeStartContainer}>{order?.startDate} - Giờ đi: 07:10 AM</Text>
+                        <Text style={styles.timeStartContainer}>{convertDate(order?.startDate)}</Text>
                         <View style={styles.statusContainer}>
-                            <Text style={styles.statusTxt}>{getOrderStatus(order.status)}</Text>
+                            <Text style={styles.statusTxt}>
+                                {getOrderStatus(order.status, order.userStart, order.tourGuideStart)}
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.itemHeaderContainer}>
@@ -96,6 +239,18 @@ const TourStatusItem = (props: TourStatusItemProps) => {
                     </View>
                 </View>
             </TouchableOpacity>
+            <TourStatusConfirmPopup
+                ref={refTourStatusConfirmPopup}
+                onConfirm={actionButton.onConfirm}
+                title={actionButton.title}
+                text={actionButton.text}
+            />
+            <TourStatusRatePopup
+                ref={refTourStatusRatePopup}
+                onConfirm={actionButton.onConfirm}
+                title={actionButton.title}
+                // text={actionButton.text}
+            />
         </View>
     );
 };
@@ -200,6 +355,14 @@ const myStyles = (theme: string) => {
             paddingHorizontal: scales(10),
             borderRadius: scales(4),
         },
+        disableButton: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: getThemeColor().Color_Gray,
+            paddingVertical: scales(5),
+            paddingHorizontal: scales(10),
+            borderRadius: scales(4),
+        },
         sellNow: {
             ...Fonts.inter400,
             fontSize: scales(12),
@@ -236,6 +399,12 @@ const myStyles = (theme: string) => {
             ...Fonts.inter600,
             fontSize: scales(12),
             color: getThemeColor().Text_Dark_1,
+        },
+        modalContainer: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
         },
     });
 };

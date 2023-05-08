@@ -50,6 +50,9 @@ declare namespace order {
         tour: OrderTourRoleUser;
         tourGuide: OrderTourGuideRoleUser;
         updatedAt: string;
+        star: number | null;
+        userStart: boolean;
+        tourGuideStart: boolean;
     }
 
     // TODO: miss order hdv

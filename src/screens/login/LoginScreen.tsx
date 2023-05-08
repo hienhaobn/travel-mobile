@@ -91,16 +91,6 @@ const LoginScreen = () => {
     );
   }, []);
 
-  // const renderHeader = useCallback(() => {
-  //   return (
-  //     <View style={styles.headerContainer}>
-  //       <View style={styles.iconHeaderContainer}>
-  //         <SvgIcons.IcLogoLaunch width={scales(150)} height={scales(150)} />
-  //       </View>
-  //     </View>
-  //   );
-  // }, []);
-
   return (<View style={styles.container}>
     {renderHeader()}
     {renderContent()}

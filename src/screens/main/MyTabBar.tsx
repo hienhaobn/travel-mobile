@@ -23,58 +23,59 @@ import { scales } from 'utils/scales';
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
 const MyTabBar = (props: BottomTabBarProps) => {
-    const { theme } = useTheme();
-    const { t } = useTranslation();
-    const styles = myStyles(theme);
-    const { state } = props;
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  const styles = myStyles(theme);
+  const { state } = props;
 
-    return (
-        <View style={styles.container}>
-            {state?.routes?.map((route, index) => {
-                const isFocused = state.index === index;
+  return (
+    <View style={styles.container}>
+      {state?.routes?.map((route, index) => {
+        const isFocused = state.index === index;
 
-                const onPress = () => {
-                    if (!isFocused) {
-                        navigate(route.name as keyof RootNavigatorParamList);
-                    }
-                };
+        const onPress = () => {
+          console.log(isFocused)
+          if (!isFocused) {
+            navigate(route.name as keyof RootNavigatorParamList);
+          }
+        };
 
-                const IconTab = SvgIcons[`IcTab${upperFirst(route.name)}${isFocused ? 'Active' : ''}`];
+        const IconTab = SvgIcons[`IcTab${upperFirst(route.name)}${isFocused ? 'Active' : ''}`];
 
-                return (
-                    <TouchableOpacity shouldHaptic key={index.toString()} style={styles.btnTab} onPress={onPress}>
-                        <IconTab width={scales(27)} height={scales(27)} />
-                        <Text style={[styles.title, { color: isFocused ? getThemeColor().Color_Primary : getThemeColor().Text_Dark_1 }]}>
-                            {t(`tabBar.${lowerFirst(route.name)}`)}
-                        </Text>
-                    </TouchableOpacity>
-                );
-            })}
-        </View>
-    );
+        return (
+          <TouchableOpacity shouldHaptic key={index.toString()} style={styles.btnTab} onPress={onPress}>
+            <IconTab width={scales(27)} height={scales(27)} />
+            <Text style={[styles.title, { color: isFocused ? getThemeColor().Color_Primary : getThemeColor().Text_Dark_1 }]}>
+              {t(`tabBar.${lowerFirst(route.name)}`)}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
 };
 
 export default MyTabBar;
 
 const myStyles = (theme: EThemeColor) => {
-    const color = getThemeColor();
-    return StyleSheet.create({
-        container: {
-            flexDirection: 'row',
-            height: Sizes.bottomSpace + scales(60),
-            paddingBottom: Sizes.bottomSpace,
-            backgroundColor: color.Color_Bg,
-        },
-        btnTab: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            paddingBottom: scales(5),
-        },
-        title: {
-            ...Fonts.inter400,
-            paddingTop: scales(5),
-            fontSize: scales(11),
-        },
-    });
+  const color = getThemeColor();
+  return StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      height: Sizes.bottomSpace + scales(60),
+      paddingBottom: Sizes.bottomSpace,
+      backgroundColor: color.Color_Bg,
+    },
+    btnTab: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingBottom: scales(5),
+    },
+    title: {
+      ...Fonts.inter400,
+      paddingTop: scales(5),
+      fontSize: scales(11),
+    },
+  });
 };
