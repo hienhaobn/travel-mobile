@@ -22,7 +22,7 @@ const persistedReducer = persistReducer(
     persistConfig,
     combineReducers({
         // add something
-        user: userReducer,
+        users: userReducer,
         provinces: provincesReducer,
         orders: ordersReducer,
     })

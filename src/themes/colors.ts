@@ -15,6 +15,7 @@ export const ColorLightTheme = {
     violet: '#D7CAFC',
     black: '#000000',
     textDes: '#A1A1A1',
+    red: '#D44242',
 
     shadow: 'rgba(0, 0, 0, 0.02)',
     pPink: '#DE81A8',
@@ -98,6 +99,7 @@ export const ColorLightTheme = {
     Text_Color_Opacity_50: 'rgba(225, 225, 225, 0.5)',
     Text_Color_Opacity_5: 'rgba(225, 225, 225, 0.05)',
     Text_Color_Opacity_10: 'rgba(225, 225, 225, 0.1)',
+    Text_Color_Opacity_80: 'rgba(225, 225, 225, 0.8)',
     bgDropdownActive: '#E8E8E8',
     bgDropdown: '#F8F8F8',
 

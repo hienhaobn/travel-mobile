@@ -29,6 +29,7 @@ import IcTabMessenger from './tab_messenger.svg';
 import IcTabMessengerActive from './tab_messenger_active.svg';
 import IcVisibility from './visibility.svg';
 import IcVisibilityOff from './visibility_off.svg';
+import IcNote from './note.svg';
 
 const SvgIcons = {
     IcBack,
@@ -62,6 +63,7 @@ const SvgIcons = {
     IcWallet,
     IcTourAccount,
     IcDownReward,
+    IcNote,
 };
 
 export default SvgIcons;

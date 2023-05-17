@@ -35,7 +35,7 @@ export const fetchMe = createAsyncThunk<{ returnValue: UserResponse }>('user/fet
 });
 
 export const userSlice = createSlice({
-    name: 'User',
+    name: 'Users',
     initialState,
     reducers: {},
     extraReducers: (builder) => {

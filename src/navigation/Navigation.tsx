@@ -42,6 +42,12 @@ const RootStack = () => {
             <Stack.Screen name="TourStatus" component={Screen.TourStatus} />
 
             <Stack.Screen name="TourStatusDetail" component={Screen.TourStatusDetail} />
+
+            <Stack.Screen name="Payment" component={Screen.Payment} />
+
+            <Stack.Screen name="Deposit" component={Screen.Deposit} />
+
+            <Stack.Screen name="Withdraw" component={Screen.Withdraw} />
         </Stack.Navigator>
     );
 };

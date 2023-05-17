@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectProfile } from 'states/user/selectors';
 
 import { fetchMe } from '.';
 
@@ -10,3 +12,7 @@ export const useFetchMe = () => {
         dispatch(fetchMe());
     }, []);
 };
+
+export const useSelectProfile = () => {
+    return useSelector(selectProfile);
+}

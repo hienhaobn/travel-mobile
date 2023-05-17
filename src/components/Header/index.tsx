@@ -92,9 +92,8 @@ const getStyles = (theme: string) => {
             backgroundColor: color.Color_Bg,
         },
         line: {
-            height: scales(1),
-            width: '100%',
-            backgroundColor: color.Text_Dark_1,
+            height: scales(0.2),
+            backgroundColor: color.Text_Dark_5,
             marginTop: scales(10),
         },
         leftView: {

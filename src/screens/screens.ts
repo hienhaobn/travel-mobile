@@ -1,3 +1,6 @@
+import Deposit from 'screens/deposit/DepositScreen';
+import Payment from 'screens/payments/PaymentScreen';
+import Withdraw from 'screens/withdraw/WithdrawScreen';
 import Account from './account/AccountScreen';
 import TourStatusDetail from './account/TourStatusDetailScreen';
 import TourStatus from './account/TourStatusScreen';
@@ -26,4 +29,7 @@ export const Screen = {
     Register,
     TourStatus,
     TourStatusDetail,
+    Payment,
+    Deposit,
+    Withdraw,
 };
