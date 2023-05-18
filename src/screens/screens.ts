@@ -10,6 +10,7 @@ import Login from './login/LoginScreen';
 import Messenger from './messenger/MessengerScreen';
 import Register from './register/RegisterScreen';
 import TourDetail from './tourDetail/TourDetailScreen';
+import Voucher from './voucher/VoucherScreen';
 
 export const Screen = {
     // TAB BOTTOM
@@ -26,4 +27,6 @@ export const Screen = {
     Register,
     TourStatus,
     TourStatusDetail,
+    Voucher,
+    // Voucher,
 };

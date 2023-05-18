@@ -61,9 +61,20 @@ interface OrderStatus {
     isLoading: boolean;
 }
 
+interface VoucherListType {
+    data: voucher.Voucher[];
+    isLoading: boolean;
+}
+
 interface OrdersState {
     orderWaiting: OrderStatus;
     orderProcessing: OrderStatus;
     orderFinished: OrderStatus;
+    loadingKeys: Record<string, boolean>;
+}
+
+interface VouchersState {
+    listVoucher: VoucherListType;
+    myListVoucher: VoucherListType;
     loadingKeys: Record<string, boolean>;
 }
