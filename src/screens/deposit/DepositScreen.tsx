@@ -5,7 +5,7 @@ import Header from 'components/Header';
 import Input from 'components/Input';
 import { useTheme } from 'hooks/useTheme';
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { fetchDeposit } from 'states/user/fetchDeposit';
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
@@ -90,10 +90,13 @@ function DepositScreen() {
     );
 
     const onSubmit = async () => {
-        console.log('amount', amount);
         const response = await fetchDeposit(parseFloat(amount));
-        console.log('response', response);
-        // dispatch(depositActionCreators.depositUsd({ amount }));
+        if (response?.statusCode === 200) {
+            if(response?.returnValue) {
+                console.log('open')
+                await Linking.openURL(response?.returnValue);
+            }
+        }
     }
 
     return (
