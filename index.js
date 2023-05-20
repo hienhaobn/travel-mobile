@@ -3,6 +3,7 @@
  */
 import 'react-native-gesture-handler';
 
+import messaging from '@react-native-firebase/messaging';
 import { AppRegistry, LogBox, Platform, StatusBar, Text, TextInput, TouchableOpacity } from 'react-native';
 
 import App from './App';
@@ -33,4 +34,17 @@ LogBox.ignoreLogs([
     '(ADVICE) View ',
 ]);
 
-AppRegistry.registerComponent(appName, () => App);
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Received background message:', remoteMessage);
+});
+
+function HeadlessCheck({ isHeadless }) {
+  if (isHeadless) {
+    // App has been launched in the background by iOS, ignore
+    return null;
+  }
+
+  // Render the app component on foreground launch
+  return <App />;
+}
+AppRegistry.registerComponent(appName, () => HeadlessCheck);

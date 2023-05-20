@@ -51,7 +51,7 @@ export const userSlice = createSlice({
                 state.profile = others;
                 state.orders = orders;
                 state.userVouchers = userVouchers;
-                state.userFavorites= userFavorites;
+                state.userFavorites = userFavorites;
             });
     },
 });

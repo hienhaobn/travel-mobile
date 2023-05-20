@@ -14,6 +14,8 @@ const Images = {
     CauRongDaNang: require('./cau_rong_da_nang.jpeg'),
     NguHanhSon: require('./ngu_hanh_son.jpeg'),
     ThanhDia: require('./thanh_dia.jpeg'),
+    Vourcher_1: require('./travel_1.jpg'),
+    Vourcher_2: require('./travel_voucher.jpg'),
 };
 
 export default Images;

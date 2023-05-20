@@ -1,77 +1,49 @@
 import { indexOf } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
 
+import ListVouchers from './src/components/ListVoucherScreen';
 
-import { getInfor } from './src/api';
-
-import TourFinishScene from './src/components/scenes/TourFinishScene';
-
-import TourProcessScene from './src/components/scenes/TourProcessScene';
-
-import TourWaitingConfirmScene from './src/components/scenes/TourWaitingConfirmScene';
-import TourWaitingScene from './src/components/scenes/TourWaitingScene';
+import MyListVoucher from './src/components/MyListVoucherScreen';
 
 import Header from 'components/Header';
 import TouchableOpacity from 'components/TouchableOpacity';
 import { useTheme } from 'hooks/useTheme';
+
 import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import AllVoucherScreen from './src/components/AllVoucherScreen';
 
-export interface TourStatusScreenRouteProps {
+export interface VoucherScreenRouteProps {
   key: string;
   title?: string;
-  role: string;
 }
 
 const renderScene = SceneMap({
-  tourWaitingConfirm: TourWaitingConfirmScene,
-  tourWaitingPurchase: TourWaitingScene,
-  tourProcess: TourProcessScene,
-  tourFinish: TourFinishScene,
+  listvouchers: AllVoucherScreen,
+  myVouchers: MyListVoucher,
 });
 
-export enum ETourStatusScreenTabKey {
-  tourWaitingConfirm = 'tourWaitingConfirm',
-  tourWaitingPurchase = 'tourWaitingPurchase',
-  tourProcess = 'tourProcess',
-  tourFinish = 'tourFinish',
+export enum EVoucherScreenTabKey {
+  myVouchers = 'myVouchers',
+  listVouchers = 'listvouchers',
 }
 
-const TourStatusScreen = () => {
+const VoucherScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const layout = useWindowDimensions();
-  const [role, setRole] = useState('');
+
   const [index, setIndex] = React.useState(0);
-  const [routes, setRoutes] = React.useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await getInfor();
-        setRole(response.role);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    fetchData();
-  }, []);
-  useEffect(() => {
-    if (role) {
-      const updatedRoutes = [
-        { key: ETourStatusScreenTabKey.tourWaitingConfirm, title: 'Chờ xác nhận', role },
-        { key: ETourStatusScreenTabKey.tourWaitingPurchase, title: 'Chờ thanh toán', role },
-        { key: ETourStatusScreenTabKey.tourProcess, title: 'Đã thanh toán', role },
-        { key: ETourStatusScreenTabKey.tourFinish, title: 'Hoàn thành', role },
-      ];
-      setRoutes(updatedRoutes);
-    }
+  const [routes] = React.useState([
+    { key: EVoucherScreenTabKey.listVouchers, title: 'Mã giảm giá' },
+    { key: EVoucherScreenTabKey.myVouchers, title: 'Mã giảm giá của tôi' },
 
-  }, [role]);
+  ]);
 
-  const renderTabItem = (tabProps: TabBarItemProps<TourStatusScreenRouteProps>) => {
+  const renderTabItem = (tabProps: TabBarItemProps<VoucherScreenRouteProps>) => {
     const { title } = tabProps.route;
     const active = indexOf(routes, tabProps.route) === tabProps.navigationState.index;
     return (
@@ -97,7 +69,7 @@ const TourStatusScreen = () => {
   };
 
   const renderTabBar = (tabbarProps) => (
-    <TabBar {...tabbarProps} scrollEnabled={true} style={styles.tabview} renderIndicator={() => null} renderTabBarItem={renderTabItem} />
+    <TabBar {...tabbarProps} style={styles.tabview} renderIndicator={() => null} renderTabBarItem={renderTabItem} />
   );
 
   const renderContent = () => (
@@ -114,13 +86,13 @@ const TourStatusScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Chuyến đi" />
+      <Header title="Mã giảm giá" />
       {renderContent()}
     </View>
   );
 };
 
-export default TourStatusScreen;
+export default VoucherScreen;
 
 const myStyles = (theme: string) => {
   const color = getThemeColor();

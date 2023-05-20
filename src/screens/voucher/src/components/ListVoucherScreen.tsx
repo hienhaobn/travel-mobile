@@ -1,28 +1,29 @@
 import React, { useCallback } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
-import UserTourStatusItem from './items/UserTourStatusItem';
+import VoucherItem from './VoucherItem';
 
 import Images from 'assets/images';
 import LoadingView from 'components/Loading/LoadingView';
 import { useTheme } from 'hooks/useTheme';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
+import { VoucherScreenRouteProps } from 'screens/voucher/VoucherScreen';
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import TourGuideTourStatusItem from './items/TourGuideTourStatusItem';
+import { useSelector } from 'react-redux';
+import { GlobalState } from 'states/types';
 
-interface ListTourStatusProps {
-  route: TourStatusScreenRouteProps;
-  data: order.OrderDetail[];
-  isLoading?: boolean;
+interface ListVouchersProps {
+  route: VoucherScreenRouteProps;
+  data: voucher.Voucher[];
 }
 
-const ListTourStatus = (props: ListTourStatusProps) => {
+const ListVouchers = (props: ListVouchersProps) => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
-  const { route, data, isLoading } = props;
-  console.log(route);
+  const { route, data } = props;
+  const user = useSelector((state: GlobalState) => state.user);
 
   const renderNoData = useCallback(() => {
     return (
@@ -35,25 +36,19 @@ const ListTourStatus = (props: ListTourStatusProps) => {
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
-        <View>
-          <LoadingView />
-        </View>
-      ) : (
-        <FlatList
-          renderItem={(item) => route.role === 'USER' ? <UserTourStatusItem order={item.item} route={route} /> : <TourGuideTourStatusItem order={item.item} route={route} />}
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
-          ListEmptyComponent={renderNoData}
-          initialNumToRender={10}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+      <FlatList
+        renderItem={(item) => <VoucherItem user={user} voucher={item.item} route={route} />}
+        data={data}
+        keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={renderNoData}
+        initialNumToRender={10}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };
 
-export default ListTourStatus;
+export default ListVouchers;
 
 const myStyles = (theme: string) => {
   const color = getThemeColor();
