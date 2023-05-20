@@ -39,4 +39,6 @@ export const onPushEventBus = <T>(type: string, payload?: T) => {
 export const EventBusName = {
     LOGOUT: 'LOGOUT',
     OPEN_BOTTOM_SHEET_ORDER_TOUR: 'OPEN_BOTTOM_SHEET_ORDER_TOUR',
-}
+    CLAIM_SUCCESS: 'CLAIM_SUCCESS',
+    ACTION_ORDER: 'ACTION_ORDER',
+};

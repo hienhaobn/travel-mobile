@@ -1,10 +1,15 @@
-declare namespace user {
+declare namespace voucher {
+    enum DiscountType {
+        RATE = '0',
+        FIX = '1',
+    }
     interface Voucher {
         id: number;
         name: string;
         description: string;
         code: string;
-        discountType: string;
+        claimed: string;
+        discountType: DiscountType;
         value: number;
         quantity: number;
         requirementPoint: number;
@@ -13,14 +18,5 @@ declare namespace user {
         createdAt: string;
         updatedAt: string;
         deletedAt: string;
-        claimed: string;
-    }
-
-    interface VoucherResponse {
-        data: Voucher[];
-        total: number;
-        currentPage: number;
-        totalPages: number;
-        limit: number;
     }
 }

@@ -51,7 +51,6 @@ export const ColorLightTheme = {
     Color_Primary_Mint_10: '#e7f8fa',
     Color_Primary_Light_Mint: '#73E2F3',
 
-
     Color_Primary: '#00A66C',
 
     // Secondary
@@ -90,6 +89,7 @@ export const ColorLightTheme = {
     Color_Linear_Button_Potentiality: '#814AF580',
 
     // Dark
+    Text_Red_1: '#ff3300',
     Text_Dark_1: '#00042D',
     Text_Dark_2: '#212448',
     Text_Dark_3: '#666881',
