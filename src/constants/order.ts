@@ -7,3 +7,9 @@ export enum EOrderStatus {
     DONE = '5',
     REJECTED = '6',
 }
+
+export enum EOrderType {
+    WAITING  = 'waiting',
+    PROCESSING = 'processing',
+    END = 'end',
+}

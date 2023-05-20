@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PrefixUrl } from 'constants/index';
+import { EOrderType } from 'constants/order';
+import { Role } from 'constants/user';
 
 import axiosInstance from 'services/api-requests';
+import { AppState } from 'states';
 
 const initialState: OrdersState = {
     orderWaiting: {
@@ -30,7 +34,7 @@ export const fetchOrderWaiting = createAsyncThunk<{ returnValue: order.OrderDeta
         } catch (error) {
             console.log(error);
         }
-    }
+    },
 );
 
 export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderDetail[] }>(
@@ -45,7 +49,7 @@ export const fetchOrderProcessing = createAsyncThunk<{ returnValue: order.OrderD
         } catch (error) {
             console.log(error);
         }
-    }
+    },
 );
 
 export const fetchOrderFinished = createAsyncThunk<{ returnValue: order.OrderDetail[] }>(
@@ -60,7 +64,27 @@ export const fetchOrderFinished = createAsyncThunk<{ returnValue: order.OrderDet
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+);
+
+export const fetchOrders = createAsyncThunk<{ returnValue: order.OrderDetail[] }, { type: EOrderType }, { state: AppState }>(
+    'tours/fetchOrders',
+    async ({ type }, { dispatch, getState }) => {
+        try {
+            const state = getState();
+            const prefix = state?.users?.profile?.role === Role.USER ? PrefixUrl.USER : PrefixUrl.TOURGUIDE;
+
+            console.log('prefix', prefix);
+
+            return await axiosInstance.get(`/orders/${prefix}`, {
+                params: {
+                    type,
+                },
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
 );
 
 export const toursSlice = createSlice({
@@ -104,7 +128,22 @@ export const toursSlice = createSlice({
             .addCase(fetchOrderFinished.fulfilled, (state, action) => {
                 state.orderFinished.data = action.payload?.returnValue;
                 state.orderFinished.isLoading = false;
+            })
+            .addCase(fetchOrders.pending, (state, action) => {
+                // state.orderFinished.data = [];
+                // state.orderFinished.isLoading = true;
+            })
+            .addCase(fetchOrders.rejected, (state, action) => {
+                // state.orderFinished.data = [];
+                // state.orderFinished.isLoading = false;
+            })
+            .addCase(fetchOrders.fulfilled, (state, action) => {
+                // state.orderFinished.data = action.payload?.returnValue;
+                // state.orderFinished.isLoading = false;
+
+                console.log('action.payload?.returnValue', action.payload?.returnValue);
             });
+        ;
     },
 });
 

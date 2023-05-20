@@ -12,4 +12,7 @@ export type RootNavigatorParamList = {
   Login: undefined,
   TourStatus: undefined,
   TourStatusDetail: { order: order.OrderDetail },
+  Payment: undefined,
+  Deposit: undefined,
+  Withdraw: undefined,
 };

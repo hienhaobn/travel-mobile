@@ -22,3 +22,8 @@ export const GlobalVariables: GlobalVariableParams = {
 export const clearGlobal = () => {
     delete GlobalVariables.tokenInfo;
 };
+
+export enum PrefixUrl {
+    USER = 'user',
+    TOURGUIDE = 'tour-guide',
+}
