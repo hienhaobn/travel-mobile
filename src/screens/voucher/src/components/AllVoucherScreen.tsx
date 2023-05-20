@@ -24,9 +24,9 @@ const AllVoucherScreen = (props: VoucherSceneProps) => {
   const subScription = new Subscription();
 
   const getVouchers = async () => {
-    showLoading();
+    // showLoading();
     const response = await fetchVouchers();
-    hideLoading();
+    // hideLoading();
     setVouchers(response.data);
 
   }
@@ -45,7 +45,8 @@ const AllVoucherScreen = (props: VoucherSceneProps) => {
     return () => {
       subScription?.unsubscribe?.();
     }
-  }, [])
+  }, []);
+
   useEffect(() => {
     getVouchers();
   }, []);

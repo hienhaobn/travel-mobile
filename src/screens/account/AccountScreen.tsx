@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { goToTourStatus } from './src/utils';
@@ -11,6 +11,7 @@ import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
+import { getInfor } from './src/api';
 
 const AccountScreen = () => {
   const { theme } = useTheme();
@@ -20,139 +21,168 @@ const AccountScreen = () => {
     Storages.remove(KeyStorage.Token);
     resetStack('Login');
   };
-
+  const [role, setRole] = React.useState('');
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await getInfor();
+        setRole(response.role);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    fetchData();
+  }, []);
   return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.wrapperContent}
-        contentContainerStyle={styles.contentContainer}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.itemsContainer}>
-          <Text style={styles.titleHeader}>Tài khoản</Text>
-          <TouchableOpacity style={styles.itemContainer}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcUserInfo
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+    role ?
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.wrapperContent}
+          contentContainerStyle={styles.contentContainer}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.itemsContainer}>
+            <Text style={styles.titleHeader}>Tài khoản</Text>
+            <TouchableOpacity style={styles.itemContainer}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcUserInfo
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Thông tin tài khoản</Text>
               </View>
-              <Text style={styles.title}>Thông tin tài khoản</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemContainer} onPress={goToTourStatus}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcTourAccount
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer} onPress={goToTourStatus}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcTourAccount
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Chuyến đi</Text>
               </View>
-              <Text style={styles.title}>Chuyến đi</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemContainer}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcWallet
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcWallet
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Phương thức thanh toán</Text>
               </View>
-              <Text style={styles.title}>Phương thức thanh toán</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcVoucher
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+            {role === 'USER' ? <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcVoucher
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Mã giảm giá</Text>
               </View>
-              <Text style={styles.title}>Mã giảm giá</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcForgotPassword
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity> : null}
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcVoucher
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Yêu cầu chuyến đi</Text>
               </View>
-              <Text style={styles.title}>Đổi mật khẩu</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Login')}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcMessageQuestion
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcForgotPassword
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Đổi mật khẩu</Text>
               </View>
-              <Text style={styles.title}>Trung tâm hỗ trợ</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.itemContainer} onPress={onLogOut}>
-            <View style={styles.itemLeftContainer}>
-              <View>
-                <SvgIcons.IcLogoLaunch
-                  width={scales(30)}
-                  height={scales(30)}
-                  color={getThemeColor().Text_Dark_1}
-                />
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Login')}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcMessageQuestion
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Trung tâm hỗ trợ</Text>
               </View>
-              <Text style={styles.title}>Đăng xuất</Text>
-            </View>
-            <SvgIcons.IcForward
-              width={scales(15)}
-              height={scales(15)}
-              color={getThemeColor().Text_Dark_1}
-            />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer} onPress={onLogOut}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcLogoLaunch
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View>
+                <Text style={styles.title}>Đăng xuất</Text>
+              </View>
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View> : null
   );
 };
 

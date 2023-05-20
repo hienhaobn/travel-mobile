@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import ListVouchers from './ListVoucherScreen';
+import { Subscription } from 'rxjs';
+
+import { userFetchOrderByStatus } from '../../api';
 
 import { hideLoading, showLoading } from 'components/Loading';
 import { useTheme } from 'hooks/useTheme';
 
+import ListTourStatus from 'screens/account/src/components/ListTourStatus';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
 
-
 import { getThemeColor } from 'utils/getThemeColor';
-
-import { fetchMyVouchers } from '../api';
-import { Subscription } from 'rxjs';
 import EventBus, { BaseEvent, EventBusName } from 'services/event-bus';
 
 
@@ -20,47 +19,45 @@ interface TourWaitingSceneProps {
   route: TourStatusScreenRouteProps;
 }
 
-const MyListVoucherScreen = (props: TourWaitingSceneProps) => {
+const TourWaitingScene = (props: TourWaitingSceneProps) => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const { route } = props;
-  const [vouchers, setVouchers] = useState<voucher.Voucher[]>([]);
-
+  const [orders, setOrders] = useState<order.OrderDetail[]>([]);
   const subScription = new Subscription();
 
-  const getMyVouchers = async () => {
-    // showLoading();
-    const response = await fetchMyVouchers();
-    // hideLoading(); 
-    setVouchers(response);
-
+  const getWaitingOrders = async () => {
+    showLoading();
+    const response = await userFetchOrderByStatus('waiting_purchase', route.role);
+    hideLoading();
+    setOrders(response);
   }
 
   const onSignUpEventBus = () => {
     subScription.add(
       EventBus.getInstance().events.subscribe((res: BaseEvent<string>) => {
-        if (res?.type === EventBusName.CLAIM_SUCCESS) {
-          getMyVouchers();
+        if (res?.type === EventBusName.ACTION_ORDER) {
+          getWaitingOrders();
         }
       })
     )
   }
 
-  useEffect(() => {
-    onSignUpEventBus();
-    return () => {
-      subScription?.unsubscribe?.();
-    }
-  }, [])
+  // useEffect(() => {
+  //   onSignUpEventBus();
+  //   return () => {
+  //     subScription?.unsubscribe?.();
+  //   }
+  // }, []);
 
   useEffect(() => {
-    getMyVouchers();
+    getWaitingOrders();
   }, []);
 
-  return <ListVouchers route={route} data={vouchers} />;
+  return <View style={styles.container}><ListTourStatus route={route} data={orders} /></View>;
 };
 
-export default MyListVoucherScreen;
+export default TourWaitingScene;
 
 const myStyles = (theme: string) => {
   const color = getThemeColor();

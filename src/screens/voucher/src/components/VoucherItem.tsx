@@ -1,31 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 
+import ClaimVoucherConfirmPopup, { IClaimVoucherConfirmPopupRef } from './ClaimVoucherConfirmPopup';
+import { claimVoucher } from '../api';
+
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
+import { hideLoading, showLoading } from 'components/Loading';
 import TouchableOpacity from 'components/TouchableOpacity';
 
 
 import { useTheme } from 'hooks/useTheme';
 
-import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
 
+import { EventBusName, onPushEventBus } from 'services/event-bus';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
-import { scales } from 'utils/scales';
 import { formatCurrency } from 'utils/number';
-import { claimVoucher } from '../api';
-import { showLoading, hideLoading } from 'components/Loading';
+import { scales } from 'utils/scales';
 import { showCustomToast } from 'utils/toast';
-import ClaimVoucherConfirmPopup, { IClaimVoucherConfirmPopupRef } from './ClaimVoucherConfirmPopup';
-import { useSelector } from 'react-redux';
-import { GlobalState } from 'states/types';
-import { useSelectUser } from 'states/user/hooks';
-import { EventBusName, onPushEventBus } from 'services/event-bus';
+
+
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

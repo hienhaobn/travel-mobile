@@ -33,7 +33,6 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
   const { order } = route.params;
   const { tour } = order;
   const [tourDetail, setTourDetail] = useState<tour.Tour>(null);
-
   const getTourById = async () => {
     const response = await fetchTourById(tour.id);
     setTourDetail(response);
@@ -63,8 +62,8 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
                 style={{
                   marginLeft: scales(8),
                 }}>
-                <Text style={styles.rate}>1553 đánh giá</Text>
-                <Text style={styles.care}>233 quan tâm</Text>
+                <Text style={styles.rate}>{tour.rates ? tour.rates.length : 0} lượt đánh giá</Text>
+                <Text style={styles.care}>{tour.rates ? tour.rates.length : 0} quan tâm</Text>
               </View>
             </View>
             <View style={styles.typeContainer}>

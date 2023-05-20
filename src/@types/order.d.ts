@@ -47,8 +47,8 @@ declare namespace order {
         size: number;
         startDate: string;
         status: string;
-        tour: OrderTourRoleUser;
-        tourGuide: OrderTourGuideRoleUser;
+        tour: unknown;
+        tourGuide: unknown;
         updatedAt: string;
         star: number | null;
         userStart: boolean;
