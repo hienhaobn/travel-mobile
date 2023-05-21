@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "334399514906",
+    "project_id": "android-nang-cao-8edd7",
+    "storage_bucket": "android-nang-cao-8edd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334399514906:android:a9817e0525f79a2f6e24a3",
+        "android_client_info": {
+          "package_name": "com.travelmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334399514906-baj2fhhpd2jkrugr3g9litn16r4u5bg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-ohfGCy5pPqU4hy-r3ge_a4MIz-G9lgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334399514906-baj2fhhpd2jkrugr3g9litn16r4u5bg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
