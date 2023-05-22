@@ -5,6 +5,7 @@ import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
 
 
+import { getTourguideByProvince, getTourListByProvince } from './api';
 import LocationDetailPostScene from './src/components/LocationDetailPostScene';
 
 import SvgIcons from 'assets/svgs';
@@ -24,7 +25,6 @@ import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import { getTourguideByProvince, getTourListByProvince } from './api';
 
 export interface LocationDetailScreenRouteProps {
   key: string;
@@ -36,7 +36,7 @@ export interface LocationDetailScreenRouteProps {
 const renderScene = SceneMap({
   tourGuide: LocationDetailTourGuideScene,
   tour: LocationDetailTourScene,
-  post: LocationDetailPostScene,
+  // post: LocationDetailPostScene,
 });
 
 interface LocationDetailScreenProps {
@@ -64,7 +64,7 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     setTours(responseTour.data);
     setTourGuides(responseTourGuide.data);
 
-    console.log(tours);
+    console.log({ tours });
     setIsLoad(true);
 
   }
@@ -80,7 +80,7 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
       const updatedRoutes = [
         { key: 'tourGuide', title: 'Hướng dẫn viên', tourGuides },
         { key: 'tour', title: 'Tour', tours },
-        { key: 'post', title: 'Bài viết', province },
+        // { key: 'post', title: 'Bài viết', province },
       ];
       setRoutes(updatedRoutes);
     }

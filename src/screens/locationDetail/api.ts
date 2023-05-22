@@ -8,7 +8,6 @@ import { BASE_URL } from 'configs/api';
 import { IToken } from 'constants/global-variables';
 
 import axiosInstance from 'services/api-requests';
-import { EventBusName, onPushEventBus } from 'services/event-bus';
 
 import Storages, { KeyStorage } from 'utils/storages';
 import { showCustomToast } from 'utils/toast';
@@ -30,7 +29,6 @@ export const getTourListByProvince = async (provinceId: number) => {
             },
         });
         hideLoading();
-        console.log(res.returnValue);
         return res.returnValue;
     } catch (error) {
         hideLoading();
@@ -45,10 +43,11 @@ export const getTourguideByProvince = async (provinceId: number) => {
         showLoading();
         const res: { returnValue: tour.Tour[] } = await axiosInstance.get(url, {
             params: {
-                provinceId,
+                provinces: provinceId,
             },
         });
         hideLoading();
+        console.log(res.returnValue);
         return res.returnValue;
     } catch (error) {
         hideLoading();

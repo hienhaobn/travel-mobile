@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { goToTourStatus } from './src/utils';
@@ -79,7 +79,7 @@ const AccountScreen = () => {
                 color={getThemeColor().Text_Dark_1}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.itemContainer}>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Payment')}>
               <View style={styles.itemLeftContainer}>
                 <View>
                   <SvgIcons.IcWallet

@@ -44,6 +44,10 @@ const RootStack = () => {
       <Stack.Screen name="TourStatusDetail" component={Screen.TourStatusDetail} />
 
       <Stack.Screen name="Voucher" component={Screen.Voucher} />
+      <Stack.Screen name="Payment" component={Screen.Payment} />
+      <Stack.Screen name="Deposit" component={Screen.Deposit} />
+      <Stack.Screen name="Withdraw" component={Screen.Withdraw} />
+
 
     </Stack.Navigator>
   );
@@ -83,51 +87,51 @@ const StackNavigator = () => {
     />
   );
 
-    const config = {
-        screens: {
-            Payment: 'deposit',
-            Splash: 'deposit',
-        },
-    };
+  const config = {
+    screens: {
+      Payment: 'deposit',
+      Splash: 'deposit',
+    },
+  };
 
-    const linking = {
-        prefixes: ['ktravel://'],
-        getStateFromPath: (path, options) => {
-            if (path?.includes('payment')) {
-                const timer = GlobalVariables.activeRouteKey ? 0 : 3000;
-                setTimeout(() => {
-                    resetStack('Splash', {
-                        stateFromPath: path,
-                    });
-                }, timer);
-            }
-        },
-        config,
-        async getInitialURL() {
-            const url = await Linking.getInitialURL();
-            const path = url?.replace(/ktravel:\/\//g, '');
-            if (path?.includes('payment')) {
-                setTimeout(() => {
-                    resetStack('Splash', {
-                        stateFromPath: path,
-                    });
-                }, 2000);
-            }
-        },
-    };
+  const linking = {
+    prefixes: ['ktravel://'],
+    getStateFromPath: (path, options) => {
+      if (path?.includes('payment')) {
+        const timer = GlobalVariables.activeRouteKey ? 0 : 3000;
+        setTimeout(() => {
+          resetStack('Splash', {
+            stateFromPath: path,
+          });
+        }, timer);
+      }
+    },
+    config,
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      const path = url?.replace(/ktravel:\/\//g, '');
+      if (path?.includes('payment')) {
+        setTimeout(() => {
+          resetStack('Splash', {
+            stateFromPath: path,
+          });
+        }, 2000);
+      }
+    },
+  };
 
 
-    return (
-        <NavigationContainer ref={navigationRef} onStateChange={onStateChange} linking={linking} fallback={<Text>Loading...</Text>}>
-            <StatusBar
-                backgroundColor={getThemeColor().Color_Bg}
-                barStyle={theme === EThemeColor.Light ? 'dark-content' : 'light-content'}
-                translucent
-            />
-            <RootStack />
-            {renderLoadingModal()}
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer ref={navigationRef} onStateChange={onStateChange} linking={linking} fallback={<Text>Loading...</Text>}>
+      <StatusBar
+        backgroundColor={getThemeColor().Color_Bg}
+        barStyle={theme === EThemeColor.Light ? 'dark-content' : 'light-content'}
+        translucent
+      />
+      <RootStack />
+      {renderLoadingModal()}
+    </NavigationContainer>
+  );
 };
 
 export default StackNavigator;

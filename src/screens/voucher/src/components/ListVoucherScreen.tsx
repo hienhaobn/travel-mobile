@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
+import { useSelector } from 'react-redux';
+
 import VoucherItem from './VoucherItem';
 
 import Images from 'assets/images';
@@ -8,11 +10,10 @@ import LoadingView from 'components/Loading/LoadingView';
 import { useTheme } from 'hooks/useTheme';
 import { TourStatusScreenRouteProps } from 'screens/account/TourStatusScreen';
 import { VoucherScreenRouteProps } from 'screens/voucher/VoucherScreen';
+import { GlobalState } from 'states/types';
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import { useSelector } from 'react-redux';
-import { GlobalState } from 'states/types';
 
 interface ListVouchersProps {
   route: VoucherScreenRouteProps;
@@ -23,7 +24,7 @@ const ListVouchers = (props: ListVouchersProps) => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const { route, data } = props;
-  const user = useSelector((state: GlobalState) => state.user);
+  const user = useSelector((state: GlobalState) => state.users);
 
   const renderNoData = useCallback(() => {
     return (

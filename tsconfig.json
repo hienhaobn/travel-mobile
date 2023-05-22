@@ -109,5 +109,5 @@
   ],
   "include": [
     "global.d.ts", "**/*.ts", "**/*.tsx", "index.js", "metro.config.js", "babel.config.js", "Reactotron.js"
-  ]
+, "src/screens/home/src/api.tss"  ]
 }
