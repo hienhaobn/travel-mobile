@@ -22,66 +22,74 @@ import { getThemeColor } from 'utils/getThemeColor';
 const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
 const RootStack = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
-      initialRouteName="Splash"
-    >
-      <Stack.Screen name="Splash" component={SplashScreen} />
+    return (
+        <Stack.Navigator
+            screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
+            initialRouteName='Splash'
+        >
+            <Stack.Screen name='Splash' component={SplashScreen} />
 
-      <Stack.Screen name="Main" component={MainScreen} />
+            <Stack.Screen name='Main' component={MainScreen} />
 
-      <Stack.Screen name="LocationDetail" component={Screen.LocationDetail} />
+            <Stack.Screen name='LocationDetail' component={Screen.LocationDetail} />
 
-      <Stack.Screen name="TourDetail" component={Screen.TourDetail} />
+            <Stack.Screen name='TourDetail' component={Screen.TourDetail} />
 
-      <Stack.Screen name="Login" component={Screen.Login} />
+            <Stack.Screen name='Login' component={Screen.Login} />
 
-      <Stack.Screen name="Register" component={Screen.Register} />
+            <Stack.Screen name='Register' component={Screen.Register} />
 
-      <Stack.Screen name="TourStatus" component={Screen.TourStatus} />
+            <Stack.Screen name='TourStatus' component={Screen.TourStatus} />
 
-      <Stack.Screen name="TourStatusDetail" component={Screen.TourStatusDetail} />
+            <Stack.Screen name='TourStatusDetail' component={Screen.TourStatusDetail} />
 
-      <Stack.Screen name="Voucher" component={Screen.Voucher} />
+            <Stack.Screen name='Voucher' component={Screen.Voucher} />
 
-    </Stack.Navigator>
-  );
+            <Stack.Screen name='Deposit' component={Screen.Deposit} />
+
+            <Stack.Screen name='Withdraw' component={Screen.Withdraw} />
+
+            <Stack.Screen name='EditProfile' component={Screen.EditProfile} />
+
+            <Stack.Screen name='AccountInfo' component={Screen.AccountInfo} />
+
+        </Stack.Navigator>
+    );
 };
 
 const StackNavigator = () => {
-  const { theme } = useTheme();
-  const loadingRef = useRef<LoadingModalRef | null>(null);
-  useEffect(() => {
-    return () => {
-      if (loadingRef?.current) {
-        LoadingManager.unregister(loadingRef.current);
-      }
+    const { theme } = useTheme();
+    const loadingRef = useRef<LoadingModalRef | null>(null);
+    useEffect(() => {
+        return () => {
+            if (loadingRef?.current) {
+                LoadingManager.unregister(loadingRef.current);
+            }
+        };
+    }, []);
+
+    const onSetStatusBar = (screenName: string) => {
+        if (!screenName) {
+            return;
+        }
     };
-  }, []);
 
-  const onSetStatusBar = (screenName: string) => {
-    if (!screenName) {
-      return;
-    }
-  };
+    const onStateChange = (): void => {
+        const screenName = getCurrentRoute();
+        if (screenName) {
+            onSetStatusBar(screenName);
+            GlobalVariables.activeRouteKey = screenName;
+        }
+    };
 
-  const onStateChange = (): void => {
-    const screenName = getCurrentRoute();
-    if (screenName) {
-      onSetStatusBar(screenName);
-      GlobalVariables.activeRouteKey = screenName;
-    }
-  };
-
-  const renderLoadingModal = () => (
-    <LoadingModal
-      ref={(ref) => {
-        loadingRef.current = ref;
-        LoadingManager.register(loadingRef.current!);
-      }}
-    />
-  );
+    const renderLoadingModal = () => (
+        <LoadingModal
+            ref={(ref) => {
+                loadingRef.current = ref;
+                LoadingManager.register(loadingRef.current!);
+            }}
+        />
+    );
 
     const config = {
         screens: {

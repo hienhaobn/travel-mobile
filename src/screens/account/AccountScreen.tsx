@@ -1,10 +1,10 @@
-import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { goToAccountInfo } from '../accountInfo/src/utils';
 
 import { goToTourStatus } from './src/utils';
 
 import SvgIcons from 'assets/svgs';
-import Button from 'components/Button/Button';
 import TouchableOpacity from 'components/TouchableOpacity';
 import { useTheme } from 'hooks/useTheme';
 import { navigate, resetStack } from 'navigation/utils';
@@ -45,7 +45,7 @@ const AccountScreen = () => {
         >
           <View style={styles.itemsContainer}>
             <Text style={styles.titleHeader}>Tài khoản</Text>
-            <TouchableOpacity style={styles.itemContainer}>
+            <TouchableOpacity style={styles.itemContainer} onPress={goToAccountInfo}>
               <View style={styles.itemLeftContainer}>
                 <View>
                   <SvgIcons.IcUserInfo

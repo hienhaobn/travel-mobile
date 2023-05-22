@@ -16,4 +16,9 @@ export type RootNavigatorParamList = {
     Payment: undefined,
     Deposit: undefined,
     Withdraw: undefined,
+    AccountInfo: undefined,
+    EditProfile: undefined,
 };
+import AccountInfo from '../screens/accountInfo/AccountInfoScreen';
+
+import EditProfile from '../screens/editProfile/EditProfileScreen';

@@ -4,6 +4,8 @@ import Withdraw from 'screens/withdraw/WithdrawScreen';
 import Account from './account/AccountScreen';
 import TourStatusDetail from './account/TourStatusDetailScreen';
 import TourStatus from './account/TourStatusScreen';
+import AccountInfo from './accountInfo/AccountInfoScreen';
+import EditProfile from './editProfile/EditProfileScreen';
 import Favorite from './favorite/FavoriteScreen';
 import Home from './home/HomeScreen';
 import Launch from './launch/LaunchScreen';
@@ -34,4 +36,6 @@ export const Screen = {
     Payment,
     Deposit,
     Withdraw,
+    AccountInfo,
+    EditProfile,
 };
