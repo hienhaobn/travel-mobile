@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { goToTourStatus } from './src/utils';
+import { goToAccountInfo } from '../accountInfo/src/utils';
+
 
 import SvgIcons from 'assets/svgs';
 import Button from 'components/Button/Button';
@@ -12,6 +14,7 @@ import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
+
 import { getInfor } from './src/api';
 
 const AccountScreen = () => {
@@ -45,7 +48,7 @@ const AccountScreen = () => {
         >
           <View style={styles.itemsContainer}>
             <Text style={styles.titleHeader}>Tài khoản</Text>
-            <TouchableOpacity style={styles.itemContainer}>
+            <TouchableOpacity style={styles.itemContainer} onPress={goToAccountInfo}>
               <View style={styles.itemLeftContainer}>
                 <View>
                   <SvgIcons.IcUserInfo
@@ -116,13 +119,13 @@ const AccountScreen = () => {
             <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
               <View style={styles.itemLeftContainer}>
                 <View>
-                  <SvgIcons.IcForgotPassword
+                  <SvgIcons.IcVoucher
                     width={scales(30)}
                     height={scales(30)}
                     color={getThemeColor().Text_Dark_1}
                   />
                 </View>
-                <Text style={styles.title}>Đổi mật khẩu</Text>
+                <Text style={styles.title}>Yêu cầu chuyến đi</Text>
               </View>
               <SvgIcons.IcForward
                 width={scales(15)}
@@ -130,6 +133,23 @@ const AccountScreen = () => {
                 color={getThemeColor().Text_Dark_1}
               />
             </TouchableOpacity>
+            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
+              <View style={styles.itemLeftContainer}>
+                <View>
+                  <SvgIcons.IcForgotPassword
+                    width={scales(30)}
+                    height={scales(30)}
+                    color={getThemeColor().Text_Dark_1}
+                  />
+                </View >
+                <Text style={styles.title}>Đổi mật khẩu</Text>
+              </View >
+              <SvgIcons.IcForward
+                width={scales(15)}
+                height={scales(15)}
+                color={getThemeColor().Text_Dark_1}
+              />
+            </TouchableOpacity >
             <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Login')}>
               <View style={styles.itemLeftContainer}>
                 <View>
@@ -164,9 +184,9 @@ const AccountScreen = () => {
                 color={getThemeColor().Text_Dark_1}
               />
             </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View> : null
+          </View >
+        </ScrollView >
+      </View > : null
   );
 };
 

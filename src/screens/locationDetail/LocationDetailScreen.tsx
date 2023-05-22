@@ -20,6 +20,7 @@ import { goBack } from 'navigation/utils';
 import LocationDetailTourGuideScene from 'screens/locationDetail/src/components/LocationDetailTourGuideScene';
 import LocationDetailTourScene from 'screens/locationDetail/src/components/LocationDetailTourScene';
 
+import EventBus, { BaseEvent, EventBusName } from 'services/event-bus';
 import { useProvinceById } from 'states/provinces/hooks';
 import { Fonts, Sizes } from 'themes';
 

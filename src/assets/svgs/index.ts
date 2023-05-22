@@ -1,4 +1,5 @@
 import IcDownReward from './down_reward.svg';
+import IcEmail from './email.svg';
 import IcBack from './ic_back.svg';
 import IcForgotPassword from './ic_forgot_password.svg';
 import IcForward from './ic_forward.svg';
@@ -8,6 +9,7 @@ import IcMenu from './ic_menu.svg';
 import IcMessageQuestion from './ic_message_question.svg';
 import IcMoreInfo from './ic_more_info.svg';
 import IcNotification from './ic_notification.svg';
+import IcPencil from './ic_pencil.svg';
 import IcScan from './ic_scan.svg';
 import IcSearch from './ic_search.svg';
 import IcShopOutline from './ic_shop_outline.svg';
@@ -16,6 +18,7 @@ import IcUserInfo from './ic_user_info.svg';
 import IcVoucher from './ic_voucher.svg';
 import IcWallet from './ic_wallet.svg';
 import IcLogoLaunch from './logo_launch.svg';
+import IcNote from './note.svg';
 import IcStarActive from './star_active.svg';
 import IcTabAccount from './tab_account.svg';
 import IcTabAccountActive from './tab_account_active.svg';
@@ -29,7 +32,6 @@ import IcTabMessenger from './tab_messenger.svg';
 import IcTabMessengerActive from './tab_messenger_active.svg';
 import IcVisibility from './visibility.svg';
 import IcVisibilityOff from './visibility_off.svg';
-import IcNote from './note.svg';
 
 const SvgIcons = {
     IcBack,
@@ -64,6 +66,8 @@ const SvgIcons = {
     IcTourAccount,
     IcDownReward,
     IcNote,
+    IcPencil,
+    IcEmail,
 };
 
 export default SvgIcons;
