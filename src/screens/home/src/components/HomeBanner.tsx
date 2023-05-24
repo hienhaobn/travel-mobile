@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
-=======
-import React from 'react';
->>>>>>> 26cf787746a423f6ccab55b7fe5d0cbe8f2c3258
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Swiper from 'react-native-swiper';
 

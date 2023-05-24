@@ -28,11 +28,11 @@ export enum ELoginScreenTabKey {
 }
 
 const LoginScreen = () => {
-  const { theme } = useTheme();
-  const styles = myStyles(theme);
+  const { theme } = useTheme(); const styles = myStyles(theme);
   const layout = useWindowDimensions();
 
   const [index, setIndex] = useState(0);
+
   const [routes] = useState([
     { key: ELoginScreenTabKey.tourGuide, title: 'Hướng dẫn viên' },
     { key: ELoginScreenTabKey.user, title: 'Người dùng' },

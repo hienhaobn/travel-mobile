@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { getTopTourGuides } from '../api';
 
-=======
-import React, { useCallback } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-
->>>>>>> 26cf787746a423f6ccab55b7fe5d0cbe8f2c3258
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
