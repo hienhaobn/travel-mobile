@@ -24,29 +24,29 @@ const MessengerScreen = () => {
   const [socketInstance, setSocketInstance] = useState(null);
   const [users, setUsers] = useState([]);
   console.log(1);
-  useEffect(() => {
-    const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
-    const socket = io(process.env.REACT_APP_WEB_SOCKET_DOMAIN || '', {
-      path: '/chat',
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            Authorization: tokenInfo.accessToken,
-          },
-        },
-      },
-    });
+  // useEffect(() => {
+  //   const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
+  //   const socket = io(process.env.REACT_APP_WEB_SOCKET_DOMAIN || '', {
+  //     path: '/chat',
+  //     transportOptions: {
+  //       polling: {
+  //         extraHeaders: {
+  //           Authorization: tokenInfo.accessToken,
+  //         },
+  //       },
+  //     },
+  //   });
 
-    socket.on('connect', () => {
-      console.log('connected!');
-    });
-    setSocket(socket);
+  //   socket.on('connect', () => {
+  //     console.log('connected!');
+  //   });
+  //   setSocket(socket);
 
-    return () => {
-      socket.disconnect();
-    };
+  //   return () => {
+  //     socket.disconnect();
+  //   };
 
-  }, []);
+  // }, []);
 
   const renderConvention = useCallback(
     () => (
