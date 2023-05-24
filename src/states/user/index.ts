@@ -52,7 +52,7 @@ export const userSlice = createSlice({
                 state.orders = orders;
                 state.userVouchers = userVouchers;
                 state.userFavorites = userFavorites;
-            });
+            })
     },
 });
 

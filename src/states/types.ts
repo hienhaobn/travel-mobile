@@ -3,4 +3,6 @@ export interface GlobalState {
     users: UserState;
     orders: OrdersState;
     vouchers: VouchersState;
+    tourGuides: tourGuide.State;
+    tours: tour.State;
 }

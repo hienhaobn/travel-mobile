@@ -1,5 +1,7 @@
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import { useFetchTourGuidePopular } from '../../states/tourGuide/hooks';
+import { useFetchPopularTours } from '../../states/tours/hooks';
 
 import MyTabBar from './MyTabBar';
 
@@ -13,6 +15,8 @@ const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
 const Main = () => {
     useFetchProvinces();
+    useFetchTourGuidePopular();
+    useFetchPopularTours();
     useFetchMe();
     const renderTabBar = (bottomTabBarProps: BottomTabBarProps) => {
         return <MyTabBar {...bottomTabBarProps} />;

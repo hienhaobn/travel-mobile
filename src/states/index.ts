@@ -6,6 +6,8 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, R
 import ordersReducer from './orders';
 import provincesReducer from './provinces';
 import userReducer from './user';
+import tourGuideReducer from './tourGuide';
+import toursReducer from './tours';
 
 const PERSISTED_KEYS: string[] = ['user'];
 
@@ -25,6 +27,8 @@ const persistedReducer = persistReducer(
         users: userReducer,
         provinces: provincesReducer,
         orders: ordersReducer,
+        tourGuides: tourGuideReducer,
+        tours: toursReducer,
     })
 );
 

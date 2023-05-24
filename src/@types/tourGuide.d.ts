@@ -1,21 +1,42 @@
 declare namespace tourGuide {
+
+    interface State {
+        data: TourGuide[];
+        total: number;
+        currentPage: number;
+        totalPages: number;
+        limit: number;
+        isLoading: boolean;
+    }
+
     interface TourGuide {
-        id: number;
-        password: string;
-        email: string;
-        username: string;
-        phone: string | null;
-        bio: string;
-        gender: string;
-        balance: string;
-        availableBalance: string;
-        avatar: string;
-        verifyStatus: string;
-        available: string;
+        tourGuideId: number;
+        tourGuideUsername: string;
+        tourGuideBio: string;
+        tourGuideAvatar: string;
+        tourGuideEmail: string;
+        tourGuidePhone: string;
+        tourGuideName: string;
+        provinceName: string;
+        tourGuideGender: string;
+        tourGuideDob: string;
+        tourGuideStatus: string;
         numOfFavorites: number;
-        dob: stringl;
-        createdAt: string;
-        updatedAt: string;
-        deletedAt: string;
+        totalTour: string;
+        totalFavorite: string;
+        star: string;
+    }
+
+    interface TourGuideResponse {
+        returnValue: {
+            data: TourGuide[];
+            total: number;
+            currentPage: number;
+            totalPages: number;
+            limit: number;
+        };
+        message: string;
+        code: string;
+        statusCode: string;
     }
 }
