@@ -1,12 +1,11 @@
-import Config from 'react-native-config';
 import socketIO from 'socket.io-client';
 import { onPushEventBus } from 'services/event-bus';
 import store from '../states';
 
-export const EVENTS_FUTURES = {
+export const EVENTS_SOCKET = {
     MESSAGE: 'MESSAGE',
     RECEIVE_MESSAGE: 'receive-messages',
-    RECEIVE_USER: 'receive-users',
+    RECEIVE_USERS: 'receive-users',
     GET_USERS: 'get-users',
     GET_MESSAGES: 'get-messages',
     JOIN_ROOM: 'join-room',
@@ -38,7 +37,6 @@ export default class SocketUtils {
     public initSocket = () => {
         const { accessToken } = this.getTokenData();
 
-        console.log('accessToken', accessToken);
         return socketIO(SOCKET_DOMAIN, {
             path: "/chat",
             transportOptions: {
@@ -53,18 +51,34 @@ export default class SocketUtils {
 
     public listenEvents(userId?: number) {
         this.listenMessage();
+        this.listenReceiveMessage();
+        this.listenReceiveUsers();
         this.connected();
     }
 
     public listenMessage() {
-        this.socket.on(EVENTS_FUTURES.MESSAGE, () => {
-            onPushEventBus(EVENTS_FUTURES.MESSAGE);
+        this.socket.on(EVENTS_SOCKET.MESSAGE, () => {
+            onPushEventBus(EVENTS_SOCKET.MESSAGE);
+        })
+    }
+
+    public listenReceiveMessage() {
+        this.socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (messages) => {
+            console.log('messages', messages);
+            onPushEventBus(EVENTS_SOCKET.RECEIVE_MESSAGE);
+        })
+    }
+
+    public listenReceiveUsers() {
+        this.socket.on(EVENTS_SOCKET.RECEIVE_USERS, (users) => {
+            console.log('users', users);
+            onPushEventBus(EVENTS_SOCKET.RECEIVE_USERS);
         })
     }
 
     public connected() {
         this.socket.on('connect', () => {
-            console.log(`⚡: connected!`);
+            console.log(`⚡: Socket connected!`);
         })
     }
 
