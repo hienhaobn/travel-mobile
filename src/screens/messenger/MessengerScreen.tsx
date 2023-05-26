@@ -23,7 +23,6 @@ const MessengerScreen = () => {
   const styles = myStyles(theme);
   const [socketInstance, setSocketInstance] = useState(null);
   const [users, setUsers] = useState([]);
-  console.log(1);
   // useEffect(() => {
   //   const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
   //   const socket = io(process.env.REACT_APP_WEB_SOCKET_DOMAIN || '', {

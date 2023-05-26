@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useRef } from 'react';
 import { Linking, StatusBar, Text } from 'react-native';
+import SocketUtils from '../services/socket';
 
 import { RootNavigatorParamList } from './types';
 import { getCurrentRoute, navigationRef, resetStack } from './utils';
@@ -60,7 +61,9 @@ const RootStack = () => {
 const StackNavigator = () => {
   const { theme } = useTheme();
   const loadingRef = useRef<LoadingModalRef | null>(null);
+
   useEffect(() => {
+    SocketUtils.getInstance().connect();
     return () => {
       if (loadingRef?.current) {
         LoadingManager.unregister(loadingRef.current);
