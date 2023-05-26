@@ -63,7 +63,6 @@ const StackNavigator = () => {
   const loadingRef = useRef<LoadingModalRef | null>(null);
 
   useEffect(() => {
-    SocketUtils.getInstance().connect();
     return () => {
       if (loadingRef?.current) {
         LoadingManager.unregister(loadingRef.current);

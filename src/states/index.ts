@@ -9,12 +9,12 @@ import userReducer from './user';
 import tourGuideReducer from './tourGuide';
 import toursReducer from './tours';
 
-const PERSISTED_KEYS: string[] = ['user'];
+const PERSISTED_KEYS: string[] = ['tokenInfo', 'profile', 'users'];
 
 const persistConfig = {
     key: 'primary',
     whitelist: PERSISTED_KEYS,
-    blacklist: ['profile'],
+    blacklist: [],
     storage: AsyncStorage,
     version: 1,
 };

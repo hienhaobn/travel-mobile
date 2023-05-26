@@ -12,6 +12,8 @@ export const EVENTS_FUTURES = {
     JOIN_ROOM: 'join-room',
 }
 
+const SOCKET_DOMAIN='https://socket.ktravel.online';
+
 export default class SocketUtils {
     public static getInstance() {
         if (!SocketUtils.instance) {
@@ -21,32 +23,48 @@ export default class SocketUtils {
     }
 
     private static instance: SocketUtils;
-    public socketFutures;
+    public socket;
 
     public connect = (userId?: number) => {
         this.disconnect();
-        this.socketFutures = this.initSocket();
+        this.socket = this.initSocket();
+        this.listenEvents(userId);
     }
 
     public disconnect = () => {
-        this.socketFutures?.close();
+        this.socket?.close();
     }
 
     public initSocket = () => {
         const { accessToken } = this.getTokenData();
 
-        return socketIO(Config.SOCKET_DOMAIN, {
-            path: '/chat',
-            query: {
-                authorization: accessToken,
+        console.log('accessToken', accessToken);
+        return socketIO(SOCKET_DOMAIN, {
+            path: "/chat",
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        Authorization: accessToken,
+                    },
+                },
             },
-            transports: ['websocket'],
         });
     }
 
+    public listenEvents(userId?: number) {
+        this.listenMessage();
+        this.connected();
+    }
+
     public listenMessage() {
-        this.socketFutures.on(EVENTS_FUTURES.MESSAGE, () => {
+        this.socket.on(EVENTS_FUTURES.MESSAGE, () => {
             onPushEventBus(EVENTS_FUTURES.MESSAGE);
+        })
+    }
+
+    public connected() {
+        this.socket.on('connect', () => {
+            console.log(`⚡: connected!`);
         })
     }
 

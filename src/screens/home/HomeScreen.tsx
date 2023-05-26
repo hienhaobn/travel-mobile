@@ -1,17 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import SocketUtils from '../../services/socket';
 
 import HomeBanner from './src/components/HomeBanner';
 import HomeOptions from './src/components/HomeOptions';
 import HomePostSection from './src/components/HomePostSection';
 import HomeTourGuideSection from './src/components/HomeTourGuideSection';
 import HomeTourSection from './src/components/HomeTourSection';
-
-import SvgIcons from 'assets/svgs';
-
-import Input from 'components/Input';
-import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
 
@@ -24,6 +20,10 @@ const HomeScreen = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = myStyles(theme);
+
+  useEffect(() => {
+    SocketUtils.getInstance().connect();
+  }, []);
 
   const renderHeader = useCallback(() => {
     return (
