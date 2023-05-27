@@ -21,4 +21,9 @@ export type RootNavigatorParamList = {
     Withdraw: undefined;
     AccountInfo: undefined;
     EditProfile: undefined;
+    PostDetail: undefined;
+    ListPostScreen: undefined;
+    ListTourScreen: undefined;
+    TourGuideInforScreen: undefined;
+    ListTourGuideScreen: undefined;
 };

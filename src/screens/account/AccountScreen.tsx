@@ -116,7 +116,7 @@ const AccountScreen = () => {
                 color={getThemeColor().Text_Dark_1}
               />
             </TouchableOpacity> : null}
-            <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
+            {/* <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
               <View style={styles.itemLeftContainer}>
                 <View>
                   <SvgIcons.IcVoucher
@@ -132,7 +132,7 @@ const AccountScreen = () => {
                 height={scales(15)}
                 color={getThemeColor().Text_Dark_1}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.itemContainer} onPress={() => navigate('Voucher')}>
               <View style={styles.itemLeftContainer}>
                 <View>

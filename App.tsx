@@ -2,7 +2,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import messaging from '@react-native-firebase/messaging';
 import { useEffect } from 'react';
-import { Alert, PermissionsAndroid } from 'react-native';
+import { Alert, LogBox, PermissionsAndroid } from 'react-native';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import Toast from 'react-native-toast-notifications';
 import toast from 'react-native-toast-notifications/lib/typescript/toast';

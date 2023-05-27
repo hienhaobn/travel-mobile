@@ -14,6 +14,7 @@ import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import { navigate } from 'navigation/utils';
 
 const HomeTourGuideSection = () => {
   const { theme } = useTheme();
@@ -31,7 +32,7 @@ const HomeTourGuideSection = () => {
     return (
       <View style={styles.headerContainer}>
         <Text style={styles.textTourGuide}>Hướng dẫn viên</Text>
-        <TouchableOpacity style={styles.showAllContainer}>
+        <TouchableOpacity style={styles.showAllContainer} onPress={() => navigate('ListTourGuideScreen')}>
           <Text style={styles.textShowAll}>Xem tất cả</Text>
           <SvgIcons.IcForward width={scales(17)} height={scales(17)} color={getThemeColor().Color_Primary} />
         </TouchableOpacity>
@@ -68,7 +69,7 @@ const HomeTourGuideSection = () => {
     return (
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {tourGuides.map((tourguide, index) => (
-          <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} key={index}>
+          <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} key={index} onPress={() => navigate('TourGuideInforScreen', tourguide)}>
             <View style={styles.itemContentContainer}>
               <Image source={{ uri: tourguide.tourGuideAvatar }} style={styles.itemImages} />
               <View style={styles.itemHeaderContainer}>
