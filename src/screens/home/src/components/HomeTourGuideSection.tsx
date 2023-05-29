@@ -1,22 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Images from '../../../../assets/images';
+import { goToTourGuideInfo } from '../../../accountInfo/src/utils';
 
 import { getTopTourGuides } from '../api';
 
-import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
-
 import TouchableOpacity from 'components/TouchableOpacity';
-
 import { useTheme } from 'hooks/useTheme';
-
 import { Fonts, Sizes } from 'themes';
-
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import { navigate } from 'navigation/utils';
 
 const HomeTourGuideSection = () => {
     const { theme } = useTheme();
@@ -46,7 +40,7 @@ const HomeTourGuideSection = () => {
         return (
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {tourGuides.map((tourguide, index) => (
-                    <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} key={index}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} key={index} onPress={goToTourGuideInfo}>
                         <View style={styles.itemContentContainer}>
                             <FastImage source={tourguide?.tourGuideAvatar ? { uri: tourguide.tourGuideAvatar } : Images.Vourcher_2} style={styles.itemImages} />
                             <View style={styles.itemHeaderContainer}>

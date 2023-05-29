@@ -2,6 +2,8 @@ import Account from './account/AccountScreen';
 import TourStatusDetail from './account/TourStatusDetailScreen';
 import TourStatus from './account/TourStatusScreen';
 import AccountInfo from './accountInfo/AccountInfoScreen';
+import TourGuideInfo from './accountInfo/TourGuideInfoScreen';
+import Conversation from './conversation/ConversationScreen';
 import EditProfile from './editProfile/EditProfileScreen';
 import Favorite from './favorite/FavoriteScreen';
 import Home from './home/HomeScreen';
@@ -18,6 +20,7 @@ import TourDetail from './tourDetail/TourDetailScreen';
 import ListTourGuideScreen from './tourGuide/ListTourGuideScreen';
 import TourGuideInforScreen from './tourGuide/TourGuideInfoScreen';
 import Voucher from './voucher/VoucherScreen';
+
 import Deposit from 'screens/deposit/DepositScreen';
 import Payment from 'screens/payments/PaymentScreen';
 import Withdraw from 'screens/withdraw/WithdrawScreen';
@@ -43,6 +46,8 @@ export const Screen = {
     Withdraw,
     AccountInfo,
     EditProfile,
+    TourGuideInfo,
+    Conversation,
     PostDetail,
     ListPostScreen,
     ListTourScreen,

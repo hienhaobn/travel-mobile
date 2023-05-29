@@ -1,6 +1,3 @@
-import AccountInfo from '../screens/accountInfo/AccountInfoScreen';
-import EditProfile from '../screens/editProfile/EditProfileScreen';
-
 export type RootNavigatorParamList = {
     Home: undefined;
     Location: undefined;
@@ -21,6 +18,8 @@ export type RootNavigatorParamList = {
     Withdraw: undefined;
     AccountInfo: undefined;
     EditProfile: undefined;
+    TourGuideInfo: undefined;
+    Conversation: undefined;
     PostDetail: undefined;
     ListPostScreen: undefined;
     ListTourScreen: undefined;

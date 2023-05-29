@@ -21,7 +21,6 @@ import IcVoucher from './ic_voucher.svg';
 import IcWallet from './ic_wallet.svg';
 import IcLogoLaunch from './logo_launch.svg';
 import IcNote from './note.svg';
-import IcSend from './send.svg';
 import IcStarActive from './star_active.svg';
 import IcTabAccount from './tab_account.svg';
 import IcTabAccountActive from './tab_account_active.svg';
@@ -35,6 +34,9 @@ import IcTabMessenger from './tab_messenger.svg';
 import IcTabMessengerActive from './tab_messenger_active.svg';
 import IcVisibility from './visibility.svg';
 import IcVisibilityOff from './visibility_off.svg';
+import IcMore from './ic_more.svg';
+import IcSend from './send.svg';
+import IcMessageText from './message_text.svg';
 import IcWarning from './warning.svg';
 
 const SvgIcons = {
@@ -76,6 +78,9 @@ const SvgIcons = {
     IcHeartRed,
     IcWarning,
     IcComment,
+    IcMore,
+    IcSend,
+    IcMessageText,
 };
 
 export default SvgIcons;

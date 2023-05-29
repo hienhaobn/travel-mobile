@@ -3,7 +3,6 @@
  */
 import 'react-native-gesture-handler';
 
-import messaging from '@react-native-firebase/messaging';
 import { AppRegistry, LogBox, Platform, StatusBar, Text, TextInput, TouchableOpacity } from 'react-native';
 
 import App from './App';
@@ -33,10 +32,6 @@ LogBox.ignoreLogs([
     'ViewPropTypes will be removed from React Native',
     '(ADVICE) View ',
 ]);
-
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Received background message:', remoteMessage);
-});
 
 function HeadlessCheck({ isHeadless }) {
   if (isHeadless) {

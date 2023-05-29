@@ -21,7 +21,7 @@ import { navigate } from 'navigation/utils';
 const HomePostSection = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
-  const [tours, setTours] = useState([]);
+  const [tours, setTours] = useState<tour.Tour[]>([]);
   const getData = async () => {
     const response = await getTopTours();
     setTours(response.data);
