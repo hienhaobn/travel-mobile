@@ -17,13 +17,15 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
 import { IToken } from 'constants/global-variables';
+import SocketUtils, { EVENTS_SOCKET } from '../../services/socket';
 
 const MessengerScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const [socketInstance, setSocketInstance] = useState(null);
   const [users, setUsers] = useState([]);
-  console.log(1);
+  const socketRef = React.useRef(SocketUtils.getInstance().socket).current;
+
   // useEffect(() => {
   //   const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
   //   const socket = io(process.env.REACT_APP_WEB_SOCKET_DOMAIN || '', {
@@ -47,6 +49,11 @@ const MessengerScreen = () => {
   //   };
 
   // }, []);
+
+  useEffect(() => {
+    socketRef?.emit(EVENTS_SOCKET.GET_USERS);
+    socketRef?.emit(EVENTS_SOCKET.GET_MESSAGES);
+  }, []);
 
   const renderConvention = useCallback(
     () => (

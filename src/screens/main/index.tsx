@@ -1,5 +1,7 @@
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import { useFetchTourGuidePopular } from '../../states/tourGuide/hooks';
+import { useFetchPopularTours } from '../../states/tours/hooks';
 
 import MyTabBar from './MyTabBar';
 
@@ -12,21 +14,23 @@ import { useFetchMe } from 'states/user/hooks';
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
 const Main = () => {
-  useFetchProvinces();
-  useFetchMe();
-  const renderTabBar = (bottomTabBarProps: BottomTabBarProps) => {
-    return <MyTabBar {...bottomTabBarProps} />;
-  };
-  return (
-    <Tab.Navigator
-      initialRouteName={'Home'}
-      screenOptions={{
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-      }}
-      tabBar={renderTabBar}
-    >
-      <Tab.Screen name={'Home'} component={Screen.Home} />
+    useFetchProvinces();
+    useFetchTourGuidePopular();
+    useFetchPopularTours();
+    useFetchMe();
+    const renderTabBar = (bottomTabBarProps: BottomTabBarProps) => {
+        return <MyTabBar {...bottomTabBarProps} />;
+    };
+    return (
+        <Tab.Navigator
+            initialRouteName={'Home'}
+            screenOptions={{
+                headerShown: false,
+                tabBarHideOnKeyboard: true,
+            }}
+            tabBar={renderTabBar}
+        >
+            <Tab.Screen name={'Home'} component={Screen.Home} />
 
       <Tab.Screen name={'Location'} component={Screen.Location} />
 

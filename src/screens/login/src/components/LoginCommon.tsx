@@ -11,12 +11,14 @@ import { GlobalVariables } from 'constants/index';
 import { useTheme } from 'hooks/useTheme';
 import { resetStack } from 'navigation/utils';
 import { ELoginScreenTabKey, LoginScreenRouteProps } from 'screens/login/LoginScreen';
-import { apiLogin, apiLoginTourGuide } from 'screens/login/src/api';
+// import { apiLogin, apiLoginTourGuide } from 'screens/login/src/api';
 import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
 import { showCustomToast } from 'utils/toast';
+import { useAppDispatch } from 'states';
+import { apiLoginTourGuide, apiLoginUser } from 'states/user';
 
 interface ILoginCommonProps {
     route: LoginScreenRouteProps;
@@ -31,19 +33,19 @@ const LoginCommon = (props: ILoginCommonProps) => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const dispatch = useAppDispatch();
+
     const onLogin = async () => {
         try {
+            let response;
             showLoading();
-            const response = key === ELoginScreenTabKey.user ? await apiLogin(email, password) : await apiLoginTourGuide(email, password);
-            hideLoading();
-            if (response?.returnValue?.accessToken) {
-                GlobalVariables.tokenInfo = {
-                    accessToken: response?.returnValue?.accessToken,
-                    refreshToken: response?.returnValue?.refreshToken,
-                };
-                Storages.saveObject(KeyStorage.Token, GlobalVariables.tokenInfo);
-                resetStack('Main');
+            // const response = key === ELoginScreenTabKey.user ? await apiLogin(email, password) : await apiLoginTourGuide(email, password);
+            if (key === ELoginScreenTabKey.user) {
+                await dispatch(apiLoginUser({ email, password }));
+            } else {
+                await dispatch(apiLoginTourGuide({email, password}));
             }
+            hideLoading();
         } catch (error) {
             hideLoading();
             showCustomToast(error?.response?.data?.info?.message)

@@ -1,11 +1,4 @@
 
-interface ResponseApiBase {
-    code: string;
-    message: string;
-    statusCode: number;
-    returnValue: [];
-}
-
 interface ProvincesState {
     data: location.Province[];
     loadingKeys: Record<string, boolean>;
@@ -28,9 +21,14 @@ interface Profile {
     role: string;
 }
 
+interface IUserToken {
+    accessToken?: string;
+    refreshToken?: string;
+}
+
 interface UserState {
     profile: Profile;
-    token: string;
+    tokenInfo: IUserToken;
     userVouchers: [];
     userFavorites: [];
     orders: [];

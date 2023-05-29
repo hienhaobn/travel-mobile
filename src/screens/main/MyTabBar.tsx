@@ -34,7 +34,6 @@ const MyTabBar = (props: BottomTabBarProps) => {
         const isFocused = state.index === index;
 
         const onPress = () => {
-          console.log(isFocused)
           if (!isFocused) {
             navigate(route.name as keyof RootNavigatorParamList);
           }

@@ -23,4 +23,17 @@ declare namespace user {
         totalPages: number;
         limit: number;
     }
+
+    interface UserLoginResponse extends common.Response{
+        returnValue: UserLoginResponseReturnValue;
+    }
+
+    interface UserLoginResponseReturnValue {
+        accessToken: string
+        refreshToken: string
+        id: number
+        email: string
+        verifyStatus: string
+        role: string
+    }
 }
