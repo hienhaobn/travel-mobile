@@ -45,7 +45,7 @@ const MyTabBar = (props: BottomTabBarProps) => {
           <TouchableOpacity shouldHaptic key={index.toString()} style={styles.btnTab} onPress={onPress}>
             <IconTab width={scales(27)} height={scales(27)} />
             <Text style={[styles.title, { color: isFocused ? getThemeColor().Color_Primary : getThemeColor().Text_Dark_1 }]}>
-              {t(`tabBar.${lowerFirst(route.name)}`)}
+              {t(`${upperFirst(route.name)}`)}
             </Text>
           </TouchableOpacity>
         );

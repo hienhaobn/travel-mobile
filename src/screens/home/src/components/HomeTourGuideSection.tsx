@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Images from '../../../../assets/images';
 import { goToTourGuideInfo } from '../../../accountInfo/src/utils';
 
 import { getTopTourGuides } from '../api';
@@ -40,7 +41,7 @@ const HomeTourGuideSection = () => {
         return (
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {tourGuides.map((tourguide, index) => (
-                    <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} key={index} onPress={goToTourGuideInfo}>
+                    <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} key={index} onPress={() => goToTourGuideInfo(tourguide?.tourGuideId)}>
                         <View style={styles.itemContentContainer}>
                             <FastImage source={tourguide?.tourGuideAvatar ? { uri: tourguide.tourGuideAvatar } : Images.Vourcher_2} style={styles.itemImages} />
                             <View style={styles.itemHeaderContainer}>

@@ -27,6 +27,37 @@ declare namespace tourGuide {
         star: string;
     }
 
+    interface TourGuideProfile {
+        available: boolean;
+        availableBalance: number;
+        avatar: string;
+        balance: number;
+        bio: string;
+        cancelledOrders: number;
+        createdAt: string;
+        deletedAt: string;
+        dob: string;
+        email: string;
+        gender: string;
+        id: number;
+        interviewDate: string;
+        name: string;
+        numOfFavorites: number | string;
+        password: string;
+        phone: string;
+        updatedAt: string;
+        username: string;
+        verifyStatus: string;
+        warningTime: number | string;
+    }
+
+    interface TourGuideProfileResponse {
+        returnValue: TourGuideProfile;
+        message: string;
+        code: string;
+        statusCode: string;
+    }
+
     interface TourGuideResponse {
         returnValue: {
             data: TourGuide[];
@@ -40,3 +71,5 @@ declare namespace tourGuide {
         statusCode: string;
     }
 }
+
+

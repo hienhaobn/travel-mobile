@@ -18,11 +18,10 @@ export type RootNavigatorParamList = {
     Withdraw: undefined;
     AccountInfo: undefined;
     EditProfile: undefined;
-    TourGuideInfo: undefined;
-    Conversation: undefined;
+    TourGuideInfo: { tourGuideId: string };
+    Conversation: { chatId: string };
     PostDetail: undefined;
     ListPostScreen: undefined;
     ListTourScreen: undefined;
-    TourGuideInforScreen: undefined;
-    ListTourGuideScreen: undefined;
+    ListTourGuide: undefined;
 };

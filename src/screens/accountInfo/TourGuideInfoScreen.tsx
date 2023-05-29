@@ -1,3 +1,4 @@
+import { RouteProp } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 
@@ -10,10 +11,11 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Images from '../../assets/images';
 import TouchableOpacity from '../../components/TouchableOpacity';
+import { RootNavigatorParamList } from '../../navigation/types';
+import { goToConversation } from '../conversation/src/utils';
 import TourGuideInfoScene from './src/components/TourGuideInfoScene';
 import TourGuideRateScene from './src/components/TourGuideRateScene';
 import TourOfTouGuideScene from './src/components/TourOfTourGuideScene';
-
 
 enum TourGuideInfoTab {
     info = 'info',
@@ -34,17 +36,24 @@ const TABS = [
         key: TourGuideInfoTab.rate,
         title: 'Đánh giá',
     },
-]
+];
 
-function TourGuideInfoScreen(props) {
+interface ITourGuideInfoScreenProps {
+    route: RouteProp<RootNavigatorParamList, 'TourGuideInfo'>
+}
+
+function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+    const { route } = props;
+    const { tourGuideId } = route.params;
+
+    console.log('tourGuideId', tourGuideId);
     const [currentTab, setCurrentTab] = useState<string>(TourGuideInfoTab.info);
 
     const renderHeader = () => (
         <Header title='Thông tin hướng dẫn viên' />
     );
-
 
     const renderTabSelect = () => (
         <View style={{ flexDirection: 'row' }}>
@@ -117,7 +126,7 @@ function TourGuideInfoScreen(props) {
             <View style={[styles.nameAndAvatarContianer, { justifyContent: 'space-between', alignItems: 'center', marginVertical: 0 }]}>
                 <Text style={styles.name}>Duy Khánh Vy</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity style={styles.sendMessageContainer}>
+                    <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId)}>
                         <Text style={styles.sendMessage}>Nhắn tin</Text>
                     </TouchableOpacity>
                     <View style={styles.heartContainer}>

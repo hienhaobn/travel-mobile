@@ -1,39 +1,47 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import { useTheme } from 'hooks/useTheme';
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import Avatar from '../../../../components/Avatar';
+import Avatar from 'components/Avatar';
+import { ESender } from 'constants/chat';
+import { useSelectProfile } from 'states/user/hooks';
 
 interface IMessageItemProps {
-    isSender: boolean;
+    message: chat.Message;
+    tourGuide?: tourGuide.TourGuideProfile;
 }
 
 function MessageItem(props: IMessageItemProps) {
     const { theme } = useTheme();
     const styles = myStyle(theme);
 
-    const { isSender } = props;
+    const { message, tourGuide } = props;
 
-    const renderAvatar = () => (
-        <View style={styles.infoUser}>
-            <Avatar imageStyle={styles.avatar}/>
-        </View>
-    );
+    const userProfile = useSelectProfile();
+
+    const renderAvatar = useCallback(() => {
+        let url = message?.sender === ESender.USER ? userProfile?.avatar : tourGuide?.avatar;
+        return (
+            <View style={styles.infoUser}>
+                <Avatar imageStyle={styles.avatar} imageUrl={url}/>
+            </View>
+        )
+    }, [tourGuide, userProfile]);
 
     return (
         <View style={styles.container}>
-            <View style={[styles.messageContainer, isSender ? { alignSelf: 'flex-end' } : {}]}>
+            <View style={[styles.messageContainer, message?.sender === ESender.USER ? { alignSelf: 'flex-end' } : {}]}>
                 {
-                    !isSender ? renderAvatar() : null
+                    message?.sender === ESender.USER ? null : renderAvatar()
                 }
-                <View style={[styles.content, !isSender ? { backgroundColor: getThemeColor().Color_Gray2 } : {  }]}>
-                    <Text style={styles.messageTxt}>MessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessage MessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessage</Text>
+                <View style={[styles.content, message?.sender === ESender.USER ? {} : { backgroundColor: getThemeColor().Color_Gray2 } ]}>
+                    <Text style={styles.messageTxt}>{message?.message || ''}</Text>
                 </View>
                 {
-                    isSender ? renderAvatar() : null
+                    message?.sender === ESender.USER ? renderAvatar() : null
                 }
             </View>
         </View>
@@ -54,7 +62,7 @@ const myStyle = (theme: string) => {
             paddingVertical: scales(10),
             marginHorizontal: scales(10),
             borderRadius: scales(20),
-            width: Sizes.scrWidth - scales(90),
+            maxWidth: Sizes.scrWidth - scales(90),
         },
         messageTxt: {
             ...Fonts.inter400,

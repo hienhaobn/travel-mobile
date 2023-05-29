@@ -2,8 +2,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useRef } from 'react';
 import { Linking, StatusBar, Text } from 'react-native';
-import TourGuideInfoScreen from '../screens/accountInfo/TourGuideInfoScreen';
-import SocketUtils from '../services/socket';
 
 import { RootNavigatorParamList } from './types';
 import { getCurrentRoute, navigationRef, resetStack } from './utils';
@@ -67,9 +65,7 @@ const RootStack = () => {
 
       <Stack.Screen name='ListTourScreen' component={Screen.ListTourScreen} />
 
-      <Stack.Screen name='TourGuideInforScreen' component={Screen.TourGuideInforScreen} />
-
-      <Stack.Screen name='ListTourGuideScreen' component={Screen.ListTourGuideScreen} />
+      <Stack.Screen name='ListTourGuide' component={Screen.ListTourGuideScreen} />
     </Stack.Navigator>
   );
 };

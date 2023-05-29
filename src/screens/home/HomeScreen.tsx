@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import SocketUtils from '../../services/socket';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import SocketUtils from 'services/socket';
+import SvgIcons from 'assets/svgs';
 
+import Input from '../../components/Input';
 import HomeBanner from './src/components/HomeBanner';
 import HomeOptions from './src/components/HomeOptions';
 import HomePostSection from './src/components/HomePostSection';
 import HomeTourGuideSection from './src/components/HomeTourGuideSection';
 import HomeTourSection from './src/components/HomeTourSection';
-
 import { useTheme } from 'hooks/useTheme';
 
 import { getThemeColor } from 'utils/getThemeColor';

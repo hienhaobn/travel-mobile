@@ -1,23 +1,75 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useTheme } from 'hooks/useTheme';
+import { Subscription } from 'rxjs';
+import SocketUtils, { EVENTS_SOCKET } from 'services/socket';
+import { RootNavigatorParamList } from 'navigation/types';
+import { goBack } from 'navigation/utils';
 import { getThemeColor } from 'utils/getThemeColor';
 import SvgIcons from 'assets/svgs';
+
 import TouchableOpacity from 'components/TouchableOpacity';
 import { scales } from 'utils/scales';
 import Avatar from 'components/Avatar';
-import Input from '../../components/Input';
-import { goBack } from '../../navigation/utils';
-import { Fonts, Sizes } from '../../themes';
+import Input from 'components/Input';
+import { Fonts, Sizes } from 'themes';
+import EventBus, { BaseEvent, EventBusName } from '../../services/event-bus';
+import { fetchTourGuideById } from '../../states/tourGuide/fetchProfileTourGuide';
 import MessageItem from './src/components/MessageItem';
 
 interface IConversationScreenProps {
-
+    route: RouteProp<RootNavigatorParamList, 'Conversation'>
 }
 
 function ConversationScreen(props: IConversationScreenProps) {
     const { theme } = useTheme();
     const styles = myStyle(theme);
+    const { chatId } = props.route.params;
+    const [contentMessage, setContentMessage] = useState<string>('');
+    const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
+    const [messages, setMessages] = useState<chat.Message[]>([]);
+    const socketRef = React.useRef(SocketUtils.getInstance().socket).current;
+    const subScription = new Subscription();
+
+    const getProfileTourGuide = async () => {
+        const profile = await fetchTourGuideById(parseInt(chatId));
+        setProfileTourGuide(profile);
+    };
+
+    useEffect(() => {
+        getProfileTourGuide();
+    }, []);
+
+    useEffect(() => {
+        onSignUpEventBus();
+        return () => {
+            subScription?.unsubscribe?.();
+        }
+    }, []);
+
+    const onSignUpEventBus = () => {
+        subScription.add(
+            EventBus.getInstance().events.subscribe((res: BaseEvent<chat.Message[]>) => {
+                if (res?.type === EVENTS_SOCKET.RECEIVE_MESSAGE) {
+                    if (res?.payload) {
+                        setMessages([...res?.payload])
+                    }
+                }
+            })
+        )
+    };
+
+    useEffect(() => {
+        socketRef?.emit("get-messages", { chatId });
+        socketRef?.emit("join-room", { chatId });
+    }, []);
+
+    const onSendMessage = () => {
+        socketRef?.emit('send-message', { chatId, content: contentMessage });
+        socketRef?.emit("get-messages", { chatId });
+        setContentMessage('');
+    };
 
     const renderHeader = () => (
         <View style={styles.wrapHeader}>
@@ -27,9 +79,9 @@ function ConversationScreen(props: IConversationScreenProps) {
                         <SvgIcons.IcBack width={scales(17)} height={scales(17)} color={getThemeColor().Text_Dark_1} />
                     </TouchableOpacity>
                     <View style={styles.headerLeftContainer}>
-                        <Avatar imageStyle={styles.avatar} />
+                        <Avatar imageStyle={styles.avatar} imageUrl={profileTourGuide?.avatar}/>
                         <View style={styles.onlineContainer}>
-                            <Text style={styles.name}>Duy Khánh Vy</Text>
+                            <Text style={styles.name}>{profileTourGuide?.name}</Text>
                             <Text style={styles.online}>Hoạt động 5 phút trước</Text>
                         </View>
                     </View>
@@ -43,8 +95,8 @@ function ConversationScreen(props: IConversationScreenProps) {
 
     const renderMessages = () => (
         <FlatList
-            data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}
-            renderItem={(item) => <MessageItem isSender={item.item % 2 === 0} />}
+            data={messages}
+            renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
             style={styles.wrapperContent}
             contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps="handled"
@@ -62,10 +114,12 @@ function ConversationScreen(props: IConversationScreenProps) {
                 containerStyle={{ flex: 1, borderRadius: scales(20) }}
                 leftIcon={<SvgIcons.IcMessageText width={scales(17)} height={scales(17)} color={getThemeColor().Text_Dark_1} />}
                 leftIconStyle={styles.leftIcon}
+                value={contentMessage}
+                onChangeText={setContentMessage}
             />
-            <View style={styles.sendContainer}>
+            <TouchableOpacity style={styles.sendContainer} onPress={onSendMessage}>
                 <SvgIcons.IcSend width={scales(22)} height={scales(22)} color={getThemeColor().Text_Dark_1} />
-            </View>
+            </TouchableOpacity>
         </View>
     );
 

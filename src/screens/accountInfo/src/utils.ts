@@ -3,4 +3,4 @@ import TourGuideInfoScreen from '../TourGuideInfoScreen';
 
 export const goToAccountInfo = () => navigate('AccountInfo');
 
-export const goToTourGuideInfo = () => navigate('TourGuideInfo');
+export const goToTourGuideInfo = (tourGuideId: string) => navigate('TourGuideInfo', { tourGuideId });

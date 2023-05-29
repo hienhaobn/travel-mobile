@@ -3,7 +3,6 @@ import { onPushEventBus } from 'services/event-bus';
 import store from '../states';
 
 export const EVENTS_SOCKET = {
-    MESSAGE: 'MESSAGE',
     RECEIVE_MESSAGE: 'receive-messages',
     RECEIVE_USERS: 'receive-users',
     GET_USERS: 'get-users',
@@ -50,28 +49,19 @@ export default class SocketUtils {
     }
 
     public listenEvents(userId?: number) {
-        this.listenMessage();
         this.listenReceiveMessage();
         this.listenReceiveUsers();
         this.connected();
     }
 
-    public listenMessage() {
-        this.socket.on(EVENTS_SOCKET.MESSAGE, () => {
-            onPushEventBus(EVENTS_SOCKET.MESSAGE);
-        })
-    }
-
     public listenReceiveMessage() {
-        this.socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (messages) => {
-            console.log('messages', messages);
-            onPushEventBus(EVENTS_SOCKET.RECEIVE_MESSAGE);
+        this.socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (messages: chat.Message[]) => {
+            onPushEventBus(EVENTS_SOCKET.RECEIVE_MESSAGE, messages);
         })
     }
 
     public listenReceiveUsers() {
         this.socket.on(EVENTS_SOCKET.RECEIVE_USERS, (users) => {
-            console.log('users', users);
             onPushEventBus(EVENTS_SOCKET.RECEIVE_USERS);
         })
     }

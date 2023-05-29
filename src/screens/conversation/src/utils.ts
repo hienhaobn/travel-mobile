@@ -1,3 +1,3 @@
 import { navigate } from 'navigation/utils';
 
-export const goToConversation = () => navigate('Conversation');
+export const goToConversation = (chatId: string) => navigate('Conversation', { chatId });

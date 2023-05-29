@@ -30,15 +30,16 @@ const Main = () => {
             }}
             tabBar={renderTabBar}
         >
-            <Tab.Screen name={'Home'} component={Screen.Home} />
 
-      <Tab.Screen name={'Location'} component={Screen.Location} />
+        <Tab.Screen name={'Home'} component={Screen.Home} />
 
-      {/* <Tab.Screen name={'Messenger'} component={Screen.Messenger} /> */}
+        <Tab.Screen name={'Location'} component={Screen.Location} />
 
-      {/* <Tab.Screen name={'Favorite'} component={Screen.Favorite} /> */}
+        <Tab.Screen name={'Messenger'} component={Screen.Messenger} />
 
-      <Tab.Screen name={'Account'} component={Screen.Account} />
+        <Tab.Screen name={'Favorite'} component={Screen.Favorite} />
+
+        <Tab.Screen name={'Account'} component={Screen.Account} />
 
     </Tab.Navigator>
   );
