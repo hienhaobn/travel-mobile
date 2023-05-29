@@ -27,7 +27,7 @@ function LocationDetailTourItem(props: ILocationDetailTourItemProps) {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const { tour } = props;
-  console.log(tour)
+  console.log({ tour })
   const onTourOrder = async () => {
     onPushEventBus(EventBusName.OPEN_BOTTOM_SHEET_ORDER_TOUR, tour);
   };

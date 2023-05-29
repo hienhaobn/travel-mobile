@@ -49,3 +49,19 @@ export const getTopTours = async () => {
     console.log(error);
   }
 };
+
+export const getTopPosts = async () => {
+  const url = `/posts/top`;
+  try {
+    showLoading();
+    const res: { returnValue: [] } = await axiosInstance.get(url, {
+
+    });
+    hideLoading();
+    return res.returnValue;
+  } catch (error) {
+    hideLoading();
+    showCustomToast('Thất bại');
+    console.log(error);
+  }
+};

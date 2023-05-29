@@ -5,6 +5,7 @@ import Images from '../../../../assets/images';
 
 import { getTopTourGuides } from '../api';
 
+import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
 import TouchableOpacity from 'components/TouchableOpacity';
@@ -15,6 +16,7 @@ import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
+import { navigate } from 'navigation/utils';
 
 const HomeTourGuideSection = () => {
     const { theme } = useTheme();

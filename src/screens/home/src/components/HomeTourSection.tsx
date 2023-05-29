@@ -1,20 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { getTopTours } from '../api';
+
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
 import TouchableOpacity from 'components/TouchableOpacity';
 
+import { ETourTypesValue } from 'constants/tours';
 import { useTheme } from 'hooks/useTheme';
 
-import { getThemeColor } from 'utils/getThemeColor';
-import { scales } from 'utils/scales';
-
 import { Fonts, Sizes } from 'themes';
-import { getTopTours } from '../api';
-import { ETourTypesValue } from 'constants/tours';
+import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
+import { scales } from 'utils/scales';
+import { navigate } from 'navigation/utils';
+
 
 const HomePostSection = () => {
   const { theme } = useTheme();
@@ -31,7 +33,7 @@ const HomePostSection = () => {
     return (
       <View style={styles.headerContainer}>
         <Text style={styles.textTourGuide}>Tour phổ biến</Text>
-        <TouchableOpacity style={styles.showAllContainer}>
+        <TouchableOpacity style={styles.showAllContainer} onPress={() => navigate('ListTourScreen')}>
           <Text style={styles.textShowAll}>Xem tất cả</Text>
           <SvgIcons.IcForward width={scales(17)} height={scales(17)} color={getThemeColor().Color_Primary} />
         </TouchableOpacity>
@@ -41,7 +43,7 @@ const HomePostSection = () => {
 
   const renderItem = useCallback((tour) => {
     return (
-      <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} onPress={() => navigate('TourDetail', tour)}>
         <View style={styles.itemContentContainer}>
           <View>
             <Image source={{ uri: tour.images[Math.floor(Math.random() * tour.images.length)].url }} style={styles.itemImages} />

@@ -46,6 +46,8 @@ const RootStack = () => {
 
       <Stack.Screen name='Voucher' component={Screen.Voucher} />
 
+      <Stack.Screen name='Payment' component={Screen.Payment} />
+
       <Stack.Screen name='Deposit' component={Screen.Deposit} />
 
       <Stack.Screen name='Withdraw' component={Screen.Withdraw} />
@@ -54,6 +56,13 @@ const RootStack = () => {
 
       <Stack.Screen name='AccountInfo' component={Screen.AccountInfo} />
 
+      <Stack.Screen name='PostDetail' component={Screen.PostDetail} />
+
+      <Stack.Screen name='ListPostScreen' component={Screen.ListPostScreen} />
+      <Stack.Screen name='ListTourScreen' component={Screen.ListTourScreen} />
+      <Stack.Screen name='TourGuideInforScreen' component={Screen.TourGuideInforScreen} />
+
+      <Stack.Screen name='ListTourGuideScreen' component={Screen.ListTourGuideScreen} />
     </Stack.Navigator>
   );
 };

@@ -57,28 +57,28 @@ const HomeScreen = () => {
     );
   }, []);
 
-  // const renderSearchComponent = useCallback(() => {
-  //   return (
-  //     <View style={styles.searchContainer}>
-  //       <View style={styles.icScan}>
-  //         <SvgIcons.IcScan color={getThemeColor().Text_Dark_1} width={scales(17)} height={scales(17)} />
-  //       </View>
-  //       <Input
-  //         placeholder="Tìm kiếm"
-  //         leftIcon={
-  //           <SvgIcons.IcSearch color={getThemeColor().Text_Dark_1} width={scales(24)} height={scales(24)} />
-  //         }
-  //         leftIconStyle={{
-  //           paddingLeft: scales(10),
-  //         }}
-  //         icon={
-  //           <SvgIcons.IcScan color={getThemeColor().Text_Dark_1} width={scales(17)} height={scales(17)} />
-  //         }
-  //         containerStyle={styles.inputContainer}
-  //       />
-  //     </View>
-  //   );
-  // }, []);
+  const renderSearchComponent = useCallback(() => {
+    return (
+      <View style={styles.searchContainer}>
+        <View style={styles.icScan}>
+          <SvgIcons.IcScan color={getThemeColor().Text_Dark_1} width={scales(17)} height={scales(17)} />
+        </View>
+        <Input
+          placeholder="Tìm kiếm"
+          leftIcon={
+            <SvgIcons.IcSearch color={getThemeColor().Text_Dark_1} width={scales(24)} height={scales(24)} />
+          }
+          leftIconStyle={{
+            paddingLeft: scales(10),
+          }}
+          icon={
+            <SvgIcons.IcScan color={getThemeColor().Text_Dark_1} width={scales(17)} height={scales(17)} />
+          }
+          containerStyle={styles.inputContainer}
+        />
+      </View>
+    );
+  }, []);
 
   const renderContent = () => {
     return (
@@ -101,7 +101,7 @@ const HomeScreen = () => {
       style={{
         backgroundColor: getThemeColor().Color_Secondary_Green,
       }}>
-      {renderHeader()}
+      {/* {renderHeader()} */}
       {renderContent()}
     </ScrollView>
   );
