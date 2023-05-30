@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useTheme } from 'hooks/useTheme';
 import { RootNavigatorParamList } from 'navigation/types';
 import { goBack } from 'navigation/utils';
+import { useSelectProfile } from 'states/user/hooks';
 import { getThemeColor } from 'utils/getThemeColor';
 import SvgIcons from 'assets/svgs';
 
@@ -28,6 +29,8 @@ function ConversationScreen(props: IConversationScreenProps) {
     const [contentMessage, setContentMessage] = useState<string>('');
     const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
     const [messages, setMessages] = useState<chat.Message[]>([]);
+
+    const profileMe = useSelectProfile();
 
     const socket = useContext(SocketContext);
 

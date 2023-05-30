@@ -137,7 +137,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
                 </View>
             </View>
             <View style={[styles.nameAndAvatarContianer, { justifyContent: 'space-between', alignItems: 'center', marginVertical: 0 }]}>
-                <Text style={styles.name}>Duy Khánh Vy</Text>
+                <Text style={styles.name}>{profileTourGuide?.name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId)}>
                         <Text style={styles.sendMessage}>Nhắn tin</Text>

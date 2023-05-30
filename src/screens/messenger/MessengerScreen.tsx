@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-
-import { io } from 'socket.io-client';
+import { useFocusEffect } from '@react-navigation/native';
+import Avatar from 'components/Avatar';
+import { ESender } from 'constants/chat';
+import { EVENTS_SOCKET } from 'constants/socket';
+import { SocketContext } from 'contexts/SocketContext';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
@@ -20,18 +24,40 @@ import { goToConversation } from '../conversation/src/utils';
 const MessengerScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+    const socket = useContext(SocketContext);
+    const [conversations, setConversations] = useState<chat.Message[]>([]);
 
-    const renderConversation = useCallback(
-        () => (
-            <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={goToConversation}>
+    useFocusEffect(useCallback(() => {
+        socket.emit(EVENTS_SOCKET.GET_USERS)
+        return () => {
+            socket.off(EVENTS_SOCKET.GET_USERS);
+        }
+    }, []));
+
+    useEffect(() => {
+        socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (messages) => {
+            console.log('message', messages);
+        });
+        socket.on(EVENTS_SOCKET.RECEIVE_USERS, (conversations) => {
+            setConversations(conversations);
+        })
+        return () => {
+            socket.off(EVENTS_SOCKET.RECEIVE_MESSAGE);
+        }
+    }, []);
+
+    const renderConversation = (item: chat.Message) => {
+        const name = item.sender === ESender.USER ? item?.user?.username : item?.tourGuide?.username;
+        const lastMessage = item?.message;
+        const imageUrl = item.sender === ESender.USER ? item?.user?.avatar : item?.tourGuide?.avatar;
+        const chatId = item.sender === ESender.USER ? item?.userId : item?.tourGuideId;
+        return (
+            <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(`${chatId}`)}>
                 <View style={styles.leftContainer}>
-                    <Image
-                        source={Images.Mountain}
-                        style={{ width: scales(50), height: scales(50), borderRadius: scales(50) }}
-                    />
+                    <Avatar imageStyle={styles.avatar} imageUrl={imageUrl} />
                     <View style={styles.messageContainer}>
-                        <Text style={styles.account}>Nguyen Duy Khanh</Text>
-                        <Text style={styles.message}>Thanks for contacting me!</Text>
+                        <Text style={styles.account}>{name}</Text>
+                        <Text style={styles.message} numberOfLines={1}>{lastMessage}</Text>
                     </View>
                 </View>
                 <View>
@@ -41,9 +67,8 @@ const MessengerScreen = () => {
                     </View>
                 </View>
             </TouchableOpacity>
-        ),
-        [],
-    );
+        )
+    };
 
     const renderHeader = useCallback(
         () => (
@@ -66,8 +91,8 @@ const MessengerScreen = () => {
         <View style={styles.container}>
             {renderHeader()}
             <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}
-                renderItem={renderConversation}
+                data={conversations}
+                renderItem={(item) => renderConversation(item.item)}
                 keyExtractor={(item) => item.toString()}
                 initialNumToRender={10}
                 showsVerticalScrollIndicator={false}
@@ -113,6 +138,7 @@ const myStyles = (theme: string) => {
         },
         messageContainer: {
             marginLeft: scales(10),
+            maxWidth: Sizes.scrWidth - scales(120),
         },
         account: {
             ...Fonts.inter700,
@@ -123,6 +149,7 @@ const myStyles = (theme: string) => {
             ...Fonts.inter400,
             fontSize: scales(12),
             color: color.Text_Dark_1,
+            marginTop: scales(5),
         },
         time: {
             ...Fonts.inter400,
@@ -143,5 +170,9 @@ const myStyles = (theme: string) => {
             justifyContent: 'center',
             alignSelf: 'flex-end',
         },
+        avatar: {
+            width: scales(50),
+            height: scales(50),
+        }
     });
 };
