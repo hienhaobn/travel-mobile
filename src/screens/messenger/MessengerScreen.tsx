@@ -15,17 +15,11 @@ import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
-import Storages, { KeyStorage } from 'utils/storages';
-import { IToken } from 'constants/global-variables';
-import SocketUtils, { EVENTS_SOCKET } from '../../services/socket';
 import { goToConversation } from '../conversation/src/utils';
 
 const MessengerScreen = () => {
     const { theme } = useTheme();
     const styles = myStyles(theme);
-    const [socketInstance, setSocketInstance] = useState(null);
-    const [users, setUsers] = useState([]);
-    const socketRef = React.useRef(SocketUtils.getInstance().socket).current;
 
     const renderConversation = useCallback(
         () => (

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import SocketUtils from 'services/socket';
 import SvgIcons from 'assets/svgs';
 
 import Input from '../../components/Input';
@@ -21,10 +20,6 @@ const HomeScreen = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = myStyles(theme);
-
-  useEffect(() => {
-    SocketUtils.getInstance().connect();
-  }, []);
 
   const renderHeader = useCallback(() => {
     return (

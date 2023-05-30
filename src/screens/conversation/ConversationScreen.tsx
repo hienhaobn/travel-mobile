@@ -1,9 +1,9 @@
 import { RouteProp } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { EVENTS_SOCKET } from 'constants/socket';
+import { SocketContext } from 'contexts/SocketContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useTheme } from 'hooks/useTheme';
-import { Subscription } from 'rxjs';
-import SocketUtils, { EVENTS_SOCKET } from 'services/socket';
 import { RootNavigatorParamList } from 'navigation/types';
 import { goBack } from 'navigation/utils';
 import { getThemeColor } from 'utils/getThemeColor';
@@ -14,8 +14,7 @@ import { scales } from 'utils/scales';
 import Avatar from 'components/Avatar';
 import Input from 'components/Input';
 import { Fonts, Sizes } from 'themes';
-import EventBus, { BaseEvent, EventBusName } from '../../services/event-bus';
-import { fetchTourGuideById } from '../../states/tourGuide/fetchProfileTourGuide';
+import { fetchTourGuideById } from 'states/tourGuide/fetchProfileTourGuide';
 import MessageItem from './src/components/MessageItem';
 
 interface IConversationScreenProps {
@@ -29,8 +28,20 @@ function ConversationScreen(props: IConversationScreenProps) {
     const [contentMessage, setContentMessage] = useState<string>('');
     const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
     const [messages, setMessages] = useState<chat.Message[]>([]);
-    const socketRef = React.useRef(SocketUtils.getInstance().socket).current;
-    const subScription = new Subscription();
+
+    const socket = useContext(SocketContext);
+
+    useEffect(() => {
+        socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (res) => {
+            setMessages([...messages, ...res]);
+        });
+        return () => {
+            socket.off(EVENTS_SOCKET.RECEIVE_MESSAGE);
+            socket.off(EVENTS_SOCKET.JOIN_ROOM);
+            socket.off(EVENTS_SOCKET.GET_MESSAGES);
+            socket.off(EVENTS_SOCKET.SEND_MESSAGE);
+        }
+    }, []);
 
     const getProfileTourGuide = async () => {
         const profile = await fetchTourGuideById(parseInt(chatId));
@@ -42,32 +53,15 @@ function ConversationScreen(props: IConversationScreenProps) {
     }, []);
 
     useEffect(() => {
-        onSignUpEventBus();
-        return () => {
-            subScription?.unsubscribe?.();
-        }
-    }, []);
-
-    const onSignUpEventBus = () => {
-        subScription.add(
-            EventBus.getInstance().events.subscribe((res: BaseEvent<chat.Message[]>) => {
-                if (res?.type === EVENTS_SOCKET.RECEIVE_MESSAGE) {
-                    if (res?.payload) {
-                        setMessages([...res?.payload])
-                    }
-                }
-            })
-        )
-    };
-
-    useEffect(() => {
-        socketRef?.emit("get-messages", { chatId });
-        socketRef?.emit("join-room", { chatId });
+        socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
+        socket.emit(EVENTS_SOCKET.JOIN_ROOM, { chatId });
     }, []);
 
     const onSendMessage = () => {
-        socketRef?.emit('send-message', { chatId, content: contentMessage });
-        socketRef?.emit("get-messages", { chatId });
+        // socketRef?.emit('send-message', { chatId, content: contentMessage });
+        // socketRef?.emit("get-messages", { chatId });
+        socket.emit(EVENTS_SOCKET.SEND_MESSAGE, { chatId, content: contentMessage })
+        socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
         setContentMessage('');
     };
 
