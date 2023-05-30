@@ -1,13 +1,15 @@
 import { RouteProp } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 
 import SvgIcons from 'assets/svgs';
 import Avatar from 'components/Avatar';
 import Header from 'components/Header';
 import { useTheme } from 'hooks/useTheme';
+import { fetchTourGuideById } from 'states/tourGuide/fetchProfileTourGuide';
 import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
+import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
 import Images from '../../assets/images';
 import TouchableOpacity from '../../components/TouchableOpacity';
@@ -48,8 +50,19 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
     const { route } = props;
     const { tourGuideId } = route.params;
 
-    console.log('tourGuideId', tourGuideId);
     const [currentTab, setCurrentTab] = useState<string>(TourGuideInfoTab.info);
+    const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
+
+    const getProfileTourGuide = async () => {
+        const profile = await fetchTourGuideById(parseInt(tourGuideId));
+
+        console.log('profile', profile);
+        setProfileTourGuide(profile);
+    };
+
+    useEffect(() => {
+        getProfileTourGuide();
+    }, []);
 
     const renderHeader = () => (
         <Header title='Thông tin hướng dẫn viên' />
@@ -87,11 +100,11 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
 
     const renderContentTab = () => {
         if (currentTab === TourGuideInfoTab.info) {
-            return <TourGuideInfoScene />
+            return <TourGuideInfoScene profile={profileTourGuide}/>
         } else if (currentTab === TourGuideInfoTab.tour) {
-            return <TourOfTouGuideScene />
+            return <TourOfTouGuideScene profile={profileTourGuide}/>
         } else {
-            return <TourGuideRateScene />
+            return <TourGuideRateScene profile={profileTourGuide}/>
         }
     }
 
@@ -144,7 +157,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
                     <Image source={Images.StarTourGuide} style={styles.imageRate} />
                     <View style={styles.rateInfoContainer}>
                         <Text style={styles.titleRate}>Đánh giá</Text>
-                        <Text style={styles.countRate}>4<Text style={{ marginLeft: scales(5) }}>(3.2k)</Text></Text>
+                        <Text style={styles.countRate}>{formatCurrency(profileTourGuide?.avgStar, 2)}<Text style={{ marginLeft: scales(5) }}>(3.2k)</Text></Text>
                     </View>
                 </View>
             </View>

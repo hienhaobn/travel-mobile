@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
@@ -6,27 +7,32 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import { Fonts } from '../../../../themes';
 
-function TourGuideInfoScene(props) {
+interface ITourGuideInfoSceneProps {
+    profile: tourGuide.TourGuideProfile;
+}
+
+function TourGuideInfoScene(props: ITourGuideInfoSceneProps) {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+    const { profile } = props;
 
     return (
         <View style={styles.container}>
             <View style={styles.infoContainer}>
-                <Text style={styles.title}>Tên:</Text>
-                <Text style={styles.value}>Duy Khánh Vy</Text>
+                <Text style={styles.title}>Tên: </Text>
+                <Text style={styles.value}>{profile?.name}</Text>
             </View>
             <View style={styles.infoContainer}>
-                <Text style={styles.title}>Tuổi::</Text>
-                <Text style={styles.value}>28</Text>
+                <Text style={styles.title}>Tuổi: </Text>
+                <Text style={styles.value}>{moment(profile?.dob).format('DD/MM/YYYY')}</Text>
             </View>
             <View style={styles.infoContainer}>
-                <Text style={styles.title}>Địa điểm:</Text>
+                <Text style={styles.title}>Địa điểm: </Text>
                 <Text style={styles.value}>Hà Nam; Nam Định; Ninh Bình</Text>
             </View>
             <View>
                 <Text style={styles.title}>Về bản thân:</Text>
-                <Text style={styles.value}>Là một hướng dẫn viên giàu nhiệt huyết, biết nhiều địa điểm ăn uống nổi tiếng trong khu vực.</Text>
+                <Text style={styles.value}>{profile?.bio}</Text>
             </View>
         </View>
     );

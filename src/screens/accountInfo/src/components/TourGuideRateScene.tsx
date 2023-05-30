@@ -5,9 +5,14 @@ import { useTheme } from 'hooks/useTheme';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-function TouGuideRateScene(props) {
+interface ITouGuideRateSceneProps {
+    profile: tourGuide.TourGuideProfile;
+}
+
+function TouGuideRateScene(props: ITouGuideRateSceneProps) {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+    const { profile } = props;
 
     return (
         <View></View>

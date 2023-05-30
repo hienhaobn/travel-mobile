@@ -5,9 +5,14 @@ import { useTheme } from 'hooks/useTheme';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
-function TourOfTouGuideScene(props) {
+interface ITourOfTouGuideSceneProps {
+    profile: tourGuide.TourGuideProfile;
+}
+
+function TourOfTouGuideScene(props: ITourOfTouGuideSceneProps) {
     const { theme } = useTheme();
     const styles = myStyles(theme);
+    const { profile } = props;
 
     return (
         <View></View>

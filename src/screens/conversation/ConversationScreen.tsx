@@ -58,8 +58,6 @@ function ConversationScreen(props: IConversationScreenProps) {
     }, []);
 
     const onSendMessage = () => {
-        // socketRef?.emit('send-message', { chatId, content: contentMessage });
-        // socketRef?.emit("get-messages", { chatId });
         socket.emit(EVENTS_SOCKET.SEND_MESSAGE, { chatId, content: contentMessage })
         socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
         setContentMessage('');

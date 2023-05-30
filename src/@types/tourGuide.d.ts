@@ -48,6 +48,7 @@ declare namespace tourGuide {
         updatedAt: string;
         username: string;
         verifyStatus: string;
+        avgStar: string;
         warningTime: number | string;
     }
 
