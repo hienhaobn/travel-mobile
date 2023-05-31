@@ -1,14 +1,9 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-
 import { hideLoading, showLoading } from 'components/Loading';
-
 import { BASE_URL } from 'configs/api';
-
 import { IToken } from 'constants/global-variables';
-
 import axiosInstance from 'services/api-requests';
-
 import Storages, { KeyStorage } from 'utils/storages';
 import { showCustomToast } from 'utils/toast';
 
@@ -54,4 +49,28 @@ export const getTourguideByProvince = async (provinceId: number) => {
         showCustomToast('Thất bại');
         console.log(error);
     }
+};
+
+export const likeProvince = async (provinceId: number) => {
+    const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
+    const response = await axios.put(
+        `${BASE_URL}/users/favorite`,
+        { provinceId },
+        {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}` },
+        }
+    );
+    return response.data.returnValue;
+};
+
+export const checkIsLiked = async (provinceId: number) => {
+    const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
+    const response = await axios.put(
+        `${BASE_URL}/users/check-favorite`,
+        { provinceId },
+        {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}` },
+        }
+    );
+    return response.data.returnValue;
 };

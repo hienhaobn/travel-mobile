@@ -15,7 +15,7 @@ import {
 import RenderHtml from 'react-native-render-html';
 
 import ConfirmPopup, { IConfirmPopupRef } from './ConfirmPopup';
-import { createComment, deleteComments, getPostComments, putComments } from './src/api';
+import { checkIsLiked, createComment, deleteComments, dislikePost, getPostComments, likePost, putComments } from './src/api';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
@@ -38,16 +38,32 @@ const PostDetail = (props) => {
   const styles = myStyles(theme);
   const post = props.route.params;
   const [show, setShow] = useState(false);
-  const [like, setLike] = useState(3);
-  const onHandleLike = () => {
-    setLike(like + 1);
+  const [like, setLike] = useState(post.like);
+  const [isLiked, setIsLiked] = useState(false);
+  const onHandleLike = async () => {
+
+    await likePost(post.id);
+    // hideLoading();
+    setLike(isLiked ? like - 1 : like + 1);
+    setIsLiked(!isLiked);
+    getIsLiked();
   };
+  const getIsLiked = async () => {
+    const responseIsLiked = await
+      checkIsLiked(post.id);
+    setIsLiked(responseIsLiked);
+  }
+  useEffect(() => {
+    getIsLiked();
+  }, []);
+
   const [openReport, setOpenReport] = React.useState(false);
   const profile = useSelectProfile();
   const onPressBookmark = () => { };
   const onPressEllipsis = () => {
     setShow(!show);
   };
+
   return (
     <View style={styles.container}>
       <Header title='Bài viết' />
@@ -81,18 +97,28 @@ const PostDetail = (props) => {
             </View>
 
             <View style={styles.actionsContainer}>
+              <Text style={styles.numberLike}>
+                {like}
+              </Text>
               <TouchableOpacity style={{ marginHorizontal: scales(10) }} onPress={onPressBookmark}>
-                <SvgIcons.IcHeartOutline
+                {isLiked ? <SvgIcons.IcHeartRed
                   color={getThemeColor().grey}
-                  width={scales(20)}
-                  height={scales(20)}
-                />
+                  width={scales(22)}
+                  height={scales(22)}
+                  onPress={() => onHandleLike()}
+                /> : <SvgIcons.IcHeartOutline
+                  color={getThemeColor().grey}
+                  width={scales(22)}
+                  height={scales(22)}
+                  onPress={() => onHandleLike()}
+                />}
+
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setOpenReport(true)}>
                 <SvgIcons.IcWarning
                   color={getThemeColor().grey}
-                  width={scales(20)}
-                  height={scales(20)}
+                  width={scales(22)}
+                  height={scales(22)}
                 />
               </TouchableOpacity>
             </View>
@@ -522,7 +548,7 @@ const myStyles = (theme: string) => {
       backgroundColor: color.Color_Bg,
     },
     content: {
-      paddingHorizontal: 15,
+      paddingHorizontal: scales(15),
       marginTop: scales(20),
       marginBottom: scales(0),
       // height: Dimens.DEVICE_HEIGHT * 0.2,
@@ -535,9 +561,9 @@ const myStyles = (theme: string) => {
       justifyContent: 'space-between',
       backgroundColor: '#f5422a',
       color: '#fff',
-      paddingHorizontal: 10,
-      paddingVertical: 20,
-      paddingTop: 40,
+      paddingHorizontal: scales(10),
+      paddingVertical: scales(20),
+      paddingTop: scales(40),
     },
     icon: {
       color: '#fff',
@@ -545,53 +571,53 @@ const myStyles = (theme: string) => {
     headerName: {
       color: '#fff',
       fontWeight: '600',
-      fontSize: 18,
-      lineHeight: 24,
+      fontSize: scales(18),
+      lineHeight: scales(24),
     },
     main: {
-      marginBottom: 20,
+      marginBottom: scales(20),
       // height: Dimens.DEVICE_HEIGHT,
       flex: 1,
     },
     mainTopic: {
-      marginBottom: 20,
+      marginBottom: scales(20),
     },
     mainSubTitle: {
       color: '#757575',
-      fontSize: 14,
+      fontSize: scales(14),
       fontWeight: '500',
-      lineHeight: 18,
+      lineHeight: scales(18),
       textTransform: 'uppercase',
-      marginTop: 10,
+      marginTop: scales(10),
     },
-    mainTitle: { color: '#242424', fontSize: 28, fontWeight: '900', marginTop: 10 },
+    mainTitle: { color: '#242424', fontSize: scales(28), fontWeight: '900', marginTop: scales(10) },
     mainList: {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
-      fontSize: 14,
-      paddingLeft: 0,
+      fontSize: scales(14),
+      paddingLeft: scales(0),
     },
     mainItemText: {
       backgroundColor: '#f2f2f2',
-      borderRadius: 20,
+      borderRadius: scales(20),
       color: '#333',
       fontWeight: '500',
-      lineHeight: 18,
-      marginHorizontal: 3,
-      marginVertical: 2,
-      paddingHorizontal: 14,
-      paddingVertical: 13,
+      lineHeight: scales(18),
+      marginHorizontal: scales(3),
+      marginVertical: scales(2),
+      paddingHorizontal: scales(14),
+      paddingVertical: scales(13),
     },
     blogList: {
-      marginTop: 0,
+      marginTop: scales(0),
     },
     blogItem: {
-      borderWidth: 2,
+      borderWidth: scales(2),
       borderColor: '#e8e8e8',
-      borderRadius: 16,
-      padding: 20,
-      marginTop: 10,
+      borderRadius: scales(16),
+      padding: scales(20),
+      marginTop: scales(10),
     },
     blogHeader: {
       alignItems: 'center',
@@ -606,10 +632,10 @@ const myStyles = (theme: string) => {
       justifyContent: 'space-between',
     },
     blogAvt: {
-      borderRadius: 9999,
-      height: 28,
+      borderRadius: scales(9999),
+      height: scales(28),
       resizeMode: 'cover',
-      width: 28,
+      width: scales(28),
       overflow: 'hidden',
     },
     imgAvt: {
@@ -617,20 +643,20 @@ const myStyles = (theme: string) => {
       height: '100%',
     },
     blogName: {
-      marginLeft: 8,
+      marginLeft: scales(8),
       color: '#292929',
-      fontSize: 12,
+      fontSize: scales(12),
       fontWeight: '600',
     },
     blogTime: {
-      fontSize: 13,
+      fontSize: scales(13),
       color: '#242424',
     },
     blogMain: {
       width: '100%',
-      height: 120,
-      marginTop: 10,
-      borderRadius: 10,
+      height: scales(120),
+      marginTop: scales(10),
+      borderRadius: scales(10),
       overflow: 'hidden',
     },
     img: {
@@ -638,14 +664,14 @@ const myStyles = (theme: string) => {
       height: '100%',
     },
     blogContent: {
-      marginTop: 10,
+      marginTop: scales(10),
     },
     blogTitle: {
       color: '#292929',
-      fontSize: 14,
+      fontSize: scales(14),
       fontWeight: '700',
-      lineHeight: 16,
-      marginBottom: 0,
+      lineHeight: scales(16),
+      marginBottom: scales(0),
     },
     blogDes: {},
     headerContainer: {
@@ -653,20 +679,20 @@ const myStyles = (theme: string) => {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 28,
+      marginBottom: scales(28),
     },
     userContainer: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: 20,
+      marginTop: scales(20),
     },
     avatarContainer: {
-      width: 50,
-      height: 50,
-      borderRadius: 999,
+      width: scales(50),
+      height: scales(50),
+      borderRadius: scales(999),
       overflow: 'hidden',
-      marginRight: 10,
+      marginRight: scales(10),
     },
     avatarImage: {
       width: '100%',
@@ -674,8 +700,10 @@ const myStyles = (theme: string) => {
     },
 
     infoContainer: {},
-    nameText: { color: '#292929', fontSize: 16, fontWeight: '600', margin: 0 },
-    timeText: { color: '#757575', margin: 0 },
+    nameText: { color: '#292929', fontSize: scales(16), fontWeight: '600', margin: scales(0) },
+    timeText: { color: '#757575', margin: scales(0) },
+    numberLike: { fontSize: scales(16), color: getThemeColor().Text_Dark_1, margin: scales(0) },
+
     actionsContainer: {
       flexDirection: 'row',
     },
@@ -683,7 +711,7 @@ const myStyles = (theme: string) => {
       flexDirection: 'row',
     },
     heading: {
-      fontSize: 24,
+      fontSize: scales(24),
       fontWeight: 'bold',
     },
     actionsIcon: {
@@ -694,43 +722,43 @@ const myStyles = (theme: string) => {
     reaction_wrapper: { flexDirection: 'row' },
     reaction_item: {
       flexDirection: 'row',
-      marginRight: 10,
-      padding: 5,
+      marginRight: scales(10),
+      padding: scales(5),
     },
-    reaction_item_edit: { flexDirection: 'row', marginRight: 10, padding: 0 },
+    reaction_item_edit: { flexDirection: 'row', marginRight: scales(10), padding: scales(0) },
     reaction_item_report: {
       flexDirection: 'row',
-      marginRight: 10,
-      marginTop: 10,
-      padding: 5,
+      marginRight: scales(10),
+      marginTop: scales(10),
+      padding: scales(5),
     },
     reaction_icon: {
       color: '#757575',
-      fontSize: 16,
+      fontSize: scales(16),
     },
     reaction_icon_report: {
       color: '#fff',
-      fontSize: 16,
-      marginLeft: 5,
+      fontSize: scales(16),
+      marginLeft: scales(5),
     },
     reaction_text: {},
     modalContent: {
       backgroundColor: 'white',
-      padding: 20,
-      borderRadius: 14,
+      padding: scales(20),
+      borderRadius: scales(14),
       width: '100%',
     },
     containerModal: {
       flex: 1,
-      borderRadius: 15,
+      borderRadius: scales(15),
       marginVertical: scales(2),
     },
     modal: {
       flex: 1,
       backgroundColor: '#0000004a',
-      padding: 20,
-      paddingTop: 100,
-      borderRadius: 15,
+      padding: scales(20),
+      paddingTop: scales(100),
+      borderRadius: scales(15),
     },
     modal_endow: {
       // textAlign: 'center',
@@ -750,11 +778,11 @@ const myStyles = (theme: string) => {
       flexDirection: 'column',
     },
     modal_endow_images: {
-      width: 30,
-      height: 30,
-      borderRadius: 999,
+      width: scales(30),
+      height: scales(30),
+      borderRadius: scales(999),
       overflow: 'hidden',
-      marginRight: 10,
+      marginRight: scales(10),
     },
     modal_endow_value: {
       flexDirection: 'row',
@@ -777,14 +805,14 @@ const myStyles = (theme: string) => {
       justifyContent: 'center',
     },
     inputModal: {
-      borderBottomWidth: 1,
+      borderBottomWidth: scales(1),
       borderBottomColor: '#ccc',
       outline: 'none',
       flex: 1,
       width: Sizes.scrWidth * 0.6,
     },
     inputModalReport: {
-      borderWidth: 1,
+      borderWidth: scales(1),
       borderColor: '#ccc',
       outline: 'none',
       // flex: 1,
@@ -792,62 +820,62 @@ const myStyles = (theme: string) => {
       alignItems: 'center',
       width: Sizes.scrWidth * 0.8,
       justifyContent: 'center',
-      marginTop: 20,
+      marginTop: scales(20),
       textAlignVertical: 'top',
-      padding: 10,
-      borderRadius: 10,
+      padding: scales(10),
+      borderRadius: scales(10),
     },
     modal_bottom_btn_primary: {
-      padding: 10,
+      padding: scales(10),
       backgroundColor: '#f05123',
-      borderRadius: 10,
+      borderRadius: scales(10),
       borderWidth: 1,
       borderColor: '#ccc',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: 15,
+      marginTop: scales(15),
     },
     modal_button_btn_text_primary: {
       color: '#fff',
     },
     modal_endow_header: {
-      fontSize: 20,
+      fontSize: scales(20),
       fontWeight: 'bold',
     },
     tippy_module: {
       position: 'absolute',
-      top: 20,
-      right: 0,
+      top: scales(20),
+      right: scales(0),
       backgroundColor: '#F4F4F4',
       zIndex: 10,
-      width: 190,
-      paddingBottom: 10,
+      width: scales(190),
+      paddingBottom: scales(10),
       padding: scales(7),
       borderRadius: scales(10),
     },
     tippy_module_coment: {
       position: 'absolute',
-      top: 30,
-      right: 60,
+      top: scales(30),
+      right: scales(60),
       backgroundColor: '#F4F4F4',
       zIndex: 10,
-      width: 190,
-      paddingBottom: 10,
+      width: scales(190),
+      paddingBottom: scales(10),
       padding: scales(7),
       borderRadius: scales(10),
     },
     tippy_item: {
-      paddingHorizontal: 10,
-      paddingVertical: 5,
+      paddingHorizontal: scales(10),
+      paddingVertical: scales(5),
       flexDirection: 'row',
       borderBottomColor: '#E0E0E0',
-      borderBottomWidth: 1,
+      borderBottomWidth: scales(1),
     },
     tippy_icon: {},
     tippy_text: {
       color: '#444',
-      fontSize: 15,
+      fontSize: scales(15),
       marginLeft: scales(5),
     },
     list_cmt: {
@@ -864,12 +892,12 @@ const myStyles = (theme: string) => {
     },
     cmt_value: {
       color: '#444',
-      fontSize: 13,
+      fontSize: scales(13),
       marginLeft: scales(2),
     },
     cmt_value_date: {
       color: '#444',
-      fontSize: 11,
+      fontSize: scales(11),
       marginLeft: scales(2),
     },
     cmt_value_group: {
@@ -879,7 +907,7 @@ const myStyles = (theme: string) => {
     },
     // save
     headingTabs_tabs: {
-      marginTop: 30,
+      marginTop: scales(30),
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -890,55 +918,55 @@ const myStyles = (theme: string) => {
       textAlign: 'center',
       margin: 'auto',
       borderBottomColor: '#0000008a',
-      borderBottomWidth: 1,
+      borderBottomWidth: scales(1),
       width: '50%',
     },
     headingTabs_item_active: {
       borderBottomColor: '#f05123',
       textAlign: 'center',
       margin: 'auto',
-      borderBottomWidth: 1,
+      borderBottomWidth: scales(1),
       width: '50%',
     },
     headingTabs_tabs_text: {
       textAlign: 'center',
-      fontSize: 16,
+      fontSize: scales(16),
       fontWeight: '700',
       color: '#0000008a',
-      paddingBottom: 5,
+      paddingBottom: scales(5),
     },
     headingTabs_tabs_text_active: {
       textAlign: 'center',
-      fontSize: 16,
+      fontSize: scales(16),
       fontWeight: '700',
       color: '#f05123',
-      paddingBottom: 5,
+      paddingBottom: scales(5),
     },
     blogcontent: {
-      marginTop: 20,
+      marginTop: scales(20),
     },
     blogcontentList: {},
     blogcontentItem: {
-      marginTop: 10,
-      borderWidth: 2,
+      marginTop: scales(10),
+      borderWidth: scales(2),
       borderColor: '#e8e8e8',
-      borderRadius: 16,
-      paddingHorizontal: 20,
-      paddingVertical: 15,
+      borderRadius: scales(16),
+      paddingHorizontal: scales(20),
+      paddingVertical: scales(15),
     },
     blogcontentItem_title: {
       color: '#333',
-      fontSize: 19,
-      lineHeight: 25,
+      fontSize: scales(19),
+      lineHeight: scales(25),
       fontWeight: '600',
     },
     blogcontentItem_author: {},
     blogcontentItem_time: {
-      fontSize: 14,
+      fontSize: scales(14),
       color: '#029e74',
     },
-    blogcontentItem_name: { fontSize: 14, marginVertical: 5 },
-    blogcontentItem_strong: { fontWeight: '600', marginLeft: 5 },
+    blogcontentItem_name: { fontSize: scales(14), marginVertical: scales(5) },
+    blogcontentItem_strong: { fontWeight: '600', marginLeft: scales(5) },
     hidden: {
       display: 'none',
     },
@@ -948,14 +976,14 @@ const myStyles = (theme: string) => {
     },
     commentAction: {
       position: 'absolute',
-      right: 20,
-      top: 0,
-      width: 40,
+      right: scales(20),
+      top: scales(0),
+      width: scales(40),
       backgroundColor: 'grey',
-      borderBottomEndRadius: 10,
+      borderBottomEndRadius: scales(10),
     },
     commentIcon: {
-      margin: 5,
+      margin: scales(5),
       color: 'white',
     },
     nodataMain: {
@@ -973,26 +1001,26 @@ const myStyles = (theme: string) => {
       resizeMode: 'contain',
     },
     textNodata: {
-      fontSize: 19,
-      lineHeight: 25,
+      fontSize: scales(19),
+      lineHeight: scales(25),
       fontWeight: '600',
     },
     modal_title: {
       color: '#333',
-      fontSize: 23,
-      lineHeight: 25,
+      fontSize: scales(23),
+      lineHeight: scales(25),
       fontWeight: '700',
       textAlign: 'center',
-      marginTop: 20,
+      marginTop: scales(20),
     },
     mainImgDetail: {
-      marginTop: 30,
+      marginTop: scales(30),
       width: '100%',
       height: scales(200),
       alignItems: 'center',
       justifyContent: 'center',
       textAlign: 'center',
-      paddingHorizontal: 20,
+      paddingHorizontal: scales(20),
     },
     mainImgDetail_img: {
       width: '100%',

@@ -30,9 +30,9 @@ const Main = () => {
 
       <Tab.Screen name={'Location'} component={Screen.Location} />
 
-      {/* <Tab.Screen name={'Messenger'} component={Screen.Messenger} /> */}
+      <Tab.Screen name={'Messenger'} component={Screen.Messenger} />
 
-      {/* <Tab.Screen name={'Favorite'} component={Screen.Favorite} /> */}
+      <Tab.Screen name={'Favorite'} component={Screen.Favorite} />
 
       <Tab.Screen name={'Account'} component={Screen.Account} />
 

@@ -22,7 +22,6 @@ function TourGuideInforScreen(props) {
   const getData = async () => {
     const response = await getTourListByTourguide(+tourguide.tourGuideId);
     setTours(response.data);
-    console.log(tours);
   }
   useEffect(() => {
     getData();
