@@ -16,9 +16,6 @@ import { resetStack, setRoot } from 'navigation/utils';
 import { getThemeColor } from 'utils/getThemeColor';
 import Storages, { KeyStorage } from 'utils/storages';
 
-import 'i18n';
-import { useFetchProvinces } from 'states/provinces/hooks';
-
 const LaunchScreen = () => {
     const { theme } = useTheme();
     const { i18n } = useTranslation();
@@ -29,9 +26,9 @@ const LaunchScreen = () => {
         i18n.changeLanguage(currentLocale);
     }, [i18n]);
 
-    React.useEffect(() => {
-        initLocale();
-    }, [initLocale]);
+    // React.useEffect(() => {
+    //     initLocale();
+    // }, [initLocale]);
 
     useEffect(() => {
         SplashScreen.hide();

@@ -55,13 +55,17 @@ const RootStack = () => {
 
       <Stack.Screen name='AccountInfo' component={Screen.AccountInfo} />
 
+      <Stack.Screen name='TourGuideInfo' component={Screen.TourGuideInfo} />
+
+      <Stack.Screen name='Conversation' component={Screen.Conversation} />
+
       <Stack.Screen name='PostDetail' component={Screen.PostDetail} />
 
       <Stack.Screen name='ListPostScreen' component={Screen.ListPostScreen} />
-      <Stack.Screen name='ListTourScreen' component={Screen.ListTourScreen} />
-      <Stack.Screen name='TourGuideInforScreen' component={Screen.TourGuideInforScreen} />
 
-      <Stack.Screen name='ListTourGuideScreen' component={Screen.ListTourGuideScreen} />
+      <Stack.Screen name='ListTourScreen' component={Screen.ListTourScreen} />
+
+      <Stack.Screen name='ListTourGuide' component={Screen.ListTourGuideScreen} />
     </Stack.Navigator>
   );
 };
@@ -69,6 +73,7 @@ const RootStack = () => {
 const StackNavigator = () => {
   const { theme } = useTheme();
   const loadingRef = useRef<LoadingModalRef | null>(null);
+
   useEffect(() => {
     return () => {
       if (loadingRef?.current) {

@@ -13,3 +13,4 @@ export const fetchTourById = async (tourId: number) => {
         console.log(error);
     }
 };
+

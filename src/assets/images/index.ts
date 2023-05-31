@@ -16,6 +16,9 @@ const Images = {
     ThanhDia: require('./thanh_dia.jpeg'),
     Vourcher_1: require('./travel_1.jpg'),
     Vourcher_2: require('./travel_voucher.jpg'),
+    FightTourGuide: require('./fight_tour_guide.png'),
+    StarTourGuide: require('./star_tour_guide.png'),
+    TimeTourGuide: require('./time_tour_guide.png'),
 };
 
 export default Images;

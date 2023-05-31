@@ -6,13 +6,15 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, R
 import ordersReducer from './orders';
 import provincesReducer from './provinces';
 import userReducer from './user';
+import tourGuideReducer from './tourGuide';
+import toursReducer from './tours';
 
-const PERSISTED_KEYS: string[] = ['user'];
+const PERSISTED_KEYS: string[] = ['tokenInfo', 'profile', 'users'];
 
 const persistConfig = {
     key: 'primary',
     whitelist: PERSISTED_KEYS,
-    blacklist: ['profile'],
+    blacklist: [],
     storage: AsyncStorage,
     version: 1,
 };
@@ -25,6 +27,8 @@ const persistedReducer = persistReducer(
         users: userReducer,
         provinces: provincesReducer,
         orders: ordersReducer,
+        tourGuides: tourGuideReducer,
+        tours: toursReducer,
     })
 );
 
@@ -33,9 +37,10 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             thunk: true,
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
+            // serializableCheck: {
+            //     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            // },
+            serializableCheck: false,
         }),
     devTools: process.env.NODE_ENV === 'development',
 });
