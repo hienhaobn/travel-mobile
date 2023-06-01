@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native
 import { SceneMap, TabBar, TabBarItemProps, TabView } from 'react-native-tab-view';
 
 
-import { getTourguideByProvince, getTourListByProvince } from './api';
+import { checkIsLiked, getTourguideByProvince, getTourListByProvince, likeProvince } from './api';
 import LocationDetailPostScene from './src/components/LocationDetailPostScene';
 
 import SvgIcons from 'assets/svgs';
@@ -55,6 +55,15 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
 
   const [isLoad, setIsLoad] = useState(false);
   const [routes, setRoutes] = React.useState([]);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLike = async () => {
+
+    await likeProvince(+provinceId);
+    // hideLoading();
+    setIsLiked(!isLiked);
+    getIsLiked();
+  }
 
   const getData = async () => {
     const [responseTour, responseTourGuide] = await Promise.all([
@@ -65,12 +74,20 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
     setTours(responseTour.data);
     setTourGuides(responseTourGuide.data);
 
-    console.log({ tours });
     setIsLoad(true);
 
   }
   useEffect(() => {
     getData();
+  }, []);
+
+  const getIsLiked = async () => {
+    const responseIsLiked = await
+      checkIsLiked(provinceId);
+    setIsLiked(responseIsLiked);
+  }
+  useEffect(() => {
+    getIsLiked();
   }, []);
   // console.log({ province });
 
@@ -99,16 +116,21 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
           <Text style={styles.titleHeader}>{province?.name}</Text>
           <View style={styles.infoTour}>
             <Text style={styles.tour}>{province?.tours?.length} tour</Text>
-            <Text style={styles.tour}>234 Lượt tìm</Text>
+            <Text style={styles.tour}> 234 Lượt tìm</Text>
           </View>
         </View>
         <View>
-          <TouchableOpacity style={styles.iconTourContainer}>
-            <SvgIcons.IcHeartOutline
-              width={scales(17)}
-              height={scales(17)}
-              color={getThemeColor().Text_Dark_1}
-            />
+          <TouchableOpacity style={styles.iconTourContainer} onPress={() => handleLike()}>
+            {isLiked ?
+              <SvgIcons.IcHeartRed
+                width={scales(17)}
+                height={scales(17)}
+                color={getThemeColor().Text_Dark_1}
+              /> : <SvgIcons.IcHeartOutline
+                width={scales(17)}
+                height={scales(17)}
+                color={getThemeColor().Text_Dark_1}
+              />}
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconTourContainer}>
             <SvgIcons.IcMoreInfo
@@ -212,9 +234,10 @@ const myStyles = (theme: string) => {
       paddingTop: scales(10),
     },
     tour: {
-      ...Fonts.inter400,
+      ...Fonts.inter600,
       fontSize: scales(12),
-      color: color.white,
+      color: color.Color_White,
+      marginHorizontal: scales(3),
     },
     iconTourContainer: {
       padding: scales(5),

@@ -80,3 +80,27 @@ export const getPosts = async (topics?: string, keyword?: string) => {
     });
     return response.data;
 };
+
+export const checkIsLiked = async (postId: number) => {
+    const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
+    const response = await axios.put(
+        `${BASE_URL}/users/check-favorite`,
+        { postId },
+        {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}` },
+        }
+    );
+    return response.data.returnValue;
+};
+
+export const likePost = async (postId: number) => {
+    const tokenInfo: IToken | null = await Storages.getObject(KeyStorage.Token);
+    const response = await axios.put(
+        `${BASE_URL}/users/favorite`,
+        { postId },
+        {
+            headers: { Authorization: `Bearer ${tokenInfo.accessToken}` },
+        }
+    );
+    return response.data.returnValue;
+};
