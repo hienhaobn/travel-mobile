@@ -14,6 +14,8 @@ function TourOfTouGuideScene(props: ITourOfTouGuideSceneProps) {
     const styles = myStyles(theme);
     const { profile } = props;
 
+    console.log('profile', profile);
+
     return (
         <View></View>
     );

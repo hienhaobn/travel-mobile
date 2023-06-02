@@ -5,9 +5,7 @@ import { EVENTS_SOCKET } from 'constants/socket';
 import { SocketContext } from 'contexts/SocketContext';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
-import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
 import Input from 'components/Input';
@@ -35,14 +33,11 @@ const MessengerScreen = () => {
     }, []));
 
     useEffect(() => {
-        socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (messages) => {
-            console.log('message', messages);
-        });
         socket.on(EVENTS_SOCKET.RECEIVE_USERS, (conversations) => {
             setConversations(conversations);
         })
         return () => {
-            socket.off(EVENTS_SOCKET.RECEIVE_MESSAGE);
+            socket.off(EVENTS_SOCKET.RECEIVE_USERS);
         }
     }, []);
 

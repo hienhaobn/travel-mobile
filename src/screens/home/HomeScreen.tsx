@@ -10,6 +10,7 @@ import HomePostSection from './src/components/HomePostSection';
 import HomeTourGuideSection from './src/components/HomeTourGuideSection';
 import HomeTourSection from './src/components/HomeTourSection';
 import { useTheme } from 'hooks/useTheme';
+import useFirebase from 'hooks/useFirebase';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
@@ -20,6 +21,8 @@ const HomeScreen = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = myStyles(theme);
+
+  useFirebase();
 
   const renderHeader = useCallback(() => {
     return (

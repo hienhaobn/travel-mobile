@@ -9,4 +9,10 @@ declare namespace chat {
         tourGuide: tourGuide.TourGuideProfile;
         user: Profile;
     }
+
+    interface RegisterDeviceParams {
+        type?: string;
+        deviceToken: string;
+    }
+
 }
