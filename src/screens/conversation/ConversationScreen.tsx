@@ -88,6 +88,7 @@ function ConversationScreen(props: IConversationScreenProps) {
             message: contentMessage,
             sender: profile?.role,
         }];
+        console.log('aa', [...messages, ...messageTmp]);
         // @ts-ignore
         setMessages([...messages, ...messageTmp]);
         setContentMessage('');
@@ -115,9 +116,11 @@ function ConversationScreen(props: IConversationScreenProps) {
         </View>
     );
 
+    const flatListRef = useRef(null)
+
     const renderMessages = () => (
         <FlatList
-            inverted
+            ref={flatListRef}
             data={messages}
             renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
             style={styles.wrapperContent}
