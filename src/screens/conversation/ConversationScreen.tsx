@@ -33,7 +33,6 @@ function ConversationScreen(props: IConversationScreenProps) {
 
     const recipient = useRef<boolean>(true);
     const profile = useSelectProfile();
-    const messagesRef = useRef(null);
 
     const socket = useContext(SocketContext);
 
@@ -116,11 +115,9 @@ function ConversationScreen(props: IConversationScreenProps) {
         </View>
     );
 
-    const scrollViewRef = useRef();
-
     const renderMessages = () => (
         <FlatList
-            ref={scrollViewRef}
+            inverted
             data={messages}
             renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
             style={styles.wrapperContent}
