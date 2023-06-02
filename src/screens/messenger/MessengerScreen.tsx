@@ -48,7 +48,7 @@ const MessengerScreen = () => {
     const imageUrl = item.sender === ESender.USER ? item?.user?.avatar : item?.tourGuide?.avatar;
     const chatId = item.sender === ESender.USER ? item?.tourGuideId : item?.userId;
     return (
-      <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(item)}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(`${chatId}`)}>
         <View style={styles.leftContainer}>
           <Avatar imageStyle={styles.avatar} imageUrl={imageUrl} />
           <View style={styles.messageContainer}>
@@ -84,17 +84,53 @@ const MessengerScreen = () => {
     [],
   );
   return (
-    <View style={styles.container}>
-      {renderHeader()}
-      <FlatList
-        data={conversations}
-        renderItem={(item) => renderConversation(item.item)}
-        keyExtractor={(item) => item.toString()}
-        initialNumToRender={10}
-        showsVerticalScrollIndicator={false}
+    <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(item)}>
+      <View style={styles.leftContainer}>
+        <Avatar imageStyle={styles.avatar} imageUrl={imageUrl} />
+        <View style={styles.messageContainer}>
+          <Text style={styles.account}>{name}</Text>
+          <Text style={styles.message} numberOfLines={1}>{lastMessage}</Text>
+        </View>
+      </View>
+      <View>
+        <Text style={styles.time}>15:23</Text>
+        <View style={styles.unreadContainer}>
+          <Text style={styles.unread}>2</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )
+};
+
+const renderHeader = useCallback(
+  () => (
+    <View style={styles.searchContainer}>
+      <Input
+        placeholder='Tìm địa điểm'
+        leftIcon={
+          <SvgIcons.IcSearch color={getThemeColor().Text_Dark_1} width={scales(24)} height={scales(24)} />
+        }
+        leftIconStyle={{
+          paddingLeft: scales(10),
+        }}
+        containerStyle={styles.inputContainer}
       />
     </View>
-  );
+  ),
+  [],
+);
+return (
+  <View style={styles.container}>
+    {renderHeader()}
+    <FlatList
+      data={conversations}
+      renderItem={(item) => renderConversation(item.item)}
+      keyExtractor={(item) => item.toString()}
+      initialNumToRender={10}
+      showsVerticalScrollIndicator={false}
+    />
+  </View>
+);
 };
 
 export default MessengerScreen;
