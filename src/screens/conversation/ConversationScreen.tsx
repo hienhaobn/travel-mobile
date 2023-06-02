@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 import { EVENTS_SOCKET } from 'constants/socket';
 import { SocketContext } from 'contexts/SocketContext';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useTheme } from 'hooks/useTheme';
 import { RootNavigatorParamList } from 'navigation/types';
@@ -29,27 +29,13 @@ function ConversationScreen(props: IConversationScreenProps) {
     const [contentMessage, setContentMessage] = useState<string>('');
     const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
     const [messages, setMessages] = useState<chat.Message[]>([]);
+    const [messageSocket, setMessageSocket] = useState<chat.Message[]>([]);
 
-    const profileMe = useSelectProfile();
+    const recipient = useRef<boolean>(true);
+    const profile = useSelectProfile();
+    const messagesRef = useRef(null);
 
     const socket = useContext(SocketContext);
-
-    useEffect(() => {
-        socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (res) => {
-            setMessages([...messages, ...res]);
-        });
-        return () => {
-            socket.off(EVENTS_SOCKET.RECEIVE_MESSAGE);
-            socket.off(EVENTS_SOCKET.JOIN_ROOM);
-            socket.off(EVENTS_SOCKET.GET_MESSAGES);
-            socket.off(EVENTS_SOCKET.SEND_MESSAGE);
-        }
-    }, []);
-
-    const getProfileTourGuide = async () => {
-        const profile = await fetchTourGuideById(parseInt(chatId));
-        setProfileTourGuide(profile);
-    };
 
     useEffect(() => {
         getProfileTourGuide();
@@ -60,9 +46,51 @@ function ConversationScreen(props: IConversationScreenProps) {
         socket.emit(EVENTS_SOCKET.JOIN_ROOM, { chatId });
     }, []);
 
+    useEffect(() => {
+        socket.on(EVENTS_SOCKET.RECEIVE_MESSAGE, (res) => {
+            if (!recipient.current) {
+                recipient.current = true;
+                setMessageSocket(res);
+            } else {
+                setMessages(res);
+            }
+        });
+        return () => {
+            socket.off(EVENTS_SOCKET.RECEIVE_MESSAGE);
+            socket.off(EVENTS_SOCKET.JOIN_ROOM);
+            socket.off(EVENTS_SOCKET.GET_MESSAGES);
+            socket.off(EVENTS_SOCKET.SEND_MESSAGE);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (recipient.current) {
+            recipient.current = false;
+            setMessages([...messages, ...messageSocket]);
+        }
+    }, [messageSocket]);
+
+    useEffect(() => {
+        console.log('messages', messages);
+    }, [messages])
+
+    const getProfileTourGuide = async () => {
+        const profile = await fetchTourGuideById(parseInt(chatId));
+        setProfileTourGuide(profile);
+    };
+
+
     const onSendMessage = () => {
         socket.emit(EVENTS_SOCKET.SEND_MESSAGE, { chatId, content: contentMessage })
-        socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
+        // socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
+        const messageTmp = [{
+            id: Date.now(),
+            created_at: Date.now(),
+            message: contentMessage,
+            sender: profile?.role,
+        }];
+        // @ts-ignore
+        setMessages([...messages, ...messageTmp]);
         setContentMessage('');
     };
 
@@ -88,14 +116,18 @@ function ConversationScreen(props: IConversationScreenProps) {
         </View>
     );
 
+    const scrollViewRef = useRef();
+
     const renderMessages = () => (
         <FlatList
+            ref={scrollViewRef}
             data={messages}
             renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
             style={styles.wrapperContent}
             contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => `${item?.id}`}
         />
     );
 

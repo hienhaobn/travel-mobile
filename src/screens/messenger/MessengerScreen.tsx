@@ -45,7 +45,7 @@ const MessengerScreen = () => {
         const name = item.sender === ESender.USER ? item?.user?.username : item?.tourGuide?.username;
         const lastMessage = item?.message;
         const imageUrl = item.sender === ESender.USER ? item?.user?.avatar : item?.tourGuide?.avatar;
-        const chatId = item.sender === ESender.USER ? item?.userId : item?.tourGuideId;
+        const chatId = item.sender === ESender.USER ? item?.tourGuideId : item?.userId;
         return (
             <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(`${chatId}`)}>
                 <View style={styles.leftContainer}>
