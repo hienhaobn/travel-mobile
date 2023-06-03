@@ -1,8 +1,8 @@
 import axiosInstance from 'services/api-requests';
 
 export const routeName = {
-    REGISTER_DEVICE: '/device/register',
-    REMOVE_DEVICE: 'device/delete',
+    REGISTER_DEVICE: 'auth/device/',
+    REMOVE_DEVICE: 'auth/device/',
 };
 
 export const apiRegisterDevice = async (params: chat.RegisterDeviceParams): Promise<any> => {
@@ -19,7 +19,7 @@ export const apiRegisterDevice = async (params: chat.RegisterDeviceParams): Prom
 export const apiRemoveDevice = async (params: chat.RegisterDeviceParams): Promise<any> => {
     try {
         const res: any = await axiosInstance.delete(routeName.REMOVE_DEVICE, {
-            params: params
+            params,
         });
         return res || undefined;
     } catch (error) {

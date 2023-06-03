@@ -22,6 +22,7 @@ interface IConversationScreenProps {
   route: RouteProp<RootNavigatorParamList, 'Conversation'>
 }
 
+
 function ConversationScreen(props: IConversationScreenProps) {
   const { theme } = useTheme();
   const styles = myStyle(theme);
@@ -59,7 +60,7 @@ function ConversationScreen(props: IConversationScreenProps) {
       socket.off(EVENTS_SOCKET.JOIN_ROOM);
       socket.off(EVENTS_SOCKET.GET_MESSAGES);
       socket.off(EVENTS_SOCKET.SEND_MESSAGE);
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -71,24 +72,23 @@ function ConversationScreen(props: IConversationScreenProps) {
 
   useEffect(() => {
     console.log('messages', messages);
-  }, [messages])
+  }, [messages]);
 
   const getProfileTourGuide = async () => {
     const profile = await fetchTourGuideById(parseInt(chatId));
     setProfileTourGuide(profile);
   };
 
-
   const onSendMessage = () => {
-    socket.emit(EVENTS_SOCKET.SEND_MESSAGE, { chatId, content: contentMessage })
-    // socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
-    const messageTmp = [{
-      id: Date.now(),
-      created_at: Date.now(),
-      message: contentMessage,
-      sender: profile?.role,
-    }];
-    // @ts-ignore
+    socket.emit(EVENTS_SOCKET.SEND_MESSAGE, { chatId, content: contentMessage });
+    const messageTmp = [
+      {
+        id: Date.now(),
+        created_at: Date.now(),
+        message: contentMessage,
+        sender: profile?.role,
+      },
+    ];
     setMessages([...messages, ...messageTmp]);
     setContentMessage('');
   };
@@ -113,8 +113,7 @@ function ConversationScreen(props: IConversationScreenProps) {
         </TouchableOpacity>
       </View>
     </View>
-        </View >
-    );
+  );
 
   const renderMessages = () => (
     <FlatList
@@ -135,7 +134,7 @@ function ConversationScreen(props: IConversationScreenProps) {
         <Text style={styles.plus}>+</Text>
       </TouchableOpacity>
       <Input
-        placeholder='Nhắn tin'
+        placeholder="Nhắn tin"
         containerStyle={{ flex: 1, borderRadius: scales(20) }}
         leftIcon={<SvgIcons.IcMessageText width={scales(17)} height={scales(17)} color={getThemeColor().Text_Dark_1} />}
         leftIconStyle={styles.leftIcon}
@@ -149,7 +148,6 @@ function ConversationScreen(props: IConversationScreenProps) {
   );
 
   return (
-
     <View style={styles.container}>
       {renderHeader()}
       {renderMessages()}

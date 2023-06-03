@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import notifee, { AndroidImportance, AndroidLaunchActivityFlag } from '@notifee/react-native';
 import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
@@ -88,7 +89,7 @@ export default class FirebaseUtils {
         notifee.setBadgeCount(0);
     }
 
-    private async getFCMToken() {
+    public async getFCMToken() {
         const token = await messaging().getToken();
         if (token) {
             FirebaseVariables.token = token;
@@ -127,7 +128,7 @@ export default class FirebaseUtils {
             this.unsubscribe = undefined;
         }
 
-        this.unsubscribe = messaging().onMessage(res => {
+        this.unsubscribe = messaging().onMessage((res) => {
             this.onPushNotificationLocal(res, paramsCallback);
         });
     }
@@ -158,7 +159,7 @@ export default class FirebaseUtils {
     }
 
     private handleNotificationOpened(paramsCallback?: ICallBackInit) {
-        messaging().onNotificationOpenedApp(res => {
+        messaging().onNotificationOpenedApp((res) => {
             // console.tron.log(
             //   'Notification caused app to open from background state: ',
             //   res,
@@ -177,7 +178,7 @@ export default class FirebaseUtils {
     private handleInitNotification(paramsCallback?: ICallBackInit) {
         messaging()
             .getInitialNotification()
-            .then(res => {
+            .then((res) => {
                 if (res) {
                     // console.tron.log(
                     //   'Notification caused app to open from quit state: ',

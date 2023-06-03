@@ -23,26 +23,26 @@ const MessengerScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const socket = useContext(SocketContext);
-  const [conversations, setConversations] = useState<chat.Message[]>([]);
+  const [conversations, setConversations] = useState([]);
 
   useFocusEffect(useCallback(() => {
-    socket.emit(EVENTS_SOCKET.GET_USERS)
+    socket.emit(EVENTS_SOCKET.GET_USERS);
     return () => {
       socket.off(EVENTS_SOCKET.GET_USERS);
-    }
+    };
   }, []));
 
   useEffect(() => {
     socket.on(EVENTS_SOCKET.RECEIVE_USERS, (conversations) => {
       setConversations(conversations);
-      console.log({ conversations })
-    })
+      console.log({ conversations });
+    });
     return () => {
       socket.off(EVENTS_SOCKET.RECEIVE_USERS);
-    }
+    };
   }, []);
 
-  const renderConversation = (item: chat.Message) => {
+  const renderConversation = (item) => {
     const name = item.sender === ESender.USER ? item?.user?.username : item?.tourGuide?.username;
     const lastMessage = item?.message;
     const imageUrl = item.sender === ESender.USER ? item?.user?.avatar : item?.tourGuide?.avatar;
@@ -63,7 +63,7 @@ const MessengerScreen = () => {
           </View>
         </View>
       </TouchableOpacity>
-    )
+    );
   };
 
   const renderHeader = useCallback(
@@ -83,54 +83,19 @@ const MessengerScreen = () => {
     ),
     [],
   );
-  return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(item)}>
-      <View style={styles.leftContainer}>
-        <Avatar imageStyle={styles.avatar} imageUrl={imageUrl} />
-        <View style={styles.messageContainer}>
-          <Text style={styles.account}>{name}</Text>
-          <Text style={styles.message} numberOfLines={1}>{lastMessage}</Text>
-        </View>
-      </View>
-      <View>
-        <Text style={styles.time}>15:23</Text>
-        <View style={styles.unreadContainer}>
-          <Text style={styles.unread}>2</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  )
-};
 
-const renderHeader = useCallback(
-  () => (
-    <View style={styles.searchContainer}>
-      <Input
-        placeholder='Tìm địa điểm'
-        leftIcon={
-          <SvgIcons.IcSearch color={getThemeColor().Text_Dark_1} width={scales(24)} height={scales(24)} />
-        }
-        leftIconStyle={{
-          paddingLeft: scales(10),
-        }}
-        containerStyle={styles.inputContainer}
+  return (
+    <View style={styles.container}>
+      {renderHeader()}
+      <FlatList
+        data={conversations}
+        renderItem={({ item }) => renderConversation(item)}
+        keyExtractor={(item) => item.toString()}
+        initialNumToRender={10}
+        showsVerticalScrollIndicator={false}
       />
     </View>
-  ),
-  [],
-);
-return (
-  <View style={styles.container}>
-    {renderHeader()}
-    <FlatList
-      data={conversations}
-      renderItem={(item) => renderConversation(item.item)}
-      keyExtractor={(item) => item.toString()}
-      initialNumToRender={10}
-      showsVerticalScrollIndicator={false}
-    />
-  </View>
-);
+  );
 };
 
 export default MessengerScreen;
