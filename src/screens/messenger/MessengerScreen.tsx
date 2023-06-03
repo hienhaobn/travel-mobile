@@ -35,7 +35,6 @@ const MessengerScreen = () => {
   useEffect(() => {
     socket.on(EVENTS_SOCKET.RECEIVE_USERS, (conversations) => {
       setConversations(conversations);
-      console.log({ conversations });
     });
     return () => {
       socket.off(EVENTS_SOCKET.RECEIVE_USERS);
