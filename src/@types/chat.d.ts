@@ -12,6 +12,7 @@ declare namespace chat {
 
     interface RegisterDeviceParams {
         type?: string;
-        tokenDevice: string;
+        deviceToken: string;
     }
+
 }
