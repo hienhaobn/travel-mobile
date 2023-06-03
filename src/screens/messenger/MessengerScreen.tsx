@@ -23,7 +23,7 @@ const MessengerScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
   const socket = useContext(SocketContext);
-  const [conversations, setConversations] = useState([]);
+  const [conversations, setConversations] = useState<chat.Message[]>([]);
 
   useFocusEffect(useCallback(() => {
     socket.emit(EVENTS_SOCKET.GET_USERS);
@@ -35,7 +35,6 @@ const MessengerScreen = () => {
   useEffect(() => {
     socket.on(EVENTS_SOCKET.RECEIVE_USERS, (conversations) => {
       setConversations(conversations);
-      console.log({ conversations });
     });
     return () => {
       socket.off(EVENTS_SOCKET.RECEIVE_USERS);
