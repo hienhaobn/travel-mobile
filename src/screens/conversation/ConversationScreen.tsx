@@ -116,11 +116,9 @@ function ConversationScreen(props: IConversationScreenProps) {
         </View>
     );
 
-    const flatListRef = useRef(null)
 
     const renderMessages = () => (
         <FlatList
-            ref={flatListRef}
             inverted
             data={messages}
             renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
