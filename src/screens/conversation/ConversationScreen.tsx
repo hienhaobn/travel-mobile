@@ -121,6 +121,7 @@ function ConversationScreen(props: IConversationScreenProps) {
     const renderMessages = () => (
         <FlatList
             ref={flatListRef}
+            inverted
             data={messages}
             renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
             style={styles.wrapperContent}
@@ -215,6 +216,7 @@ const myStyle = (theme: string) => {
         contentContainer: {
             paddingBottom: scales(30),
             marginTop: scales(15),
+            flexDirection: 'column-reverse',
         },
         iconPlus: {
             paddingHorizontal: scales(12),
