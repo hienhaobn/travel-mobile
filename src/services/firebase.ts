@@ -89,6 +89,8 @@ export default class FirebaseUtils {
     }
 
     private async getFCMToken() {
+        await messaging().registerDeviceForRemoteMessages();
+
         const token = await messaging().getToken();
         if (token) {
             FirebaseVariables.token = token;
@@ -127,8 +129,12 @@ export default class FirebaseUtils {
             this.unsubscribe = undefined;
         }
 
-        this.unsubscribe = messaging().onMessage(res => {
-            this.onPushNotificationLocal(res, paramsCallback);
+        messaging().setBackgroundMessageHandler(async remoteMessage => {
+            await this.onPushNotificationLocal(remoteMessage);
+        });
+
+        this.unsubscribe = messaging().onMessage(async res => {
+            await this.onPushNotificationLocal(res, paramsCallback);
         });
     }
 
