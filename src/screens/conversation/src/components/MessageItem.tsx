@@ -1,3 +1,4 @@
+import { Role } from 'constants/user';
 import React, { useCallback } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
@@ -12,18 +13,19 @@ import { useSelectProfile } from 'states/user/hooks';
 interface IMessageItemProps {
     message: chat.Message;
     tourGuide?: tourGuide.TourGuideProfile;
+    user?: Profile;
 }
 
 function MessageItem(props: IMessageItemProps) {
     const { theme } = useTheme();
     const styles = myStyle(theme);
 
-    const { message, tourGuide } = props;
+    const { message, tourGuide, user } = props;
 
     const profileMe = useSelectProfile();
 
     const renderAvatar = useCallback(() => {
-        let url = message?.sender === profileMe.role ? profileMe?.avatar : tourGuide?.avatar;
+        let url = message?.sender === ESender.USER ? user?.avatar : tourGuide?.avatar;
         return (
             <View style={styles.infoUser}>
                 <Avatar imageStyle={styles.avatar} imageUrl={url}/>

@@ -1,5 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
 import { EVENTS_SOCKET } from 'constants/socket';
+import { Role } from 'constants/user';
 import { SocketContext } from 'contexts/SocketContext';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
@@ -15,7 +16,6 @@ import { scales } from 'utils/scales';
 import Avatar from 'components/Avatar';
 import Input from 'components/Input';
 import { Fonts, Sizes } from 'themes';
-import { fetchTourGuideById } from 'states/tourGuide/fetchProfileTourGuide';
 import MessageItem from './src/components/MessageItem';
 
 interface IConversationScreenProps {
@@ -25,20 +25,15 @@ interface IConversationScreenProps {
 function ConversationScreen(props: IConversationScreenProps) {
     const { theme } = useTheme();
     const styles = myStyle(theme);
-    const { chatId } = props.route.params;
+    const { chatId, user, tourGuide } = props.route.params;
     const [contentMessage, setContentMessage] = useState<string>('');
-    const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
     const [messages, setMessages] = useState<chat.Message[]>([]);
     const [messageSocket, setMessageSocket] = useState<chat.Message[]>([]);
 
     const recipient = useRef<boolean>(true);
-    const profile = useSelectProfile();
+    const profileSelector = useSelectProfile();
 
     const socket = useContext(SocketContext);
-
-    useEffect(() => {
-        getProfileTourGuide();
-    }, []);
 
     useEffect(() => {
         socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
@@ -69,16 +64,6 @@ function ConversationScreen(props: IConversationScreenProps) {
         }
     }, [messageSocket]);
 
-    useEffect(() => {
-        console.log('messages', messages);
-    }, [messages])
-
-    const getProfileTourGuide = async () => {
-        const profile = await fetchTourGuideById(parseInt(chatId));
-        setProfileTourGuide(profile);
-    };
-
-
     const onSendMessage = () => {
         socket.emit(EVENTS_SOCKET.SEND_MESSAGE, { chatId, content: contentMessage })
         // socket.emit(EVENTS_SOCKET.GET_MESSAGES, { chatId });
@@ -86,9 +71,8 @@ function ConversationScreen(props: IConversationScreenProps) {
             id: Date.now(),
             created_at: Date.now(),
             message: contentMessage,
-            sender: profile?.role,
+            sender: profileSelector?.role,
         }];
-        console.log('aa', [...messages, ...messageTmp]);
         // @ts-ignore
         setMessages([...messages, ...messageTmp]);
         setContentMessage('');
@@ -102,9 +86,9 @@ function ConversationScreen(props: IConversationScreenProps) {
                         <SvgIcons.IcBack width={scales(17)} height={scales(17)} color={getThemeColor().Text_Dark_1} />
                     </TouchableOpacity>
                     <View style={styles.headerLeftContainer}>
-                        <Avatar imageStyle={styles.avatar} imageUrl={profileTourGuide?.avatar}/>
+                        <Avatar imageStyle={styles.avatar} imageUrl={profileSelector?.role === Role.USER ? tourGuide?.avatar : user?.avatar}/>
                         <View style={styles.onlineContainer}>
-                            <Text style={styles.name}>{profileTourGuide?.name}</Text>
+                            <Text style={styles.name}>{profileSelector?.role === Role.USER ? tourGuide?.name : user?.username}</Text>
                             <Text style={styles.online}>Hoạt động 5 phút trước</Text>
                         </View>
                     </View>
@@ -121,7 +105,7 @@ function ConversationScreen(props: IConversationScreenProps) {
         <FlatList
             inverted
             data={messages}
-            renderItem={(item) => <MessageItem message={item.item} tourGuide={profileTourGuide} />}
+            renderItem={(item) => <MessageItem message={item.item} tourGuide={tourGuide} user={user}/>}
             style={styles.wrapperContent}
             contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps="handled"

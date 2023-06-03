@@ -12,6 +12,7 @@ import Input from 'components/Input';
 import TouchableOpacity from 'components/TouchableOpacity';
 
 import { useTheme } from 'hooks/useTheme';
+import { useSelectProfile } from 'states/user/hooks';
 
 import { Fonts, Sizes } from 'themes';
 
@@ -25,6 +26,8 @@ const MessengerScreen = () => {
   const socket = useContext(SocketContext);
   const [conversations, setConversations] = useState<chat.Message[]>([]);
 
+  const profileMe = useSelectProfile();
+
   useFocusEffect(useCallback(() => {
     socket.emit(EVENTS_SOCKET.GET_USERS);
     return () => {
@@ -34,6 +37,7 @@ const MessengerScreen = () => {
 
   useEffect(() => {
     socket.on(EVENTS_SOCKET.RECEIVE_USERS, (conversations) => {
+      console.log('conversations', conversations);
       setConversations(conversations);
     });
     return () => {
@@ -45,9 +49,11 @@ const MessengerScreen = () => {
     const name = item.sender === ESender.USER ? item?.user?.username : item?.tourGuide?.username;
     const lastMessage = item?.message;
     const imageUrl = item.sender === ESender.USER ? item?.user?.avatar : item?.tourGuide?.avatar;
-    const chatId = item.sender === ESender.USER ? item?.tourGuideId : item?.userId;
+    const chatId = profileMe.role === ESender.USER ? item?.tourGuideId : item?.userId;
+    const user = item?.user;
+    const tourGuide = item?.tourGuide;
     return (
-      <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(`${chatId}`)}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.conventionContainer} onPress={() => goToConversation(`${chatId}`, user, tourGuide)}>
         <View style={styles.leftContainer}>
           <Avatar imageStyle={styles.avatar} imageUrl={imageUrl} />
           <View style={styles.messageContainer}>
@@ -89,7 +95,7 @@ const MessengerScreen = () => {
       <FlatList
         data={conversations}
         renderItem={({ item }) => renderConversation(item)}
-        keyExtractor={(item) => item.toString()}
+        keyExtractor={(item) => item.id.toString()}
         initialNumToRender={10}
         showsVerticalScrollIndicator={false}
       />

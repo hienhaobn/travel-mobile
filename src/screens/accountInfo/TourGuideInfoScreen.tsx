@@ -55,8 +55,6 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
 
     const getProfileTourGuide = async () => {
         const profile = await fetchTourGuideById(parseInt(tourGuideId));
-
-        console.log('profile', profile);
         setProfileTourGuide(profile);
     };
 

@@ -93,7 +93,11 @@ export const apiLoginTourGuide = createAsyncThunk<user.UserLoginResponse, { emai
 export const userSlice = createSlice({
     name: 'Users',
     initialState,
-    reducers: {},
+    reducers: {
+        logout(state) {
+            state = initialState;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchMe.pending, (state) => {
@@ -127,12 +131,13 @@ export const userSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(apiLoginTourGuide.fulfilled, (state, action) => {
-                console.log('action.payload', action.payload);
                 state.tokenInfo.accessToken = action.payload?.returnValue?.accessToken;
                 state.tokenInfo.refreshToken = action.payload?.returnValue?.refreshToken;
                 state.isLoading = false;
             })
     },
 });
+
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

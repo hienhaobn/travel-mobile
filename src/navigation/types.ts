@@ -19,7 +19,7 @@ export type RootNavigatorParamList = {
     AccountInfo: undefined;
     EditProfile: undefined;
     TourGuideInfo: { tourGuideId: string };
-    Conversation: { chatId: string };
+    Conversation: { chatId: string, user: Profile, tourGuide: tourGuide.TourGuideProfile };
     PostDetail: undefined;
     ListPostScreen: undefined;
     ListTourScreen: undefined;

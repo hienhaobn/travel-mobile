@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useAppDispatch } from 'states';
+import { logout } from 'states/user';
 
 import { goToTourStatus } from './src/utils';
 import { goToAccountInfo } from '../accountInfo/src/utils';
@@ -21,7 +23,9 @@ const AccountScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
 
+  const dispatch = useAppDispatch();
   const onLogOut = () => {
+    dispatch(logout());
     Storages.remove(KeyStorage.Token);
     resetStack('Login');
   };
