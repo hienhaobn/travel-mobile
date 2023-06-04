@@ -53,7 +53,7 @@ declare namespace tour {
         status: string;
         images: Image[];
         rates: Rate[];
-        tourGuide: tourGuide.TourGuide[];
+        tourGuide: tourGuide.TourGuideProfile;
         userFavorites: [];
         tourSchedule: TourSchedule[];
         province: location.Province;

@@ -118,7 +118,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
         <View>
             <View style={styles.nameAndAvatarContianer}>
                 <View>
-                    <Avatar containerStyle={styles.avatarContainer} />
+                    <Avatar containerStyle={styles.avatarContainer} imageUrl={profileTourGuide?.avatar} />
                 </View>
                 <View style={styles.rightContainer}>
                     <Text style={styles.subTitle}>Địa điểm</Text>
@@ -135,15 +135,17 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
                 </View>
             </View>
             <View style={[styles.nameAndAvatarContianer, { justifyContent: 'space-between', alignItems: 'center', marginVertical: 0 }]}>
-                <Text style={styles.name}>{profileTourGuide?.name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId)}>
-                        <Text style={styles.sendMessage}>Nhắn tin</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.name}>{profileTourGuide?.name}</Text>
                     <View style={styles.heartContainer}>
                         <SvgIcons.IcHeartOutline width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary}/>
                     </View>
                 </View>
+
+                <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId)}>
+                    <Text style={styles.sendMessage}>Nhắn tin</Text>
+                </TouchableOpacity>
+
             </View>
         </View>
     );
@@ -230,7 +232,7 @@ const myStyles = (themeCurrent: string) => {
         },
         nameAndAvatarContianer: {
             flexDirection: 'row',
-            marginVertical: scales(15),
+            marginTop: scales(10),
         },
         name: {
             ...Fonts.inter600,
@@ -307,9 +309,16 @@ const myStyles = (themeCurrent: string) => {
             marginRight: scales(10),
         },
         heartContainer: {
-            backgroundColor: color.Color_Gray5,
+            backgroundColor: color.Color_Primary_Mint_10,
             padding: scales(5),
             borderRadius: 100,
+            marginLeft: scales(8),
+
+            shadowColor: color.Text_Dark_1,
+            shadowOffset: { width: -1, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 3,
         },
         imageRate: {
             width: scales(40),

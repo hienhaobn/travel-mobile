@@ -50,6 +50,13 @@ declare namespace tourGuide {
         verifyStatus: string;
         avgStar: string;
         warningTime: number | string;
+        numberOfOrder: number;
+        orders: order.OrderDetail[];
+        posts: [];
+        provinces: location.Province[];
+        tokenDevice: string;
+        tours: tour.Tour[];
+        userFavorites: []
     }
 
     interface TourGuideProfileResponse {

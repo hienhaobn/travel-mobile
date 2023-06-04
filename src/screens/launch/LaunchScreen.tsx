@@ -5,13 +5,13 @@ import SplashScreen from 'react-native-splash-screen';
 import Orientation from 'react-native-orientation-locker';
 
 import SvgIcons from 'assets/svgs';
-
+import 'i18n';
 import { GlobalVariables, IToken } from 'constants/global-variables';
 
 import { useTheme } from 'hooks/useTheme';
 
 import { RootNavigatorParamList } from 'navigation/types';
-import { resetStack, setRoot } from 'navigation/utils';
+import { resetStack } from 'navigation/utils';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import Storages, { KeyStorage } from 'utils/storages';
@@ -21,14 +21,14 @@ const LaunchScreen = () => {
     const { i18n } = useTranslation();
     const styles = myStyles(theme);
 
-    const initLocale = React.useCallback(() => {
+    const initLocale = React.useCallback(async () => {
         const currentLocale = 'en'; // Todo
-        i18n.changeLanguage(currentLocale);
+        await i18n.changeLanguage(currentLocale);
     }, [i18n]);
 
-    // React.useEffect(() => {
-    //     initLocale();
-    // }, [initLocale]);
+    React.useEffect(() => {
+        initLocale();
+    }, [initLocale]);
 
     useEffect(() => {
         SplashScreen.hide();

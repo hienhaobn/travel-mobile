@@ -1,10 +1,10 @@
 {
   "appName": "KTravel",
   "tabBar": {
-    "home": "Home",
-    "location": "Location",
-    "messenger": "Messenger",
-    "favorite": "Favorite",
-    "account": "Account"
+    "home": "Trang chủ",
+    "location": "Tỉnh thành",
+    "messenger": "Tin nhắn",
+    "favorite": "Yêu thích",
+    "account": "Tài khoản"
   }
 }

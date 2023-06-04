@@ -11,15 +11,15 @@ export enum ELanguageType {
 i18next.use(initReactI18next).init({
     compatibilityJSON: 'v3',
     interpolation: {
-        escapeValue: true,
+        escapeValue: false,
     },
     lng: ELanguageType.English,
     fallbackLng: ELanguageType.English,
     resources: {
-        en: {
-            translation: en,
-        },
+        en: { translation: en },
     },
+}).catch(_err => {
+    // TODO: Log i18n init failed
 });
 
 export default i18next;

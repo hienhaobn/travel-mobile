@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 
 import { useTheme } from 'hooks/useTheme';
+import TourSectionItem from 'screens/home/src/components/TourSectionItem';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
@@ -16,8 +17,18 @@ function TourOfTouGuideScene(props: ITourOfTouGuideSceneProps) {
 
     console.log('profile', profile);
 
+    const renderContent = () => (
+        <View style={styles.contentContainer}>
+            {
+                profile?.tours?.map((tour) => <TourSectionItem key={tour.id.toString()} tour={tour} />)
+            }
+        </View>
+    );
+
     return (
-        <View></View>
+        <View style={styles.container}>
+            {renderContent()}
+        </View>
     );
 }
 
@@ -27,14 +38,10 @@ const myStyles = (theme: string) => {
     const color = getThemeColor();
     return StyleSheet.create({
         container: {
-            flex: 1,
             backgroundColor: color.Color_Bg,
         },
-        wrapperContent: {
-            flexGrow: 1,
-        },
         contentContainer: {
-            paddingBottom: scales(30),
+            marginBottom: scales(60),
         },
     });
 };

@@ -1,22 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import TourSectionItem from 'screens/home/src/components/TourSectionItem';
 
 import { getTopTours } from '../api';
 
-import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
 
 import TouchableOpacity from 'components/TouchableOpacity';
 
-import { ETourTypesValue } from 'constants/tours';
 import { useTheme } from 'hooks/useTheme';
 
 import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
-import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
 import { navigate } from 'navigation/utils';
-
 
 const HomePostSection = () => {
   const { theme } = useTheme();
@@ -29,6 +26,9 @@ const HomePostSection = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  console.log('tours', tours);
+
   const renderHeader = useCallback(() => {
     return (
       <View style={styles.headerContainer}>
@@ -41,65 +41,16 @@ const HomePostSection = () => {
     );
   }, []);
 
-  const renderItem = useCallback((tour) => {
-    return (
-      <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} onPress={() => navigate('TourDetail', tour)}>
-        <View style={styles.itemContentContainer}>
-          <View>
-            <Image source={{ uri: tour.images[Math.floor(Math.random() * tour.images.length)].url }} style={styles.itemImages} />
-            <View style={styles.rateContainer}>
-              <SvgIcons.IcStarActive width={scales(12)} height={scales(12)} />
-              <Text style={styles.rate}>4.8</Text>
-              <View style={styles.typeContainer}>
-                <Text style={styles.desc}>{ETourTypesValue[tour?.type]}</Text>
-              </View>
-            </View>
-            <TouchableOpacity style={styles.heart}>
-              <SvgIcons.IcHeartOutline
-                color={getThemeColor().white}
-                width={scales(17)}
-                height={scales(17)}
-              />
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Text style={styles.timeStartContainer}>Chuyến đi {tour.tourSchedule.length - 1 == 0 ? 'trong ngày' : tour.tourSchedule.length + ' ngày'}</Text>
-          </View>
-          <View style={styles.itemHeaderContainer}>
-            <Text style={styles.tourGuideName} numberOfLines={3}>
-              {tour.name}
-            </Text>
-          </View>
-          <View style={styles.locationContainer}>
-            <Text style={styles.textLocation}>Hướng dẫn viên: </Text>
-            <Text style={styles.startLocation}>{tour.tourGuide.name}</Text>
-          </View>
-          <Text style={styles.textPrice}>Giá cơ bản: {formatCurrency(tour.basePrice)} VNĐ</Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: scales(10) }}>
-            <View />
-            <TouchableOpacity style={styles.showInfoContainer}>
-              <Text style={styles.textShowInfo}>Xem chi tiết</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity >
-    );
-  }, []);
-
-  const renderSection = useCallback(() => {
-    return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {tours.length > 0 ? tours.map((tour, index) => (
-          renderItem(tour)
-        )) : null}
-      </ScrollView>
-    );
-  }, [tours.length]);
-
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {tours.length > 0 ? renderSection() : null}
+      <FlatList
+        data={tours}
+        renderItem={(item) => <TourSectionItem tour={item.item} />}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };
