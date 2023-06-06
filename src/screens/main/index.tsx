@@ -9,7 +9,7 @@ import { RootNavigatorParamList } from 'navigation/types';
 
 import { Screen } from 'screens/screens';
 import { useFetchProvinces } from 'states/provinces/hooks';
-import { useFetchMe } from 'states/user/hooks';
+import { useFetchMe, useSelectProfile } from 'states/user/hooks';
 
 const Tab = createBottomTabNavigator<RootNavigatorParamList>();
 
@@ -18,6 +18,7 @@ const Main = () => {
   useFetchTourGuidePopular();
   useFetchPopularTours();
   useFetchMe();
+  const profile = useSelectProfile();
   const renderTabBar = (bottomTabBarProps: BottomTabBarProps) => {
     return <MyTabBar {...bottomTabBarProps} />;
   };
@@ -36,8 +37,8 @@ const Main = () => {
       <Tab.Screen name={'Location'} component={Screen.Location} />
 
       <Tab.Screen name={'Messenger'} component={Screen.Messenger} />
-
-      <Tab.Screen name={'Favorite'} component={Screen.Favorite} />
+      {profile.role === 'USER' ?
+        <Tab.Screen name={'Favorite'} component={Screen.Favorite} /> : null}
 
       <Tab.Screen name={'Account'} component={Screen.Account} />
 

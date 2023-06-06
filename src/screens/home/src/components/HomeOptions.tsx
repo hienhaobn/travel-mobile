@@ -12,13 +12,19 @@ import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import { navigate } from 'navigation/utils';
+import { useSelectProfile } from 'states/user/hooks';
 
 
 const HomeOptions = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
+  const profile = useSelectProfile();
+  console.log(profile)
   return (
-    <ScrollView horizontal style={styles.optionsContainer}>
+    <ScrollView horizontal style={styles.optionsContainer} contentContainerStyle={{
+      justifyContent: 'space-between',
+      flex: 1,
+    }}>
       <TouchableOpacity style={styles.optionItem} onPress={() => navigate('Location')}>
         <Image source={Images.IcAddressTour} style={styles.imageOptions} />
         <Text style={styles.optionText}>Địa điểm</Text>
@@ -35,10 +41,11 @@ const HomeOptions = () => {
         <Image source={Images.IcHandbook} style={styles.imageOptions} />
         <Text style={styles.optionText}>Cẩm nang</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.optionItem} onPress={() => navigate('Voucher')}>
-        <Image source={Images.IcReward} style={styles.imageOptions} />
-        <Text style={styles.optionText}>Phần thưởng</Text>
-      </TouchableOpacity>
+      {profile.role === 'USER' ?
+        <TouchableOpacity style={styles.optionItem} onPress={() => navigate('Voucher')}>
+          <Image source={Images.IcReward} style={styles.imageOptions} />
+          <Text style={styles.optionText}>Phần thưởng</Text>
+        </TouchableOpacity> : null}
     </ScrollView>
   );
 };

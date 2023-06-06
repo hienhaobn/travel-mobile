@@ -26,6 +26,7 @@ import { Fonts, Sizes } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
+import { useSelectProfile } from 'states/user/hooks';
 
 interface ITourDetailScreenProps {
   route: RouteProp<RootNavigatorParamList, 'TourDetail'>;
@@ -38,7 +39,7 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
   const [tourDetail, setTourDetail] = useState<tour.Tour>(null);
   const bottomSheetOrderTourRef = useRef<CustomBottomSheetRefType>(null);
   const [vouchers, setVouchers] = useState<user.Voucher[]>([]);
-
+  const profile = useSelectProfile();
   // get voucher
   const getVoucher = async () => {
     const response = await fetchVouchers();
@@ -151,15 +152,16 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
     <View style={styles.container}>
       <Header />
       <FlatList data={[1]} renderItem={renderContent} showsVerticalScrollIndicator={false} />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.shopContainer} onPress={showOrderTour}>
-          <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
-          <Text style={styles.sellNow}>Đặt ngay</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.showInfoContainer}>
-          <Text style={styles.textShowInfo}>Liên hệ tư vấn</Text>
-        </TouchableOpacity>
-      </View>
+      {profile.role === 'USER' ?
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.shopContainer} onPress={showOrderTour}>
+            <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+            <Text style={styles.sellNow}>Đặt ngay</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.showInfoContainer}>
+            <Text style={styles.textShowInfo}>Liên hệ tư vấn</Text>
+          </TouchableOpacity>
+        </View> : null}
       {renderOrderTour()}
     </View>
   );

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useAppDispatch } from 'states';
-import { logout } from 'states/user';
+import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 
+import { getInfor } from './src/api';
 import { goToTourStatus } from './src/utils';
+
+
 import { goToAccountInfo } from '../accountInfo/src/utils';
 
 
@@ -12,12 +13,13 @@ import Button from 'components/Button/Button';
 import TouchableOpacity from 'components/TouchableOpacity';
 import { useTheme } from 'hooks/useTheme';
 import { navigate, resetStack } from 'navigation/utils';
+import { useAppDispatch } from 'states';
+import { logout } from 'states/user';
 import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 import Storages, { KeyStorage } from 'utils/storages';
 
-import { getInfor } from './src/api';
 
 const AccountScreen = () => {
   const { theme } = useTheme();
@@ -51,7 +53,16 @@ const AccountScreen = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.itemsContainer}>
-            <Text style={styles.titleHeader}>Tài khoản</Text>
+            <View style={styles.headerContainer}>
+              <Text style={styles.titleHeader}>Tài khoản</Text>
+              <Switch
+                trackColor={{ false: '#767577', true: '#81b0ff' }}
+                thumbColor={true ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() => { }}
+                value={true}
+              />
+            </View>
             <TouchableOpacity style={styles.itemContainer} onPress={goToAccountInfo}>
               <View style={styles.itemLeftContainer}>
                 <View>
@@ -245,6 +256,11 @@ const myStyles = (themeCurrent: string) => {
       ...Fonts.inter700,
       fontSize: scales(24),
       color: color.Text_Dark_1,
+    },
+    headerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       marginBottom: scales(30),
     },
   });

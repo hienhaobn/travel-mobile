@@ -116,7 +116,6 @@ const LocationDetailScreen = (props: LocationDetailScreenProps) => {
           <Text style={styles.titleHeader}>{province?.name}</Text>
           <View style={styles.infoTour}>
             <Text style={styles.tour}>{province?.tours?.length} tour</Text>
-            <Text style={styles.tour}> 234 Lượt tìm</Text>
           </View>
         </View>
         <View>

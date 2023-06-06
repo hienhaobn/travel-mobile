@@ -57,7 +57,7 @@ function TourGuideInforScreen(props) {
   );
 
   const renderItem = useCallback((tour) => {
-    console.log({ tour });
+    console.log("1111", { tour });
 
     return (
       <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} onPress={() => navigate('TourDetail', tour)} >

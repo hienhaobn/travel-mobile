@@ -12,28 +12,36 @@ import { getThemeColor } from 'utils/getThemeColor';
 import { scales } from 'utils/scales';
 
 import { Fonts, Sizes } from 'themes';
+import { goToTourGuideInfo } from 'screens/accountInfo/src/utils';
+function formatNumber(number) {
+  if (Number.isInteger(number)) {
+    return number.toString();
+  } else {
+    return number.toFixed(1);
+  }
+}
 
 const LocationDetailTourGuideScene = (props) => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
-  const { tourGuides } = props;
-  console.log(tourGuides);
-
-  const renderItem = useCallback(() => {
+  const tourGuides = props.route.tourGuides;
+  const renderItem = (
+    item
+  ) => {
     return (
-      <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.itemContainer} onPress={() => goToTourGuideInfo(item.tourGuideId)}>
         <View style={styles.itemContentContainer}>
-          <Image source={Images.Mountain} style={styles.itemImages} />
+          <Image source={{ uri: item.tourGuideAvatar }} style={styles.itemImages} />
           <View
             style={{
               flex: 1,
               marginLeft: scales(10),
             }}>
             <View style={styles.itemHeaderContainer}>
-              <Text style={styles.tourGuideName}>Mai anh</Text>
+              <Text style={styles.tourGuideName}>{item.tourGuideName}</Text>
               <View style={styles.rateContainer}>
                 <SvgIcons.IcStarActive width={scales(12)} height={scales(12)} />
-                <Text style={styles.rate}>4.8</Text>
+                <Text style={styles.rate}>{item.star ? formatNumber(+item.star) : 5}</Text>
               </View>
             </View>
             <View style={styles.locationContainer}>
@@ -42,23 +50,28 @@ const LocationDetailTourGuideScene = (props) => {
                 height={scales(17)}
                 color={getThemeColor().Color_Primary}
               />
-              <Text style={styles.textLocation}>Bali, Indonesia</Text>
+              <Text style={styles.textLocation}>{item.provinceName.trim()}</Text>
+            </View>
+            <View style={{ ...styles.locationContainer, marginTop: scales(3) }}>
+              <Text style={styles.textLocation}>Số chuyến đi: {item.totalTour.trim()}</Text>
+            </View>
+
+            <View style={{ ...styles.locationContainer, marginTop: scales(3) }}>
+              <Text style={styles.textLocation}>Số lượt yêu thích: {item.totalFavorite.trim()}</Text>
             </View>
           </View>
         </View>
       </TouchableOpacity>
     );
-  }, []);
+  };
 
   const renderSection = useCallback(() => {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
-        {renderItem()}
-        {renderItem()}
-        {renderItem()}
+        {tourGuides.length > 0 ? tourGuides.map((tourGuide, index) => <View key={index.toString()}>{renderItem(tourGuide)}</View>) : null}
       </ScrollView>
     );
-  }, []);
+  }, [])
 
   return <View style={styles.container}>{renderSection()}</View>;
 };
