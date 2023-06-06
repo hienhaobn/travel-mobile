@@ -41,6 +41,7 @@ function TouGuideRateScene(props: ITouGuideRateSceneProps) {
                                 startingValue={item.star}
                                 minValue={0}
                                 imageSize={scales(12)}
+                                readonly
                             />
                         </View>
                     </View>

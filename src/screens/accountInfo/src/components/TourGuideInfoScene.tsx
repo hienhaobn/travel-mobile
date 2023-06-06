@@ -67,6 +67,7 @@ const myStyles = (theme: string) => {
             ...Fonts.inter400,
             fontSize: scales(12),
             color: color.Text_Dark_1,
+            lineHeight: scales(19),
         },
     });
 };

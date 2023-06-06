@@ -1,4 +1,5 @@
 import { RouteProp } from '@react-navigation/native';
+import { Role } from 'constants/user';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 
@@ -7,6 +8,7 @@ import Avatar from 'components/Avatar';
 import Header from 'components/Header';
 import { useTheme } from 'hooks/useTheme';
 import { fetchTourGuideById } from 'states/tourGuide/fetchProfileTourGuide';
+import { useSelectProfile } from 'states/user/hooks';
 import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
@@ -52,11 +54,11 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
 
   const [currentTab, setCurrentTab] = useState<string>(TourGuideInfoTab.info);
   const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
+  const profileMe = useSelectProfile();
 
   const getProfileTourGuide = async () => {
     const profile = await fetchTourGuideById(parseInt(tourGuideId));
     setProfileTourGuide(profile);
-    console.log("1111 ", profileTourGuide);
   };
 
   useEffect(() => {
@@ -143,9 +145,13 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId)}>
-          <Text style={styles.sendMessage}>Nhắn tin</Text>
-        </TouchableOpacity>
+        {
+          profileMe?.role === Role.TOURGUIDE ? null  : (
+              <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId, profileMe, profileTourGuide)}>
+                <Text style={styles.sendMessage}>Nhắn tin</Text>
+              </TouchableOpacity>
+          )
+        }
 
       </View>
     </View>

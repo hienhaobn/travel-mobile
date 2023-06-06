@@ -1,5 +1,9 @@
-import React, { useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { Role } from 'constants/user';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { apiGetAvailableStatus, apiToggleAvailableStatus } from 'states/user/fetchAvailableStatus';
+import { useSelectProfile } from 'states/user/hooks';
 
 import { getInfor } from './src/api';
 import { goToTourStatus } from './src/utils';
@@ -25,13 +29,15 @@ const AccountScreen = () => {
   const { theme } = useTheme();
   const styles = myStyles(theme);
 
-  const dispatch = useAppDispatch();
-  const onLogOut = () => {
-    dispatch(logout());
-    Storages.remove(KeyStorage.Token);
-    resetStack('Login');
-  };
   const [role, setRole] = React.useState('');
+  const [availableStatus, setAvailableStatus] = useState<boolean>(false);
+  const profileMe = useSelectProfile();
+  const dispatch = useAppDispatch();
+
+  useFocusEffect(useCallback(() => {
+    getAvailableStatus();
+  }, []));
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -42,7 +48,25 @@ const AccountScreen = () => {
       }
     }
     fetchData();
+
   }, []);
+
+  const getAvailableStatus = async () => {
+    const response: boolean = await apiGetAvailableStatus();
+    setAvailableStatus(response);
+  };
+
+  const onToggleAvailableStatus = async () => {
+    setAvailableStatus(!availableStatus);
+    await apiToggleAvailableStatus(!availableStatus);
+  };
+
+  const onLogOut = () => {
+    dispatch(logout());
+    Storages.remove(KeyStorage.Token);
+    resetStack('Login');
+  };
+
   return (
     role ?
       <View style={styles.container}>
@@ -55,13 +79,17 @@ const AccountScreen = () => {
           <View style={styles.itemsContainer}>
             <View style={styles.headerContainer}>
               <Text style={styles.titleHeader}>Tài khoản</Text>
-              <Switch
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={true ? '#f5dd4b' : '#f4f3f4'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={() => { }}
-                value={true}
-              />
+              {
+                profileMe?.role === Role.TOURGUIDE && (
+                    <Switch
+                        trackColor={{ false: getThemeColor().Text_Dark_5, true: getThemeColor().Color_Primary }}
+                        thumbColor={ getThemeColor().white}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={onToggleAvailableStatus}
+                        value={availableStatus}
+                    />
+                )
+              }
             </View>
             <TouchableOpacity style={styles.itemContainer} onPress={goToAccountInfo}>
               <View style={styles.itemLeftContainer}>
