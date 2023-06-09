@@ -33,9 +33,12 @@ const AccountScreen = () => {
   const [availableStatus, setAvailableStatus] = useState<boolean>(false);
   const profileMe = useSelectProfile();
   const dispatch = useAppDispatch();
+  const profile = useSelectProfile();
 
   useFocusEffect(useCallback(() => {
-    getAvailableStatus();
+    if (profile.role === 'TOURGUIDE') {
+      getAvailableStatus();
+    }
   }, []));
 
   useEffect(() => {
@@ -81,13 +84,13 @@ const AccountScreen = () => {
               <Text style={styles.titleHeader}>Tài khoản</Text>
               {
                 profileMe?.role === Role.TOURGUIDE && (
-                    <Switch
-                        trackColor={{ false: getThemeColor().Text_Dark_5, true: getThemeColor().Color_Primary }}
-                        thumbColor={ getThemeColor().white}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={onToggleAvailableStatus}
-                        value={availableStatus}
-                    />
+                  <Switch
+                    trackColor={{ false: getThemeColor().Text_Dark_5, true: getThemeColor().Color_Primary }}
+                    thumbColor={getThemeColor().white}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={onToggleAvailableStatus}
+                    value={availableStatus}
+                  />
                 )
               }
             </View>

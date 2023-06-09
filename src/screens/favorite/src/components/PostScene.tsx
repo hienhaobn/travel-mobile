@@ -57,7 +57,7 @@ const PostScene = (props) => {
     return (
       <View style={styles.noDataContainer}>
         <Image source={Images.NoData} style={styles.image} resizeMode={'contain'} />
-        <Text style={styles.textNoData}>Chưa có chuyến đi</Text>
+        <Text style={styles.textNoData}>Bạn chưa yêu thích bài viết nào</Text>
       </View>
     );
   }, []);

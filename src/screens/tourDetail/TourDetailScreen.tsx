@@ -41,6 +41,8 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
   const [vouchers, setVouchers] = useState<user.Voucher[]>([]);
   const profile = useSelectProfile();
   // get voucher
+  console.log(tour);
+
   const getVoucher = async () => {
     const response = await fetchVouchers();
     setVouchers(response?.data);
@@ -90,7 +92,7 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
             }}>
             <View>
               <View style={styles.voteContainer}>
-                <Text style={styles.textBold}>9</Text>
+                <Text style={styles.textBold}>5</Text>
               </View>
               <View style={styles.voteBka} />
             </View>
@@ -98,8 +100,8 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
               style={{
                 marginLeft: scales(8),
               }}>
-              <Text style={styles.rate}>1553 đánh giá</Text>
-              <Text style={styles.care}>233 quan tâm</Text>
+              <Text style={styles.rate}>{tourDetail?.rates.length} đánh giá</Text>
+              <Text style={styles.care}>{tourDetail?.userFavorites.length} lượt quan tâm</Text>
             </View>
           </View>
           <View style={styles.typeContainer}>
@@ -114,7 +116,7 @@ function TourDetailScreen(props: ITourDetailScreenProps) {
           </Text>
           <View>
             <Text style={styles.desc}>
-              Phí phụ thu: <Text style={styles.textBold}>{tourDetail?.numOfFreeMember}/người</Text>
+              Phí phụ thu: <Text style={styles.textBold}>{tourDetail?.feePerMember ? `${formatCurrency(tourDetail.feePerMember)}/người` : `không áp dụng`}</Text>
             </Text>
             <Text style={styles.desc}>(Khi vượt quá tối đa người)</Text>
           </View>
@@ -183,6 +185,7 @@ const myStyles = (theme: string) => {
       ...Fonts.inter600,
       fontSize: scales(18),
       color: color.Text_Dark_1,
+      marginBottom: scales(3),
     },
     rateContainer: {
       flexDirection: 'row',

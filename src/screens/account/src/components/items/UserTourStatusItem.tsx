@@ -148,10 +148,11 @@ const UserTourStatusItem = (props: TourStatusItemProps) => {
         text: `Cảm ơn bạn đã lựa chọn Ktravel.`,
       };
       return route.role === 'USER' ? (
-        <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusConfirmPopup?.current?.showModal}>
-          <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
-          <Text style={styles.sellNow}>Kết thúc</Text>
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity style={styles.shopContainer} onPress={refTourStatusConfirmPopup?.current?.showModal}>
+            <SvgIcons.IcShopOutline color={getThemeColor().white} width={scales(17)} height={scales(17)} />
+            <Text style={styles.sellNow}>Kết thúc</Text>
+          </TouchableOpacity></>
       ) : (
         <View />
       );

@@ -89,7 +89,7 @@ function DepositScreen() {
   );
 
   const onSubmit = async () => {
-    const response = await fetchDeposit(parseFloat(amount));
+    const response = await fetchDeposit(parseFloat(amount), profile.role);
     if (response?.statusCode === 200) {
       if (response?.returnValue) {
         console.log('open')
