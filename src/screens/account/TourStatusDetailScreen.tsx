@@ -2,9 +2,12 @@ import { RouteProp } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { color } from 'react-native-reanimated';
+import { color, log, or } from 'react-native-reanimated';
 
+import { apiCancelOrder } from './src/api';
 import CancelOrderPopup, { IConfirmPopupRef } from './src/components/CancelOrderPopup';
+
+import ReportTourPopup, { IReportTourPopupRef } from './src/components/ReportTourPopup';
 
 import SvgIcons from 'assets/svgs';
 import Button from 'components/Button/Button';
@@ -23,14 +26,14 @@ import TourDetailImages from 'screens/tourDetail/src/components/TourDetailImages
 
 import { fetchTourById } from 'states/tours/fetchTours';
 
+import { useSelectProfile } from 'states/user/hooks';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
 import { showCustomToast } from 'utils/toast';
-import { useSelectProfile } from 'states/user/hooks';
-import { apiCancelOrder } from './src/api';
+import { apiReportTourGuide } from 'states/orders/fetchReport';
 
 
 interface ITourStatusDetailScreenProps {
@@ -46,7 +49,9 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
   const [tourDetail, setTourDetail] = useState<tour.Tour>(null);
   const [openReport, setOpenReport] = React.useState(false);
   const refCancelOrderPopup = useRef<IConfirmPopupRef>(null);
+  const refReportPopup = useRef<IReportTourPopupRef>(null);
   const profile = useSelectProfile();
+  console.log('order', order)
   const actionButton = {
     title: 'Bạn có muốn hủy chuyến đi này ?',
     onConfirm: () => apiCancelOrder(order.id, profile.role),
@@ -61,6 +66,10 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
   useEffect(() => {
     getTourById();
   }, []);
+
+  const onReport = () => {
+    refReportPopup?.current?.showModal();
+  };
 
   const renderContent = () => (
     <ScrollView>
@@ -134,10 +143,10 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
       </View>
       {
         [EOrderStatus.DONE, EOrderStatus.PROCESSING, EOrderStatus.REJECTED, EOrderStatus.WAITING_TOUR_GUIDE].includes(order?.status) ? (
-          order.status === EOrderStatus.DONE ? (
+          order.status === EOrderStatus.PROCESSING ? (
             <Button
               title="Báo cáo chuyến đi"
-              // onPress={onLogin}
+              onPress={onReport}
               customStyles={{ marginTop: scales(10), marginBottom: scales(20), marginHorizontal: scales(10) }}
             />
           ) : null
@@ -168,6 +177,10 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
         onConfirm={actionButton.onConfirm}
         title={actionButton.title}
         onReject={actionButton.onReject}
+      />
+      <ReportTourPopup
+        ref={refReportPopup}
+        orderId={order?.id}
       />
     </View>
   );

@@ -9,6 +9,7 @@ import IcForward from './ic_forward.svg';
 import IcHeartOutline from './ic_heart_outline.svg';
 import IcHeartRed from './ic_heart_red.svg';
 import IcLocation from './ic_location.svg';
+import IcLogout from './ic_logout.svg';
 import IcMenu from './ic_menu.svg';
 import IcMessageQuestion from './ic_message_question.svg';
 import IcMore from './ic_more.svg';
@@ -84,6 +85,7 @@ const SvgIcons = {
     IcMessageText,
     IcGender,
     IcBirthday,
+    IcLogout,
 };
 
 export default SvgIcons;

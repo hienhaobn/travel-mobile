@@ -216,9 +216,9 @@ const AccountScreen = () => {
             <TouchableOpacity style={styles.itemContainer} onPress={onLogOut}>
               <View style={styles.itemLeftContainer}>
                 <View>
-                  <SvgIcons.IcLogoLaunch
-                    width={scales(30)}
-                    height={scales(30)}
+                  <SvgIcons.IcLogout
+                    width={scales(25)}
+                    height={scales(25)}
                     color={getThemeColor().Text_Dark_1}
                   />
                 </View>
