@@ -1,25 +1,33 @@
 import { RouteProp } from '@react-navigation/native';
-import { Role } from 'constants/user';
+
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import TourGuideInfoScene from './src/components/TourGuideInfoScene';
+import TourGuideRateScene from './src/components/TourGuideRateScene';
+import TourOfTouGuideScene from './src/components/TourOfTourGuideScene';
+import Images from '../../assets/images';
+
+import TouchableOpacity from '../../components/TouchableOpacity';
+
+import { RootNavigatorParamList } from '../../navigation/types';
+
+import { goToConversation } from '../conversation/src/utils';
 
 import SvgIcons from 'assets/svgs';
+
 import Avatar from 'components/Avatar';
 import Header from 'components/Header';
+import { Role } from 'constants/user';
 import { useTheme } from 'hooks/useTheme';
-import { fetchTourGuideById } from 'states/tourGuide/fetchProfileTourGuide';
+import { checkIsLikedTourGuide, fetchTourGuideById, likeTourGuide } from 'states/tourGuide/fetchProfileTourGuide';
 import { useSelectProfile } from 'states/user/hooks';
 import { Fonts } from 'themes';
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
-import Images from '../../assets/images';
-import TouchableOpacity from '../../components/TouchableOpacity';
-import { RootNavigatorParamList } from '../../navigation/types';
-import { goToConversation } from '../conversation/src/utils';
-import TourGuideInfoScene from './src/components/TourGuideInfoScene';
-import TourGuideRateScene from './src/components/TourGuideRateScene';
-import TourOfTouGuideScene from './src/components/TourOfTourGuideScene';
+
 
 enum TourGuideInfoTab {
   info = 'info',
@@ -51,15 +59,33 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
   const styles = myStyles(theme);
   const { route } = props;
   const { tourGuideId } = route.params;
+  const [isLiked, setIsLiked] = useState(false);
 
   const [currentTab, setCurrentTab] = useState<string>(TourGuideInfoTab.info);
   const [profileTourGuide, setProfileTourGuide] = useState<tourGuide.TourGuideProfile>(null);
   const profileMe = useSelectProfile();
 
+  const onHandleLike = async () => {
+
+    await likeTourGuide(+tourGuideId);
+    // hideLoading();
+    setIsLiked(!isLiked);
+    getIsLiked();
+  };
+
   const getProfileTourGuide = async () => {
     const profile = await fetchTourGuideById(parseInt(tourGuideId));
     setProfileTourGuide(profile);
   };
+
+  const getIsLiked = async () => {
+    const responseIsLiked = await
+      checkIsLikedTourGuide(+tourGuideId);
+    setIsLiked(responseIsLiked);
+  }
+  useEffect(() => {
+    getIsLiked();
+  }, []);
 
   useEffect(() => {
     getProfileTourGuide();
@@ -89,7 +115,8 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
                 style={[
                   styles.labelTabText,
                   isFocus ? { color: getThemeColor().Color_Primary } : { color: getThemeColor().Text_Dark_1 },
-                ]}>
+                ]}
+              >
                 {tab.title}
               </Text>
             </TouchableOpacity>
@@ -127,13 +154,24 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
           <Text style={styles.subTitle}>Địa điểm</Text>
           <View style={styles.row}>
             <SvgIcons.IcLocation width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary} />
-            <Text style={[styles.rightText, { marginLeft: scales(5), marginRight: scales(8) }]}>Hà Nam</Text>
-            <SvgIcons.IcLocation width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary} />
-            <Text style={[styles.rightText, { marginLeft: scales(5) }]}>Nam Định</Text>
+            <Text style={[styles.rightText, { marginLeft: scales(5), marginRight: scales(8) }]}>{profileTourGuide?.provinces[0]?.name.trim()}</Text>
+            {profileTourGuide.provinces[1] ?
+              <>
+                <SvgIcons.IcLocation width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary} />
+                <Text style={[styles.rightText, { marginLeft: scales(5) }]}>{profileTourGuide.provinces[1].name}</Text>
+              </>
+              : null
+            }
+
           </View>
           <View style={styles.row}>
-            <SvgIcons.IcLocation width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary} />
-            <Text style={[styles.rightText, { marginLeft: scales(5) }]}>Ninh Bình</Text>
+            {profileTourGuide.provinces[2] ?
+              <>
+                <SvgIcons.IcLocation width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary} />
+                <Text style={[styles.rightText, { marginLeft: scales(5) }]}>{profileTourGuide.provinces[2].name}</Text>
+              </>
+              : null
+            }
           </View>
         </View>
       </View>
@@ -141,15 +179,25 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.name}>{profileTourGuide?.name}</Text>
           <View style={styles.heartContainer}>
-            <SvgIcons.IcHeartOutline width={scales(12)} height={scales(12)} color={getThemeColor().Color_Primary} />
+            <TouchableOpacity style={{ marginHorizontal: scales(10) }} onPress={() => onHandleLike()}>
+              {isLiked ? <SvgIcons.IcHeartRed
+                color={getThemeColor().grey}
+                width={scales(20)}
+                height={scales(20)}
+                         /> : <SvgIcons.IcHeartOutline
+                color={getThemeColor().grey}
+                width={scales(20)}
+                height={scales(20)}
+                              />}
+            </TouchableOpacity>
           </View>
         </View>
 
         {
-          profileMe?.role === Role.TOURGUIDE ? null  : (
-              <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId, profileMe, profileTourGuide)}>
-                <Text style={styles.sendMessage}>Nhắn tin</Text>
-              </TouchableOpacity>
+          profileMe?.role === Role.TOURGUIDE ? null : (
+            <TouchableOpacity style={styles.sendMessageContainer} onPress={() => goToConversation(tourGuideId, profileMe, profileTourGuide)}>
+              <Text style={styles.sendMessage}>Nhắn tin</Text>
+            </TouchableOpacity>
           )
         }
 
@@ -164,7 +212,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
           <Image source={Images.StarTourGuide} style={styles.imageRate} />
           <View style={styles.rateInfoContainer}>
             <Text style={styles.titleRate}>Đánh giá</Text>
-            <Text style={styles.countRate}>{formatCurrency(profileTourGuide?.avgStar, 2)}<Text style={{ marginLeft: scales(5) }}>(3.2k)</Text></Text>
+            <Text style={styles.countRate}>{formatCurrency(profileTourGuide?.avgStar ? profileTourGuide.avgStar : 4, 2)}<Text style={{ marginLeft: scales(5) }}>(3.2k)</Text></Text>
           </View>
         </View>
       </View>
@@ -173,7 +221,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
           <Image source={Images.FightTourGuide} style={styles.imageRate} />
           <View style={styles.rateInfoContainer}>
             <Text style={styles.titleRate}>Chuyến đi</Text>
-            <Text style={styles.countRate}>234</Text>
+            <Text style={styles.countRate}>{profileTourGuide.orders.length === 0 ? 3 : profileTourGuide.orders.length}</Text>
           </View>
         </View>
       </View>
@@ -182,7 +230,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
           <Image source={Images.TimeTourGuide} style={styles.imageRate} />
           <View style={styles.rateInfoContainer}>
             <Text style={styles.titleRate}>Tham gia</Text>
-            <Text style={styles.countRate}>5 năm</Text>
+            <Text style={styles.countRate}>{profileTourGuide.interviewDate?.split('-')[0] || '2023'}</Text>
           </View>
         </View>
       </View>
@@ -190,9 +238,7 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
   );
 
   const renderInfo = () => (
-    <View style={styles.infoContainer}>
-
-    </View>
+    <View style={styles.infoContainer} />
   );
 
   const renderContent = () => (
@@ -202,11 +248,13 @@ function TourGuideInfoScreen(props: ITourGuideInfoScreenProps) {
         contentContainerStyle={styles.contentContainer}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
-      >
+      >{profileTourGuide ? <>
+
         {renderContentHeader()}
         {renderRateFight()}
         {renderInfo()}
         {renderListFooter()}
+      </> : null}
       </ScrollView>
     </View>
   );

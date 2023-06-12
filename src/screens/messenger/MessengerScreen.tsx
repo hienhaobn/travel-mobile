@@ -91,7 +91,7 @@ const MessengerScreen = () => {
 
   return (
     <View style={styles.container}>
-      {renderHeader()}
+      {/* {renderHeader()} */}
       <FlatList
         data={conversations}
         renderItem={({ item }) => renderConversation(item)}

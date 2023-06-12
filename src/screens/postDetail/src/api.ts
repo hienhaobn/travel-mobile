@@ -104,3 +104,10 @@ export const likePost = async (postId: number) => {
     );
     return response.data.returnValue;
 };
+
+export const reportPost = async (postId: number, content: string) => {
+    // showLoading();
+    const response = await axiosInstance.post(`reports/post`, { postId, content });
+    // hideLoading();
+    return response;
+};

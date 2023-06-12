@@ -1,26 +1,40 @@
 import { RouteProp } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Modal, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+import { color, log, or } from 'react-native-reanimated';
+
+import { apiCancelOrder } from './src/api';
+import CancelOrderPopup, { IConfirmPopupRef } from './src/components/CancelOrderPopup';
+
+import ReportTourPopup, { IReportTourPopupRef } from './src/components/ReportTourPopup';
+
+import SvgIcons from 'assets/svgs';
 import Button from 'components/Button/Button';
 
 import Header from 'components/Header';
 
+import { EOrderStatus } from 'constants/order';
 import { ETourTypesValue } from 'constants/tours';
 
 import { useTheme } from 'hooks/useTheme';
 
 import { RootNavigatorParamList } from 'navigation/types';
 
+import { reportPost } from 'screens/postDetail/src/api';
 import TourDetailImages from 'screens/tourDetail/src/components/TourDetailImages';
 
 import { fetchTourById } from 'states/tours/fetchTours';
 
+import { useSelectProfile } from 'states/user/hooks';
 import { Fonts, Sizes } from 'themes';
 
 import { getThemeColor } from 'utils/getThemeColor';
 import { formatCurrency } from 'utils/number';
 import { scales } from 'utils/scales';
-import { color } from 'react-native-reanimated';
+import { showCustomToast } from 'utils/toast';
+import { apiReportTourGuide } from 'states/orders/fetchReport';
+
 
 interface ITourStatusDetailScreenProps {
   route: RouteProp<RootNavigatorParamList, 'TourStatusDetail'>;
@@ -33,14 +47,29 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
   const { order } = route.params;
   const { tour } = order;
   const [tourDetail, setTourDetail] = useState<tour.Tour>(null);
+  const [openReport, setOpenReport] = React.useState(false);
+  const refCancelOrderPopup = useRef<IConfirmPopupRef>(null);
+  const refReportPopup = useRef<IReportTourPopupRef>(null);
+  const profile = useSelectProfile();
+  console.log('order', order)
+  const actionButton = {
+    title: 'Bạn có muốn hủy chuyến đi này ?',
+    onConfirm: () => apiCancelOrder(order.id, profile.role),
+    text: `Việc hủy chuyến đi đã thanh toán cọc, có thể khiến bạn bị mất tiền cọc`,
+  };
   const getTourById = async () => {
     const response = await fetchTourById(tour.id);
     setTourDetail(response);
+
   };
 
   useEffect(() => {
     getTourById();
   }, []);
+
+  const onReport = () => {
+    refReportPopup?.current?.showModal();
+  };
 
   const renderContent = () => (
     <ScrollView>
@@ -51,7 +80,8 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
             <View
               style={{
                 flexDirection: 'row',
-              }}>
+              }}
+            >
               <View>
                 <View style={styles.voteContainer}>
                   <Text style={styles.textBold}>9</Text>
@@ -61,7 +91,8 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
               <View
                 style={{
                   marginLeft: scales(8),
-                }}>
+                }}
+              >
                 <Text style={styles.rate}>{tour.rates ? tour.rates.length : 0} lượt đánh giá</Text>
                 <Text style={styles.care}>{tour.rates ? tour.rates.length : 0} quan tâm</Text>
               </View>
@@ -110,11 +141,24 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
           ))}
         </View>
       </View>
-      <Button
-        title="Hủy chuyến đi"
-        // onPress={onLogin}
-        customStyles={{ marginTop: scales(10), marginBottom: scales(20), marginHorizontal: scales(10) }}
-      />
+      {
+        [EOrderStatus.DONE, EOrderStatus.PROCESSING, EOrderStatus.REJECTED, EOrderStatus.WAITING_TOUR_GUIDE].includes(order?.status) ? (
+          order.status === EOrderStatus.PROCESSING ? (
+            <Button
+              title="Báo cáo chuyến đi"
+              onPress={onReport}
+              customStyles={{ marginTop: scales(10), marginBottom: scales(20), marginHorizontal: scales(10) }}
+            />
+          ) : null
+        ) : (
+          <Button
+            title="Hủy chuyến đi"
+            onPress={refCancelOrderPopup?.current?.showModal}
+            customStyles={{ marginTop: scales(10), marginBottom: scales(20), marginHorizontal: scales(10) }}
+          />
+        )
+      }
+
     </ScrollView>
   );
 
@@ -122,12 +166,106 @@ const TourStatusDetailScreen = (props: ITourStatusDetailScreenProps) => {
     <View style={styles.container}>
       <Header title="Chi tiết chuyến đi" />
       {renderContent()}
+      <ModalReport
+        // user={user}
+        id={1}
+        close={() => setOpenReport(false)}
+        show={openReport}
+      />
+      <CancelOrderPopup
+        ref={refCancelOrderPopup}
+        onConfirm={actionButton.onConfirm}
+        title={actionButton.title}
+        onReject={actionButton.onReject}
+      />
+      <ReportTourPopup
+        ref={refReportPopup}
+        orderId={order?.id}
+      />
     </View>
   );
 };
 
 export default TourStatusDetailScreen;
 
+const ModalReport = ({ id, show, close, user }: any) => {
+  const { theme } = useTheme();
+
+  const styles = myStyles(theme);
+
+  const [report, setReport] = React.useState('');
+
+  const handleReport = async () => {
+    try {
+      if (report) {
+        const params = {
+          postId: id,
+          reason: report,
+        };
+        const res = await reportPost(params.postId, params.reason);
+        if (res?.statusCode === 200) {
+          showCustomToast('Gửi báo cáo thành công !');
+          close();
+        } else {
+          showCustomToast(res?.message ?? '');
+        }
+      }
+    } catch (error) {
+      showCustomToast(error?.message ?? '');
+      close();
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.containerModal}>
+        <Modal animationType={'slide'} transparent={true} visible={show}>
+          <View style={styles.modal}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.modalClose}
+                onPress={() => {
+                  close();
+                }}
+              >
+                <SvgIcons.IcBack color={getThemeColor().Color_Gray} width={scales(14)} height={scales(14)} />
+              </TouchableOpacity>
+              <View style={styles.modal_endow}>
+                <Text style={styles.modal_title}>Báo cáo bài viết</Text>
+                <View style={styles.modal_endow_comment}>
+                  <View style={styles.modal_endow_item_report}>
+                    <View style={styles.modal_endow_value_report}>
+                      <TextInput
+                        multiline={true}
+                        textContentType="givenName"
+                        placeholder="Viết báo cáo"
+                        style={styles.inputModalReport}
+                        onChangeText={setReport}
+                        value={report}
+                        numberOfLines={4}
+                      />
+                    </View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleReport();
+                      }}
+                      style={styles.modal_bottom_btn_primary}
+                    >
+                      <Text style={styles.modal_button_btn_text_primary}>
+                        Gửi báo cáo
+                      </Text>
+                      {/* <SvgIcons.IcHeartRed width={scales(12)} height={scales(12)} /> */}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    </SafeAreaView>
+  );
+};
 const myStyles = (theme: string) => {
   const color = getThemeColor();
   return StyleSheet.create({
@@ -263,6 +401,115 @@ const myStyles = (theme: string) => {
       borderRadius: scales(8),
     },
     overviewContainer: {
+      marginTop: scales(20),
+    },
+    modalContent: {
+      backgroundColor: 'white',
+      padding: scales(20),
+      borderRadius: scales(14),
+      width: '100%',
+    },
+    containerModal: {
+      flex: 1,
+      borderRadius: scales(15),
+      marginVertical: scales(2),
+    },
+    modal: {
+      flex: 1,
+      backgroundColor: '#0000004a',
+      padding: scales(20),
+      paddingTop: scales(100),
+      borderRadius: scales(15),
+    },
+    modal_endow: {
+      // textAlign: 'center',
+      marginTop: scales(10),
+    },
+    modalClose: {},
+    modalCloseIcon: {
+      textAlign: 'right',
+    },
+    modal_endow_comment: {},
+    modal_endow_item: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modal_endow_item_report: {
+      flexDirection: 'column',
+    },
+    modal_endow_images: {
+      width: scales(30),
+      height: scales(30),
+      borderRadius: scales(999),
+      overflow: 'hidden',
+      marginRight: scales(10),
+    },
+    modal_endow_value: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: Sizes.scrWidth * 0.5,
+      justifyContent: 'space-between',
+      flex: 1,
+    },
+    modal_endow_value_edit: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: Sizes.scrWidth * 0.65,
+      justifyContent: 'space-between',
+      flex: 1,
+    },
+    modal_endow_value_report: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: Sizes.scrWidth * 0.8,
+      justifyContent: 'center',
+    },
+    inputModal: {
+      borderBottomWidth: scales(1),
+      borderBottomColor: '#ccc',
+      outline: 'none',
+      flex: 1,
+      width: Sizes.scrWidth * 0.6,
+    },
+    inputModalReport: {
+      borderWidth: scales(1),
+      borderColor: '#ccc',
+      outline: 'none',
+      // flex: 1,
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: Sizes.scrWidth * 0.8,
+      justifyContent: 'center',
+      marginTop: scales(20),
+      textAlignVertical: 'top',
+      padding: scales(10),
+      borderRadius: scales(10),
+    },
+    modal_bottom_btn_primary: {
+      padding: scales(10),
+      backgroundColor: '#f05123',
+      borderRadius: scales(10),
+      borderWidth: 1,
+      borderColor: '#ccc',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: scales(15),
+    },
+    modal_button_btn_text_primary: {
+      color: '#fff',
+    },
+    modal_endow_header: {
+      fontSize: scales(20),
+      fontWeight: 'bold',
+    },
+    modal_title: {
+      color: '#333',
+      fontSize: scales(23),
+      lineHeight: scales(25),
+      fontWeight: '700',
+      textAlign: 'center',
       marginTop: scales(20),
     },
   });

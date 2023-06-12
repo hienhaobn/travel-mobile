@@ -15,7 +15,7 @@ import {
 import RenderHtml from 'react-native-render-html';
 
 import ConfirmPopup, { IConfirmPopupRef } from './ConfirmPopup';
-import { checkIsLiked, createComment, deleteComments, dislikePost, getPostComments, likePost, putComments } from './src/api';
+import { checkIsLiked, createComment, deleteComments, dislikePost, getPostComments, likePost, putComments, reportPost } from './src/api';
 
 import Images from 'assets/images';
 import SvgIcons from 'assets/svgs';
@@ -271,7 +271,7 @@ const ModalScreen = ({ id, user }: any) => {
     refConfirmOrderPopup?.current.showModal();
   };
 
-  return (comments.length > 0 ?
+  return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.containerModal}>
         <Modal animationType={'slide'} transparent={true} visible={showModal}>
@@ -452,7 +452,7 @@ const ModalScreen = ({ id, user }: any) => {
         }}
         customStyles={{ marginTop: scales(10), marginBottom: scales(20), marginHorizontal: scales(10), width: Sizes.scrWidth - scales(50) }}
       />
-    </SafeAreaView> : null
+    </SafeAreaView>
   );
 };
 
@@ -463,27 +463,26 @@ const ModalReport = ({ id, show, close, user }: any) => {
 
   const [report, setReport] = React.useState('');
 
-  // const handleReport = async () => {
-  //   try {
-  //     if (report) {
-  //       let params = {
-  //         postId: id,
-  //         reason: report,
-  //       };
-  //       const res = await service.sendReport(params);
-  //       if (res?.returnValue?.statusCode == '200') {
-  //         notifyInvalid('Gửi báo cáo thành công !');
-  //         close();
-  //       } else {
-  //         notifyInvalid(res?.returnData?.message ?? '');
-  //       }
-  //       console.log('vao day 1');
-  //     }
-  //   } catch (error) {
-  //     notifyInvalid(error?.message ?? '');
-  //     close();
-  //   }
-  // };
+  const handleReport = async () => {
+    try {
+      if (report) {
+        const params = {
+          postId: id,
+          reason: report,
+        };
+        const res = await reportPost(params.postId, params.reason);
+        if (res?.statusCode === 200) {
+          showCustomToast('Gửi báo cáo thành công !');
+          close();
+        } else {
+          showCustomToast(res?.message ?? '');
+        }
+      }
+    } catch (error) {
+      showCustomToast(error?.message ?? '');
+      close();
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -516,14 +515,14 @@ const ModalReport = ({ id, show, close, user }: any) => {
                     </View>
                     <TouchableOpacity
                       onPress={() => {
-                        // handleReport();
+                        handleReport();
                       }}
                       style={styles.modal_bottom_btn_primary}
                     >
                       <Text style={styles.modal_button_btn_text_primary}>
                         Gửi báo cáo
                       </Text>
-                      <SvgIcons.IcHeartRed width={scales(12)} height={scales(12)} />
+                      {/* <SvgIcons.IcHeartRed width={scales(12)} height={scales(12)} /> */}
                     </TouchableOpacity>
                   </View>
                 </View>

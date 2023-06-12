@@ -30,7 +30,7 @@ const renderScene = SceneMap({
   location: LocationScene,
   tour: TourScene,
   tourGuide: TourGuideScene,
-  post: PostScene
+  post: PostScene,
 });
 
 const FavoriteScreen = () => {

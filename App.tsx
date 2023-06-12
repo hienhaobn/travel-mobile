@@ -9,8 +9,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import StackNavigator from 'navigation/Navigation';
 
 import store, { persistor } from 'states';
+import { StatusBar } from 'react-native';
 
 function App() {
+  StatusBar.setHidden(true, 'none');
+
   return (
     <RootSiblingParent>
       <Provider store={store}>

@@ -1,15 +1,10 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-
 import { hideLoading, showLoading } from 'components/Loading';
-
 import { BASE_URL } from 'configs/api';
-
 import { IToken } from 'constants/global-variables';
-
 import axiosInstance from 'services/api-requests';
 import { EventBusName, onPushEventBus } from 'services/event-bus';
-
 import Storages, { KeyStorage } from 'utils/storages';
 import { showCustomToast } from 'utils/toast';
 
@@ -103,4 +98,16 @@ export const apiConfirmOrder = async (orderId: number, action: string) => {
         { headers: { Authorization: `Bearer ${tokenInfo.accessToken}` } }
     );
     return response.data;
+};
+
+export const apiCancelOrder = async (orderId: number, role: string) => {
+    if (role === 'USER') {
+        const response = await axiosInstance.delete(`${BASE_URL}/orders/user`, { data: { orderId } });
+        showCustomToast('Hủy chuyến đi thành công');
+        return response.data;
+    } else if (role === 'TOURGUIDE') {
+        const response = await axiosInstance.delete(`${BASE_URL}/orders/tourguide`, { data: { orderId } });
+        showCustomToast('Hủy chuyến đi thành công');
+        return response.data;
+    }
 };
